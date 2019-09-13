@@ -7,6 +7,7 @@ import com.github.craftforever.infinitefeatures.init.ModItems;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class RecipeHandler
@@ -25,8 +26,10 @@ public class RecipeHandler
 	{
 		for (int i = 0; i < InfiniteFeatures.ORE_QTY; i++)
 		{
-//			GameRegistry.addShapelessRecipe(null,null,new ItemStack(Item.getItemFromBlock(ModBlocks.ingotblockArray[i]),1), new Ingredient[] {ModItems.itemArray[i],9});
-//			GameRegistry.addShapelessRecipe(null, null, new ItemStack(ModItems.itemArray[i]), new Ingredient[] {ModBlocks.ingotblockArray[i]});
+			String nameItem = ModItems.itemArray[i].getRegistryName().toString();
+			String nameBlock = ModBlocks.blockArray[i].getRegistryName().toString();
+			GameRegistry.addShapedRecipe(new ResourceLocation("infeatures:"+nameBlock),new ResourceLocation("infeatures:"+nameItem.substring(0,nameItem.length()-6)+"_blocks"),new ItemStack(Item.getItemFromBlock(ModBlocks.ingotblockArray[i]),1), new Object[] {"III","III","III",'I',ModItems.itemArray[i]});
+			GameRegistry.addShapelessRecipe(new ResourceLocation("infeatures:"+nameItem), new ResourceLocation("infeatures:"+nameItem.substring(0,nameItem.length()-6)+"_items"), new ItemStack(ModItems.itemArray[i],9), new Ingredient[] {Ingredient.fromItem(Item.getItemFromBlock(ModBlocks.ingotblockArray[i]))});
 		}
 	}
 }
