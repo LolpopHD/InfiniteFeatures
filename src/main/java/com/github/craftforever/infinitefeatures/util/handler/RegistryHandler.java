@@ -111,45 +111,24 @@ public class RegistryHandler
 			writer.flush();
 		}
 		
-		for(int i = 0; i < ModItems.ToolOres; i++)
-		{
-			Item item = ModItems.hoeArray[i];
+		for(int i = 0; i < ModItems.ToolOres * 5; i++)
+		{	
+			Item item = ModItems.toolArray[i];
 			String itemName = item.getTranslationKey().substring(5);
 			itemName = itemName.replace("_", " ");
 			itemName = WordUtils.capitalize(itemName);
 			String langinput = item.getTranslationKey()+".name="+itemName+"\n";
 			writer.write(langinput);
 			writer.flush();
-			
-			item = ModItems.pickaxeArray[i];
-			itemName = item.getTranslationKey().substring(5);
+		}
+		
+		for(int i = 0; i < ModItems.ArmorCount * 4; i++) 
+		{
+			Item item = ModItems.armorArray[i];
+			String itemName = item.getTranslationKey().substring(5);
 			itemName = itemName.replace("_", " ");
 			itemName = WordUtils.capitalize(itemName);
-			langinput = item.getTranslationKey()+".name="+itemName+"\n";
-			writer.write(langinput);
-			writer.flush();
-			
-			item = ModItems.shovelArray[i];
-			itemName = item.getTranslationKey().substring(5);
-			itemName = itemName.replace("_", " ");
-			itemName = WordUtils.capitalize(itemName);
-			langinput = item.getTranslationKey()+".name="+itemName+"\n";
-			writer.write(langinput);
-			writer.flush();
-			
-			item = ModItems.swordArray[i];
-			itemName = item.getTranslationKey().substring(5);
-			itemName = itemName.replace("_", " ");
-			itemName = WordUtils.capitalize(itemName);
-			langinput = item.getTranslationKey()+".name="+itemName+"\n";
-			writer.write(langinput);
-			writer.flush();
-			
-			item = ModItems.axeArray[i];
-			itemName = item.getTranslationKey().substring(5);
-			itemName = itemName.replace("_", " ");
-			itemName = WordUtils.capitalize(itemName);
-			langinput = item.getTranslationKey()+".name="+itemName+"\n";
+			String langinput = item.getTranslationKey()+".name="+itemName+"\n";
 			writer.write(langinput);
 			writer.flush();
 		}
@@ -192,6 +171,10 @@ public class RegistryHandler
 		if(itemTextureFolder.exists())
 			FileUtils.deleteDirectory(itemTextureFolder);
 		itemTextureFolder.mkdirs();
+		File armorModelsFolder = new File("InfiniCraft/Resources/assets/infeatures/textures/models/armor");
+		if(armorModelsFolder.exists())
+			FileUtils.deleteDirectory(armorModelsFolder);
+		armorModelsFolder.mkdirs();
 		/*
 		InputStream streambases = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/block/base");
 		BufferedReader reader = new BufferedReader(new InputStreamReader(streambases));
@@ -313,6 +296,42 @@ public class RegistryHandler
 			g.drawImage(headImg, 0, 0, null);
 			ImageIO.write(finalImg, "PNG", new File("InfiniCraft/Resources/assets/infeatures/textures/items/"+ModItems.shovelArray[i].getTranslationKey().substring(5)+".png"));
 		
+		}
+		
+		for(int i = 0; i < ModItems.ArmorCount; i++) 
+		{
+			String name = ModBlocks.minerals[i].name;
+			
+			InputStream stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/item/armor/boots.png");
+			BufferedImage itemImg = ImageIO.read(stream);
+			Color color = ModBlocks.minerals[i].color;
+			dye(itemImg, color);
+			ImageIO.write(itemImg, "PNG", new File("InfiniCraft/Resources/assets/infeatures/textures/items/"+ModItems.bootsArray[i].getTranslationKey().substring(5)+".png"));
+			
+			stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/item/armor/leggings.png");
+			itemImg = ImageIO.read(stream);
+			dye(itemImg, color);
+			ImageIO.write(itemImg, "PNG", new File("InfiniCraft/Resources/assets/infeatures/textures/items/"+ModItems.leggingsArray[i].getTranslationKey().substring(5)+".png"));
+			
+			stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/item/armor/chestplate.png");
+			itemImg = ImageIO.read(stream);
+			dye(itemImg, color);
+			ImageIO.write(itemImg, "PNG", new File("InfiniCraft/Resources/assets/infeatures/textures/items/"+ModItems.chestplateArray[i].getTranslationKey().substring(5)+".png"));
+			
+			stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/item/armor/helmet.png");
+			itemImg = ImageIO.read(stream);
+			dye(itemImg, color);
+			ImageIO.write(itemImg, "PNG", new File("InfiniCraft/Resources/assets/infeatures/textures/items/"+ModItems.helmetArray[i].getTranslationKey().substring(5)+".png"));
+			
+			stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/item/armor/armor_layer_1.png");
+			itemImg = ImageIO.read(stream);
+			dye(itemImg, color);
+			ImageIO.write(itemImg, "PNG", new File("InfiniCraft/Resources/assets/infeatures/textures/models/armor/"+name+"_layer_1.png"));
+			
+			stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/item/armor/armor_layer_2.png");
+			itemImg = ImageIO.read(stream);
+			dye(itemImg, color);
+			ImageIO.write(itemImg, "PNG", new File("InfiniCraft/Resources/assets/infeatures/textures/models/armor/"+name+"_layer_2.png"));
 		}
 	}
 	
