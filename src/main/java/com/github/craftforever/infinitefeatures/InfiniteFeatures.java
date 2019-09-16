@@ -62,7 +62,7 @@ public class InfiniteFeatures
 	public static int fastWorldTypeIndex;
 	public static String fastchunkProviderSettings;
 	public static int fastIndex;
-	public static int ORE_QTY = 5;
+	public static int ORE_QTY = 10;
 	
 	public static final CreativeTabs InfiniTab = new InfiniTab("InfiniteTab");
 	

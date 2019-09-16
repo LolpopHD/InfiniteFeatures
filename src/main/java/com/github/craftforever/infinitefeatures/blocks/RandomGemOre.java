@@ -28,7 +28,7 @@ import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class RandomGemOre extends Block implements IHasModel {
+public class RandomGemOre extends BlockBase{
 	public enum SpecialEventTrigger 
 	{
 		ONDESTROY, ONEXPLODEDESTROY, ONACTIVATED, ONWALKEDON, ONCLICKED, ONCOLLIDED, ONPLACED, ONFALLENON, ONLANDED,
@@ -54,11 +54,11 @@ public class RandomGemOre extends Block implements IHasModel {
 			float ihardness, float iresistance, SoundType isound,
 			HashMap<SpecialEventTrigger, List<ISpecialEvent>> randomUniqueActions, Item drop) 
 	{
-		super(imaterial);
-		setTranslationKey(imineral.name + "_ore");
-		setRegistryName(imineral.name + "_ore");
-		ModBlocks.BLOCKS.add(this);
-		ModItems.ITEMS.add(new ItemBlock(this).setRegistryName(this.getRegistryName()));
+		super(imineral.name + "_ore",imaterial,imineral);
+		//setTranslationKey(imineral.name + "_ore");
+		//setRegistryName(imineral.name + "_ore");
+		//ModBlocks.BLOCKS.add(this);
+		//ModItems.ITEMS.add(new ItemBlock(this).setRegistryName(this.getRegistryName()));
 
 		setSoundType(isound);
 		setHardness(ihardness);
@@ -123,6 +123,7 @@ public class RandomGemOre extends Block implements IHasModel {
 	public boolean removedByPlayer(IBlockState p_removedByPlayer_1_, World p_removedByPlayer_2_,
 			BlockPos p_removedByPlayer_3_, EntityPlayer p_removedByPlayer_4_, boolean p_removedByPlayer_5_) 
 	{
+		
 
 		SpecialEventTrigger triggerName = SpecialEventTrigger.ONREMOVEDBYPLAYER;
 		if (UniqueActions.containsKey(triggerName)) 
@@ -246,7 +247,8 @@ public class RandomGemOre extends Block implements IHasModel {
 
 	@Override
 	public void onBlockExploded(World p_onBlockExploded_1_,BlockPos p_onBlockExploded_2_, Explosion p_onBlockExploded_3_) {
-
+		p_onBlockExploded_1_.setBlockToAir(p_onBlockExploded_2_);
+        onExplosionDestroy(p_onBlockExploded_1_, p_onBlockExploded_2_, p_onBlockExploded_3_);
 		SpecialEventTrigger triggerName = SpecialEventTrigger.ONEXPLODED;
 		if (UniqueActions.containsKey(triggerName)) {
 			invokeSpecialEvents(UniqueActions.get(triggerName), true, p_onBlockExploded_3_.getExplosivePlacedBy(), p_onBlockExploded_3_.getExplosivePlacedBy());

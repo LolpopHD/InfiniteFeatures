@@ -14,7 +14,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 
-public class RandomBlock extends Block implements IHasModel {
+public class RandomBlock extends BlockBase{
 	public enum SpecialEvent {
 		UNBREAKABLE, RANDOM_HARDNESS, CONSTANT_HARDNESS, RANDOM_HARVEST, CONSTANT_HARVEST, RANDOM_LIGHTLEVEL,
 		CONSTANT_LIGHTLEVEL, RANDOM_LIGHTOPACITY, CONSTANT_LIGHTOPACITY, RANDOM_EXPLOSION_RESIST,
@@ -83,11 +83,11 @@ public class RandomBlock extends Block implements IHasModel {
 
 	public RandomBlock(Mineral imineral, Material imaterial, float ilightLevel, String itoolType, int iharvestLevel,
 			float ihardness, float iresistance, SoundType isound, SpecialEvent iuniqueAttribute, SpecialEventTrigger iuniqueTrigger) {
-		super(imaterial);
-		setTranslationKey(imineral.name + "_ore");
-		setRegistryName(imineral.name + "_ore");
-		ModBlocks.BLOCKS.add(this);
-		ModItems.ITEMS.add(new ItemBlock(this).setRegistryName(this.getRegistryName()));
+		super(imineral.name + "_ore",imaterial,imineral);
+		//setTranslationKey(imineral.name + "_ore");
+		//setRegistryName(imineral.name + "_ore");
+		//ModBlocks.BLOCKS.add(this);
+		//ModItems.ITEMS.add(new ItemBlock(this).setRegistryName(this.getRegistryName()));
 
 		setSoundType(isound);
 		setHardness(ihardness);

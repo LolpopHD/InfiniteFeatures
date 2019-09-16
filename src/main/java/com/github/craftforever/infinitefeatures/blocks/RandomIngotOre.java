@@ -30,8 +30,7 @@ import net.minecraft.world.World;
 
 @SuppressWarnings("unlikely-arg-type")
 
-public class RandomIngotOre extends Block implements IHasModel 
-{
+public class RandomIngotOre extends BlockBase{
 	public enum SpecialEventTrigger 
 	{
 		ONDESTROY, ONEXPLODEDESTROY, ONACTIVATED, ONWALKEDON, ONCLICKED, ONCOLLIDED, ONPLACED, ONFALLENON, ONLANDED,
@@ -56,11 +55,11 @@ public class RandomIngotOre extends Block implements IHasModel
 			float ihardness, float iresistance, SoundType isound,
 			HashMap<com.github.craftforever.infinitefeatures.blocks.RandomGemOre.SpecialEventTrigger, List<ISpecialEvent>> randomUniqueActions) 
 	{
-		super(imaterial);
-		setTranslationKey(imineral.name + "_ore");
-		setRegistryName(imineral.name + "_ore");
-		ModBlocks.BLOCKS.add(this);
-		ModItems.ITEMS.add(new ItemBlock(this).setRegistryName(this.getRegistryName()));
+		super(imineral.name + "_ore",imaterial,imineral);
+		//setTranslationKey(imineral.name + "_ore");
+		//setRegistryName(imineral.name + "_ore");
+		//ModBlocks.BLOCKS.add(this);
+		//ModItems.ITEMS.add(new ItemBlock(this).setRegistryName(this.getRegistryName()));
 
 		setSoundType(isound);
 		setHardness(ihardness);

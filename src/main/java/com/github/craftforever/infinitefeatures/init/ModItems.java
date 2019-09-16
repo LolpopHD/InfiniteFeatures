@@ -61,11 +61,11 @@ public class ModItems
 			for(int i = 0; i < ToolOres; i++) 
 			{
 				String name = "material_"+ModBlocks.minerals[i].name;
-				int harvestlevel = RandomHelper.getRandomIntInRange(0, 3);
-				int maxUses = RandomHelper.getRandomIntInRange(32, 1561);
-				float efficiency = RandomHelper.getRandomFloatInRange(2.0F, 12.0F);
-				float damage = RandomHelper.getRandomFloatInRange(0.0F, 5.0F);
-				int enchantability = RandomHelper.getRandomIntInRange(5, 22);
+				int harvestlevel = ModBlocks.minerals[i].quality-1;
+				int maxUses = RandomHelper.getRandomIntInRange(128, 512)*ModBlocks.minerals[i].quality;
+				float efficiency = RandomHelper.getRandomFloatInRange(2.0F, 4.0F)*ModBlocks.minerals[i].quality;
+				float damage = RandomHelper.getRandomFloatInRange(1.0F, 2.0F)*ModBlocks.minerals[i].quality;
+				int enchantability = RandomHelper.getRandomIntInRange(1, 11)*ModBlocks.minerals[i].quality;
 				materialarray[i] = EnumHelper.addToolMaterial(name, harvestlevel, maxUses, efficiency, damage, enchantability);
 			}
 			return materialarray;
@@ -86,13 +86,15 @@ public class ModItems
 			{
 				String name = "armor_"+ModBlocks.minerals[i].name;
 				String texturename = InfiniteFeatures.modID+":"+ModBlocks.minerals[i].name;
-				int durability = RandomHelper.getRandomIntInRange(5, 33);
-				int enchantability = RandomHelper.getRandomIntInRange(9, 25);
+				int durability = RandomHelper.getRandomIntInRange(16, 32)*ModBlocks.minerals[i].quality;
+				int enchantability = RandomHelper.getRandomIntInRange(3, 6)*ModBlocks.minerals[i].quality;
 				
 				materialarray[i] = EnumHelper.addArmorMaterial(name, texturename, durability,
-						new int[] {RandomHelper.getRandomIntInRange(1, 3), RandomHelper.getRandomIntInRange(2, 6), 
-						RandomHelper.getRandomIntInRange(3, 8), RandomHelper.getRandomIntInRange(1, 3)}, enchantability, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC,
-						RandomHelper.getRandomFloatInRange(0.0F, 2.0F));
+						new int[] {	(int)(((float)RandomHelper.getRandomIntInRange(2, 6))*((float)ModBlocks.minerals[i].quality)/2.0F),
+									(int)(((float)RandomHelper.getRandomIntInRange(4, 8))*((float)ModBlocks.minerals[i].quality)/2.0F), 
+									(int)(((float)RandomHelper.getRandomIntInRange(6, 10))*((float)ModBlocks.minerals[i].quality)/2.0F),
+									(int)(((float)RandomHelper.getRandomIntInRange(2, 6))*((float)ModBlocks.minerals[i].quality)/2.0F),},
+						enchantability, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC,RandomHelper.getRandomFloatInRange(0.1F, 1.0F)*ModBlocks.minerals[i].quality);
 			}
 			return materialarray;
 		}
@@ -111,7 +113,7 @@ public class ModItems
 		boolean[] hasTools = new boolean[InfiniteFeatures.ORE_QTY];
 		for(int i = 0; i < InfiniteFeatures.ORE_QTY; i++) 
 		{
-			hasTools[i] = RandomHelper.getRandomBoolean(0.5F);
+			hasTools[i] = RandomHelper.getRandomBoolean(0.8F);
 			if(hasTools[i]) 
 			{
 				count++;
@@ -126,7 +128,7 @@ public class ModItems
 		boolean[] hasArmor = new boolean[InfiniteFeatures.ORE_QTY];
 		for(int i = 0; i < InfiniteFeatures.ORE_QTY; i++) 
 		{
-			hasArmor[i] = RandomHelper.getRandomBoolean(0.5F);
+			hasArmor[i] = RandomHelper.getRandomBoolean(0.8F);
 			if(hasArmor[i]) 
 			{
 				count++;
