@@ -40,16 +40,33 @@ public class RecipeHandler
 			String pickaxe = ModItems.pickaxeArray[i].getRegistryName().toString();
 			String axe = ModItems.axeArray[i].getRegistryName().toString();
 			
-			GameRegistry.addShapedRecipe(new ResourceLocation("infeatures:"+hoe), new ResourceLocation("infeatures:"+hoe.substring(0,hoe.length()-6)+"_items"),
+			GameRegistry.addShapedRecipe(new ResourceLocation("infeatures:"+hoe), new ResourceLocation("infeatures:"+hoe.substring(0,hoe.length()-4)+"_items"),
 			new ItemStack(ModItems.hoeArray[i],1),new Object[] {" II"," S "," S ",'I', ModItems.itemArray[i],'S',Items.STICK});
-			GameRegistry.addShapedRecipe(new ResourceLocation("infeatures:"+shovel), new ResourceLocation("infeatures:"+shovel.substring(0,shovel.length()-6)+"_items"),
+			GameRegistry.addShapedRecipe(new ResourceLocation("infeatures:"+shovel), new ResourceLocation("infeatures:"+shovel.substring(0,shovel.length()-7)+"_items"),
 			new ItemStack(ModItems.shovelArray[i],1),new Object[] {" I "," S "," S ",'I', ModItems.itemArray[i],'S',Items.STICK});
 			GameRegistry.addShapedRecipe(new ResourceLocation("infeatures:"+sword), new ResourceLocation("infeatures:"+sword.substring(0,sword.length()-6)+"_items"),
 			new ItemStack(ModItems.swordArray[i],1),new Object[] {" I "," I "," S ",'I', ModItems.itemArray[i],'S',Items.STICK});
-			GameRegistry.addShapedRecipe(new ResourceLocation("infeatures:"+pickaxe), new ResourceLocation("infeatures:"+pickaxe.substring(0,pickaxe.length()-6)+"_items"),
+			GameRegistry.addShapedRecipe(new ResourceLocation("infeatures:"+pickaxe), new ResourceLocation("infeatures:"+pickaxe.substring(0,pickaxe.length()-8)+"_items"),
 			new ItemStack(ModItems.pickaxeArray[i],1),new Object[] {"III"," S "," S ",'I', ModItems.itemArray[i],'S',Items.STICK});
-			GameRegistry.addShapedRecipe(new ResourceLocation("infeatures:"+axe), new ResourceLocation("infeatures:"+axe.substring(0,axe.length()-6)+"_items"),
+			GameRegistry.addShapedRecipe(new ResourceLocation("infeatures:"+axe), new ResourceLocation("infeatures:"+axe.substring(0,axe.length()-4)+"_items"),
 					new ItemStack(ModItems.axeArray[i],1),new Object[] {" II"," SI"," S ",'I', ModItems.itemArray[i],'S',Items.STICK});
+		}
+		
+		for(int i = 0; i < ModItems.ArmorCount; i++) 
+		{
+			String boots = ModItems.bootsArray[i].getRegistryName().toString();
+			String leggings = ModItems.leggingsArray[i].getRegistryName().toString();
+			String chestplate = ModItems.chestplateArray[i].getRegistryName().toString();
+			String helmet = ModItems.helmetArray[i].getRegistryName().toString();
+			
+			GameRegistry.addShapedRecipe(new ResourceLocation("infeatures:"+boots), new ResourceLocation("infeatures:"+boots.substring(0,boots.length()-6)+"_items"),
+			new ItemStack(ModItems.bootsArray[i],1),new Object[] {"I I","I I",'I', ModItems.itemArray[i]});
+			GameRegistry.addShapedRecipe(new ResourceLocation("infeatures:"+leggings), new ResourceLocation("infeatures:"+leggings.substring(0,leggings.length()-9)+"_items"),
+			new ItemStack(ModItems.leggingsArray[i],1),new Object[] {"III","I I","I I",'I', ModItems.itemArray[i]});
+			GameRegistry.addShapedRecipe(new ResourceLocation("infeatures:"+chestplate), new ResourceLocation("infeatures:"+chestplate.substring(0,chestplate.length()-10)+"_items"),
+			new ItemStack(ModItems.chestplateArray[i],1),new Object[] {"I I","III","III",'I', ModItems.itemArray[i]});
+			GameRegistry.addShapedRecipe(new ResourceLocation("infeatures:"+helmet), new ResourceLocation("infeatures:"+helmet.substring(0,helmet.length()-7)+"_items"),
+			new ItemStack(ModItems.helmetArray[i],1),new Object[] {"III","I I",'I', ModItems.itemArray[i]});
 		}
 	}
 }
