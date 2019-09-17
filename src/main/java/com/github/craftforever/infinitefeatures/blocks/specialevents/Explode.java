@@ -51,13 +51,8 @@ public class Explode implements ISpecialEvent {
 				
 				float strength = (float)RandomHelper.getRandomGaussianInRange(strength_mean, strength_std, strength_min, strength_max);
 				boolean damagesTerrain = RandomHelper.getRandomBoolean(damagesTerrain_prob);
-				// TODO: SUPER HACKY WTF, SOMEONE PLEASE FIX THIS OR MY EYES WILL BLEED
-				Entity tempEnt = new EntityBat(nullable_world);
-				tempEnt.setPosition(nullable_blockPos.getX(), nullable_blockPos.getY(), nullable_blockPos.getZ());
 				nullable_world.setBlockToAir(nullable_blockPos);
-				nullable_world.createExplosion(tempEnt, nullable_blockPos.getX(), nullable_blockPos.getY(), nullable_blockPos.getZ(), strength, damagesTerrain);	
-				
-				tempEnt.setDead();
+				nullable_world.createExplosion(null, nullable_blockPos.getX(), nullable_blockPos.getY(), nullable_blockPos.getZ(), strength, damagesTerrain);
 			}
 		}
 	}
