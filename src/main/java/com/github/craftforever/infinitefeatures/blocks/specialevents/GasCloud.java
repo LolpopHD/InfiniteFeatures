@@ -12,31 +12,59 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.potion.PotionType;
-import net.minecraft.potion.PotionUtils;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class GasCloud implements ISpecialEvent {
 
-	protected PotionType potType;
-	protected ItemStack potItem;
-
 	protected float radius;
 
-	protected int duration;
+	protected int 	duration;
 	protected float expansion_modifier;
 
-	protected int potionID;
+	protected int 	potionID;
 	
 	protected float effect_duration_min;
     protected float effect_duration_max;
     protected float effect_duration_mean;
-    protected float effect_duration_std;
+	protected float effect_duration_std;
+	
     protected int   effect_level_min;
     protected int   effect_level_max;
     protected float effect_level_mean;
-    protected float effect_level_std;
+	protected float effect_level_std;
+	
+	public GasCloud(float iradius, int iduration, float iexpansion_modifier, int ipotionid, float effect_duration_min, float effect_duration_max, 
+	float effect_duration_mean, float effect_duration_std, 
+	int effect_level_min, int effect_level_max, float effect_level_mean, float effect_level_std){
+		this.radius = iradius;
+		this.duration = iduration;
+		this.expansion_modifier = iexpansion_modifier;
+		this.potionID = ipotionid;
+		this.effect_duration_min = effect_duration_min;
+		this.effect_duration_max = effect_duration_max;
+		this.effect_duration_mean = effect_duration_mean;
+		this.effect_duration_std = effect_duration_std;
+		this.effect_level_min = effect_level_min;
+		this.effect_level_max = effect_level_max;
+		this.effect_level_mean = effect_level_mean;
+		this.effect_level_std = effect_level_std;
+	}
+
+	public GasCloud(float iradius, int iduration, float iexpansion_modifier, int ipotionid, float effect_duration, int effect_level){
+		this.radius = iradius;
+		this.duration = iduration;
+		this.expansion_modifier = iexpansion_modifier;
+		this.potionID = ipotionid;
+		this.effect_duration_min = effect_duration;
+		this.effect_duration_max = effect_duration;
+		this.effect_duration_mean = effect_duration;
+		this.effect_duration_std = 0;
+		this.effect_level_min = effect_level;
+		this.effect_level_max = effect_level;
+		this.effect_level_mean = effect_level;
+		this.effect_level_std = 0;
+	}
 
 	@Override
 	public void Execute(OreWithSpecialEvents block, Entity relatedEntity, EntityLivingBase relatedLivingEntity, World world, BlockPos blockPos) 
@@ -55,18 +83,6 @@ public class GasCloud implements ISpecialEvent {
 					entityareaeffectcloud.setDuration(duration);
 					entityareaeffectcloud.setRadiusPerTick((expansion_modifier - entityareaeffectcloud.getRadius()) / (float)entityareaeffectcloud.getDuration());
 					entityareaeffectcloud.addEffect(new PotionEffect(Potion.getPotionById(potionID), potDuration, potLevel));
-
-					for (PotionEffect potioneffect : PotionUtils.getFullEffectsFromItem(potItem))
-					{
-						entityareaeffectcloud.addEffect(new PotionEffect(potioneffect));
-					}
-
-					NBTTagCompound nbttagcompound = potItem.getTagCompound();
-
-					if (nbttagcompound != null && nbttagcompound.hasKey("CustomPotionColor", 99))
-					{
-						entityareaeffectcloud.setColor(nbttagcompound.getInteger("CustomPotionColor"));
-					}
 
 					world.spawnEntity(entityareaeffectcloud);
 				}

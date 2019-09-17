@@ -58,6 +58,11 @@ public class RandomFactory
     private static final float EXPLODE_POWER_MAX = 20;
     private static final float EXPLODE_DESTROY_BLOCKS_PROB = 0.8f;
 
+    private static final int GAS_CLOUD_SIZE_MIN = 1f;
+    private static final int GAS_CLOUD_SIZE_MAX = 10f;
+    private static final int GAS_CLOUD_DURATION_MIN = 0;
+    private static final int GAS_CLOUD_DURATION_MAX = 1200;
+
     private static List<ISpecialEvent> GenerateAllPossibleEvents()
     {
         List<ISpecialEvent> allEvents = new ArrayList<ISpecialEvent>();
@@ -106,6 +111,14 @@ public class RandomFactory
         allEvents.add(new Explode(
             getRandomFloatInRange(EXPLODE_POWER_MIN, EXPLODE_POWER_MAX), 
             getRandomBoolean(EXPLODE_DESTROY_BLOCKS_PROB)));
+
+        allEvents.add(new GasCloud(
+            getRandomFloatInRange(GAS_CLOUD_SIZE_MIN, GAS_CLOUD_SIZE_MAX), 
+            getRandomIntInRange(GAS_CLOUD_DURATION_MIN, GAS_CLOUD_DURATION_MAX), 
+            7f, 
+            getRandomIntInRange(POT_ID_MIN, POT_ID_MAX), 
+            getRandomFloatInRange(POT_DURATION_MIN, POT_DURATION_MAX), 
+            getRandomIntInRange(0, POT_DURATION_MAX)));
 
         return allEvents;
     }
