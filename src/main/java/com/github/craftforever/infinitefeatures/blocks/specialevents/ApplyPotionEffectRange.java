@@ -6,6 +6,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.world.World;
 
 public class ApplyPotionEffectRange implements ISpecialEvent {
 
@@ -53,10 +54,10 @@ public class ApplyPotionEffectRange implements ISpecialEvent {
     }
 
     @Override
-    public void Execute(OreWithSpecialEvents block, boolean livingEntity, Entity relatedEntity,
-    EntityLivingBase relatedLivingEntity)
+    public void Execute(OreWithSpecialEvents block, Entity relatedEntity,
+    EntityLivingBase relatedLivingEntity, World world)
     {
-        if (livingEntity){
+        if (relatedLivingEntity != null){
             
             int duration = (int)Math.round(RandomHelper.getRandomGaussianInRange((double)duration_mean, (double)duration_std, (double)duration_min, (double)duration_max));
             int level = (int)Math.round(RandomHelper.getRandomGaussianInRange((double)level_mean, (double)level_std, (double)level_min, (double)level_max));
