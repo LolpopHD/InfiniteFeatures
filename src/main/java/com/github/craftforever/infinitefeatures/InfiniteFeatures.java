@@ -9,7 +9,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.github.craftforever.infinitefeatures.gui.*;
-import com.github.craftforever.infinitefeatures.helpers.RandomHelper;
 import com.github.craftforever.infinitefeatures.proxy.*;
 import com.github.craftforever.infinitefeatures.util.handler.*;
 import com.github.craftforever.infinitefeatures.world.OreGen;
