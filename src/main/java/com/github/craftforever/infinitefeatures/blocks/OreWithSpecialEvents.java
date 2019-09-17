@@ -124,7 +124,7 @@ public abstract class OreWithSpecialEvents extends BlockBase {
 		{
 			invokeSpecialEvents(UniqueActions.get(triggerName), p_onEntityWalk_3_, null, p_onEntityWalk_1_, p_onEntityWalk_2_);
 		}
-		super.onEntityWalk(p_onEntityWalk_1_, p_onEntityWalk_2_, p_onEntityWalk_3_)
+		super.onEntityWalk(p_onEntityWalk_1_, p_onEntityWalk_2_, p_onEntityWalk_3_);
 	}
 
 	@Override
