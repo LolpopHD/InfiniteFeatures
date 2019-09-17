@@ -99,6 +99,7 @@ public class RegistryHandler
 			writer.write(langinput);
 			writer.flush();
 		}
+		
 		for(int i = 0; i < InfiniteFeatures.ORE_QTY; i++) 
 		{
 			Block block = ModBlocks.ingotblockArray[i];
@@ -109,9 +110,43 @@ public class RegistryHandler
 			writer.write(langinput);
 			writer.flush();
 		}
-		for(int i = 0; i < InfiniteFeatures.ORE_QTY; i++)
+		
+		for(int i = 0; i < ModItems.ToolOres * 5; i++)
+		{	
+			Item item = ModItems.toolArray[i];
+			String itemName = item.getTranslationKey().substring(5);
+			itemName = itemName.replace("_", " ");
+			itemName = WordUtils.capitalize(itemName);
+			String langinput = item.getTranslationKey()+".name="+itemName+"\n";
+			writer.write(langinput);
+			writer.flush();
+		}
+		
+		for(int i = 0; i < ModItems.ArmorCount * 4; i++) 
 		{
-			Item item = ModItems.itemArray[i];
+			Item item = ModItems.armorArray[i];
+			String itemName = item.getTranslationKey().substring(5);
+			itemName = itemName.replace("_", " ");
+			itemName = WordUtils.capitalize(itemName);
+			String langinput = item.getTranslationKey()+".name="+itemName+"\n";
+			writer.write(langinput);
+			writer.flush();
+		}
+		
+		for(int i = 0; i < ModBlocks.ingotorecount; i++)
+		{
+			Item item = ModItems.ingotArray[i];
+			String itemName = item.getTranslationKey().substring(5);
+			itemName = itemName.replace("_", " ");
+			itemName = WordUtils.capitalize(itemName);
+			String langinput = item.getTranslationKey()+".name="+itemName+"\n";
+			writer.write(langinput);
+			writer.flush();
+		}
+		
+		for(int i = 0; i < ModBlocks.gemorecount; i++)
+		{
+			Item item = ModItems.gemArray[i];
 			String itemName = item.getTranslationKey().substring(5);
 			itemName = itemName.replace("_", " ");
 			itemName = WordUtils.capitalize(itemName);
@@ -136,6 +171,10 @@ public class RegistryHandler
 		if(itemTextureFolder.exists())
 			FileUtils.deleteDirectory(itemTextureFolder);
 		itemTextureFolder.mkdirs();
+		File armorModelsFolder = new File("InfiniCraft/Resources/assets/infeatures/textures/models/armor");
+		if(armorModelsFolder.exists())
+			FileUtils.deleteDirectory(armorModelsFolder);
+		armorModelsFolder.mkdirs();
 		/*
 		InputStream streambases = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/block/base");
 		BufferedReader reader = new BufferedReader(new InputStreamReader(streambases));
@@ -172,16 +211,127 @@ public class RegistryHandler
 			Color color = ModBlocks.minerals[i].color;
 			dye(oreImg,color);
 			g.drawImage(oreImg, 0, 0, null);
-			stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/item/ingot/generic.png");
-			BufferedImage ingotImg = ImageIO.read(stream);
-			dye(ingotImg,color);
-			stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/block/storage/generic_iron_old.png");
-			BufferedImage ingotBlockImg = ImageIO.read(stream);
-			dye(ingotBlockImg,color);
-			ImageIO.write(ingotBlockImg, "PNG", new File("InfiniCraft/Resources/assets/infeatures/textures/blocks/"+ModBlocks.ingotblockArray[i].getTranslationKey().substring(5)+".png"));
-			ImageIO.write(ingotImg, "PNG", new File("InfiniCraft/Resources/assets/infeatures/textures/items/"+ModItems.itemArray[i].getTranslationKey().substring(5)+".png"));
 			ImageIO.write(finalImg, "PNG", new File("InfiniCraft/Resources/assets/infeatures/textures/blocks/"+ModBlocks.blockArray[i].getTranslationKey().substring(5)+".png"));
 			
+		}
+		for(int i = 0; i < ModBlocks.ingotorecount; i++)
+		{
+			InputStream stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/item/ingot/generic.png");
+			BufferedImage ingotImg = ImageIO.read(stream);
+			stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/block/storage/generic_iron_old.png");
+			BufferedImage ingotblockImg = ImageIO.read(stream);
+			Color color = ModBlocks.minerals[i].color;
+			dye(ingotImg, color);
+			dye(ingotblockImg, color);
+			ImageIO.write(ingotblockImg, "PNG", new File("InfiniCraft/Resources/assets/infeatures/textures/blocks/"+ModBlocks.ingotblockArray[i].getTranslationKey().substring(5)+".png"));
+			ImageIO.write(ingotImg, "PNG", new File("InfiniCraft/Resources/assets/infeatures/textures/items/"+ModItems.ingotArray[i].getTranslationKey().substring(5)+".png"));
+		}
+		for(int i = 0; i < ModBlocks.gemorecount; i++)
+		{
+			InputStream stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/item/gem/generic_diamond.png");
+			BufferedImage gemImg = ImageIO.read(stream);
+			stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/block/storage/generic_diamond_old.png");
+			BufferedImage ingotblockImg = ImageIO.read(stream);
+			Color color = ModBlocks.minerals[i+ModBlocks.ingotorecount].color;
+			dye(gemImg, color);
+			dye(ingotblockImg, color);
+			ImageIO.write(ingotblockImg, "PNG", new File("InfiniCraft/Resources/assets/infeatures/textures/blocks/"+ModBlocks.ingotblockArray[i+ModBlocks.ingotorecount].getTranslationKey().substring(5)+".png"));
+			ImageIO.write(gemImg, "PNG", new File("InfiniCraft/Resources/assets/infeatures/textures/items/"+ModItems.gemArray[i].getTranslationKey().substring(5)+".png"));
+		}
+		for(int i = 0; i < ModItems.ToolOres; i++)
+		{
+			InputStream stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/item/tool/axe_handle.png");
+			BufferedImage baseImg = ImageIO.read(stream);
+			stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/item/tool/axe_head.png");
+			BufferedImage headImg = ImageIO.read(stream);
+			BufferedImage finalImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+			Graphics g = finalImg.getGraphics();
+			g.drawImage(baseImg, 0, 0, null);
+			Color color = ModBlocks.minerals[i].color;
+			dye(headImg,color);
+			g.drawImage(headImg, 0, 0, null);
+			ImageIO.write(finalImg, "PNG", new File("InfiniCraft/Resources/assets/infeatures/textures/items/"+ModItems.axeArray[i].getTranslationKey().substring(5)+".png"));
+			
+			stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/item/tool/hoe_handle.png");
+			baseImg = ImageIO.read(stream);
+			stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/item/tool/hoe_blade.png");
+			headImg = ImageIO.read(stream);
+			finalImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+			g = finalImg.getGraphics();
+			g.drawImage(baseImg, 0, 0, null);
+			dye(headImg,color);
+			g.drawImage(headImg, 0, 0, null);
+			ImageIO.write(finalImg, "PNG", new File("InfiniCraft/Resources/assets/infeatures/textures/items/"+ModItems.hoeArray[i].getTranslationKey().substring(5)+".png"));
+			
+			stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/item/tool/pickaxe_handle.png");
+			baseImg = ImageIO.read(stream);
+			stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/item/tool/pickaxe_head.png");
+			headImg = ImageIO.read(stream);
+			finalImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+			g = finalImg.getGraphics();
+			g.drawImage(baseImg, 0, 0, null);
+			dye(headImg,color);
+			g.drawImage(headImg, 0, 0, null);
+			ImageIO.write(finalImg, "PNG", new File("InfiniCraft/Resources/assets/infeatures/textures/items/"+ModItems.pickaxeArray[i].getTranslationKey().substring(5)+".png"));
+			
+			stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/item/tool/sword_handle.png");
+			baseImg = ImageIO.read(stream);
+			stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/item/tool/sword_blade.png");
+			headImg = ImageIO.read(stream);
+			finalImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+			g = finalImg.getGraphics();
+			g.drawImage(baseImg, 0, 0, null);
+			dye(headImg,color);
+			g.drawImage(headImg, 0, 0, null);
+			ImageIO.write(finalImg, "PNG", new File("InfiniCraft/Resources/assets/infeatures/textures/items/"+ModItems.swordArray[i].getTranslationKey().substring(5)+".png"));
+		
+			stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/item/tool/shovel_handle.png");
+			baseImg = ImageIO.read(stream);
+			stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/item/tool/shovel_head.png");
+			headImg = ImageIO.read(stream);
+			finalImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+			g = finalImg.getGraphics();
+			g.drawImage(baseImg, 0, 0, null);
+			dye(headImg,color);
+			g.drawImage(headImg, 0, 0, null);
+			ImageIO.write(finalImg, "PNG", new File("InfiniCraft/Resources/assets/infeatures/textures/items/"+ModItems.shovelArray[i].getTranslationKey().substring(5)+".png"));
+		
+		}
+		
+		for(int i = 0; i < ModItems.ArmorCount; i++) 
+		{
+			String name = ModBlocks.minerals[i].name;
+			
+			InputStream stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/item/armor/boots.png");
+			BufferedImage itemImg = ImageIO.read(stream);
+			Color color = ModBlocks.minerals[i].color;
+			dye(itemImg, color);
+			ImageIO.write(itemImg, "PNG", new File("InfiniCraft/Resources/assets/infeatures/textures/items/"+ModItems.bootsArray[i].getTranslationKey().substring(5)+".png"));
+			
+			stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/item/armor/leggings.png");
+			itemImg = ImageIO.read(stream);
+			dye(itemImg, color);
+			ImageIO.write(itemImg, "PNG", new File("InfiniCraft/Resources/assets/infeatures/textures/items/"+ModItems.leggingsArray[i].getTranslationKey().substring(5)+".png"));
+			
+			stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/item/armor/chestplate.png");
+			itemImg = ImageIO.read(stream);
+			dye(itemImg, color);
+			ImageIO.write(itemImg, "PNG", new File("InfiniCraft/Resources/assets/infeatures/textures/items/"+ModItems.chestplateArray[i].getTranslationKey().substring(5)+".png"));
+			
+			stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/item/armor/helmet.png");
+			itemImg = ImageIO.read(stream);
+			dye(itemImg, color);
+			ImageIO.write(itemImg, "PNG", new File("InfiniCraft/Resources/assets/infeatures/textures/items/"+ModItems.helmetArray[i].getTranslationKey().substring(5)+".png"));
+			
+			stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/item/armor/armor_layer_1.png");
+			itemImg = ImageIO.read(stream);
+			dye(itemImg, color);
+			ImageIO.write(itemImg, "PNG", new File("InfiniCraft/Resources/assets/infeatures/textures/models/armor/"+name+"_layer_1.png"));
+			
+			stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/item/armor/armor_layer_2.png");
+			itemImg = ImageIO.read(stream);
+			dye(itemImg, color);
+			ImageIO.write(itemImg, "PNG", new File("InfiniCraft/Resources/assets/infeatures/textures/models/armor/"+name+"_layer_2.png"));
 		}
 	}
 	
