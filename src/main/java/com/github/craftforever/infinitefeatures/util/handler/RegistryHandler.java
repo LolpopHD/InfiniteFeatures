@@ -376,6 +376,21 @@ public class RegistryHandler
 			writer.close();
 		}
 		
+		for(Item item : ModItems.toolArray) 
+		{
+			File itemModelFile = new File("InfiniCraft/Resources/assets/infeatures/models/item/"+item.getTranslationKey().substring(5)+".json");
+			BufferedWriter writer = Files.newBufferedWriter(itemModelFile.toPath(), charset);
+			String modelInput ="{\r\n" + 
+					"   \"parent\": \"item/handheld"+"\" ,\r\n"
+							+ "    \"textures\": { \r\n" +
+							"     \"layer0\": \""+InfiniteFeatures.modID+":items/"+item.getTranslationKey().substring(5)+"\"\r\n" + 
+							"} \r\n" +
+							"}";
+			writer.write(modelInput);
+			writer.flush();
+			writer.close();
+		}
+		
 		for(Block block : ModBlocks.BLOCKS)
 		{
 			File blockModelFile = new File("InfiniCraft/Resources/assets/infeatures/models/block/"+block.getTranslationKey().substring(5)+".json");

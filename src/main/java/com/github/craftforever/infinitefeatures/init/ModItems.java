@@ -8,6 +8,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import com.github.craftforever.infinitefeatures.InfiniteFeatures;
 import com.github.craftforever.infinitefeatures.helpers.RandomHelper;
 import com.github.craftforever.infinitefeatures.items.ArmorBase;
+import com.github.craftforever.infinitefeatures.items.FoodIngotBase;
 import com.github.craftforever.infinitefeatures.items.ItemIngotBase;
 import com.github.craftforever.infinitefeatures.items.tools.ToolAxe;
 import com.github.craftforever.infinitefeatures.items.tools.ToolHoe;
@@ -311,9 +312,19 @@ public class ModItems
 		if (InfiniteFeatures.continueRandomGeneration) 
 		{
 			Item[] itemarray = new Item[ModBlocks.ingotorecount];
+			boolean isFood = RandomHelper.getRandomBoolean(0.5F);
 			for (int i = 0; i < ModBlocks.ingotorecount; i++)
 			{
-				itemarray[i] = new ItemIngotBase(ModBlocks.minerals[i].name+"_ingot").setCreativeTab(InfiniteFeatures.InfiniTab);
+				if(isFood) 
+				{
+					int amount = RandomHelper.getRandomIntInRange(1, 8);
+					boolean isWolfFood = RandomHelper.getRandomBoolean(0.1F);
+					itemarray[i] = new FoodIngotBase(ModBlocks.minerals[i].name+"_ingot", amount, 0.6F, isWolfFood).setCreativeTab(InfiniteFeatures.InfiniTab);
+				}
+				else
+				{
+					itemarray[i] = new ItemIngotBase(ModBlocks.minerals[i].name+"_ingot").setCreativeTab(InfiniteFeatures.InfiniTab);
+				}
 			}
 			return itemarray;
 		}
@@ -330,9 +341,19 @@ public class ModItems
 		if (InfiniteFeatures.continueRandomGeneration) 
 		{
 			Item[] itemarray = new Item[ModBlocks.gemorecount];
+			boolean isFood = RandomHelper.getRandomBoolean(0.5F);
 			for (int i = 0; i < ModBlocks.gemorecount; i++)
 			{
-				itemarray[i] = new ItemIngotBase(ModBlocks.minerals[i+ModBlocks.ingotorecount].name+"_gem").setCreativeTab(InfiniteFeatures.InfiniTab);
+				if(isFood) 
+				{
+					int amount = RandomHelper.getRandomIntInRange(1, 8);
+					boolean isWolfFood = RandomHelper.getRandomBoolean(0.1F);
+					itemarray[i] = new FoodIngotBase(ModBlocks.minerals[i].name+"_gem", amount, 0.6F, isWolfFood).setCreativeTab(InfiniteFeatures.InfiniTab);
+				}
+				else
+				{
+					itemarray[i] = new ItemIngotBase(ModBlocks.minerals[i].name+"_gem").setCreativeTab(InfiniteFeatures.InfiniTab);
+				}
 			}
 			return itemarray;
 		}
