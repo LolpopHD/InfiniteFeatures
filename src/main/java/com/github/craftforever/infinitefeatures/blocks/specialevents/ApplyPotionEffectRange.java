@@ -6,6 +6,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class ApplyPotionEffectRange implements ISpecialEvent {
@@ -55,7 +56,7 @@ public class ApplyPotionEffectRange implements ISpecialEvent {
 
     @Override
     public void Execute(OreWithSpecialEvents block, Entity relatedEntity,
-    EntityLivingBase relatedLivingEntity, World world)
+    EntityLivingBase relatedLivingEntity, World world, BlockPos nullable_blockPos)
     {
         if (relatedLivingEntity != null){
             

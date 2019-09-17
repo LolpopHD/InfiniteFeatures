@@ -60,9 +60,9 @@ public abstract class OreWithSpecialEvents extends BlockBase {
 		ONHARVESTED, ONEXPLODED, ONPLANTGROW, ONNEIGHBOURCHANGE, ONREMOVEDBYPLAYER, ONBLOCKADDED
     }
     
-    private void invokeSpecialEvents(List<ISpecialEvent> events, Entity relatedEntity, EntityLivingBase relatedLivingEntity, World world) 
+    private void invokeSpecialEvents(List<ISpecialEvent> events, Entity relatedEntity, EntityLivingBase relatedLivingEntity, World world, BlockPos blockPos) 
 	{
-		events.forEach(event -> event.Execute(this, relatedEntity, relatedLivingEntity, world));
+		events.forEach(event -> event.Execute(this, relatedEntity, relatedLivingEntity, world, blockPos));
 	}
 
     // #region Potential function overrides
@@ -73,7 +73,7 @@ public abstract class OreWithSpecialEvents extends BlockBase {
 
 		if (UniqueActions.containsKey(triggerName)) 
 		{
-			invokeSpecialEvents(UniqueActions.get(triggerName), null, null, p_onPlayerDestroy_1_);
+			invokeSpecialEvents(UniqueActions.get(triggerName), null, null, p_onPlayerDestroy_1_, p_onPlayerDestroy_2_);
 		}
 	}
 
@@ -87,7 +87,7 @@ public abstract class OreWithSpecialEvents extends BlockBase {
 		{
 			if(!p_removedByPlayer_4_.capabilities.isCreativeMode) 
 			{
-			invokeSpecialEvents(UniqueActions.get(triggerName), p_removedByPlayer_4_, p_removedByPlayer_4_, p_removedByPlayer_2_);
+			invokeSpecialEvents(UniqueActions.get(triggerName), p_removedByPlayer_4_, p_removedByPlayer_4_, p_removedByPlayer_2_, p_removedByPlayer_3_);
 			}
 		}
 		return super.removedByPlayer(p_removedByPlayer_1_, p_removedByPlayer_2_, p_removedByPlayer_3_, p_removedByPlayer_4_,
@@ -100,7 +100,7 @@ public abstract class OreWithSpecialEvents extends BlockBase {
 		SpecialEventTrigger triggerName = SpecialEventTrigger.ONEXPLODEDESTROY;
 		if (UniqueActions.containsKey(triggerName)) 
 		{
-			invokeSpecialEvents(UniqueActions.get(triggerName), p_onExplosionDestroy_3_.getExplosivePlacedBy(), p_onExplosionDestroy_3_.getExplosivePlacedBy(), p_onExplosionDestroy_1_);
+			invokeSpecialEvents(UniqueActions.get(triggerName), p_onExplosionDestroy_3_.getExplosivePlacedBy(), p_onExplosionDestroy_3_.getExplosivePlacedBy(), p_onExplosionDestroy_1_, p_onExplosionDestroy_2_);
 		}
 	}
 
@@ -113,7 +113,7 @@ public abstract class OreWithSpecialEvents extends BlockBase {
 		{
 			if(!p_onBlockActivated_4_.capabilities.isCreativeMode) 
 			{
-			invokeSpecialEvents(UniqueActions.get(triggerName), p_onBlockActivated_4_, p_onBlockActivated_4_, p_onBlockActivated_1_);
+			invokeSpecialEvents(UniqueActions.get(triggerName), p_onBlockActivated_4_, p_onBlockActivated_4_, p_onBlockActivated_1_, p_onBlockActivated_2_);
 			}
 		}
 		return false;
@@ -126,7 +126,7 @@ public abstract class OreWithSpecialEvents extends BlockBase {
 		SpecialEventTrigger triggerName = SpecialEventTrigger.ONWALKEDON;
 		if (UniqueActions.containsKey(triggerName)) 
 		{
-			invokeSpecialEvents(UniqueActions.get(triggerName), p_onEntityWalk_3_, null, p_onEntityWalk_1_);
+			invokeSpecialEvents(UniqueActions.get(triggerName), p_onEntityWalk_3_, null, p_onEntityWalk_1_, p_onEntityWalk_2_);
 		}
 	}
 
@@ -138,7 +138,7 @@ public abstract class OreWithSpecialEvents extends BlockBase {
 		{
 			if(!p_onBlockClicked_3_.capabilities.isCreativeMode)
 		    {
-			invokeSpecialEvents(UniqueActions.get(triggerName), p_onBlockClicked_3_, p_onBlockClicked_3_, p_onBlockClicked_1_);
+			invokeSpecialEvents(UniqueActions.get(triggerName), p_onBlockClicked_3_, p_onBlockClicked_3_, p_onBlockClicked_1_, p_onBlockClicked_2_);
 		    }
 		}
 	}
@@ -147,11 +147,11 @@ public abstract class OreWithSpecialEvents extends BlockBase {
 	public void onEntityCollision(World p_onEntityCollision_1_,BlockPos p_onEntityCollision_2_,IBlockState p_onEntityCollision_3_,
 			Entity p_onEntityCollision_4_) 
 	{
-
+        
 		SpecialEventTrigger triggerName = SpecialEventTrigger.ONCOLLIDED;
 		if (UniqueActions.containsKey(triggerName)) 
 		{
-			invokeSpecialEvents(UniqueActions.get(triggerName), p_onEntityCollision_4_, null, p_onEntityCollision_1_);
+			invokeSpecialEvents(UniqueActions.get(triggerName), p_onEntityCollision_4_, null, p_onEntityCollision_1_, p_onEntityCollision_2_);
 		}
 	}
 
@@ -162,7 +162,7 @@ public abstract class OreWithSpecialEvents extends BlockBase {
 		SpecialEventTrigger triggerName = SpecialEventTrigger.ONPLACED;
 		if (UniqueActions.containsKey(triggerName)) 
 		{
-			invokeSpecialEvents(UniqueActions.get(triggerName), p_onBlockPlacedBy_4_, p_onBlockPlacedBy_4_, p_onBlockPlacedBy_1_);
+			invokeSpecialEvents(UniqueActions.get(triggerName), p_onBlockPlacedBy_4_, p_onBlockPlacedBy_4_, p_onBlockPlacedBy_1_, p_onBlockPlacedBy_2_);
 		}
 	}
 
@@ -173,7 +173,7 @@ public abstract class OreWithSpecialEvents extends BlockBase {
 		SpecialEventTrigger triggerName = SpecialEventTrigger.ONFALLENON;
 		if (UniqueActions.containsKey(triggerName)) 
 		{
-			invokeSpecialEvents(UniqueActions.get(triggerName), p_onFallenUpon_3_, null, p_onFallenUpon_1_);
+			invokeSpecialEvents(UniqueActions.get(triggerName), p_onFallenUpon_3_, null, p_onFallenUpon_1_, p_onFallenUpon_2_);
 		}
 	}
 
@@ -184,7 +184,7 @@ public abstract class OreWithSpecialEvents extends BlockBase {
 		p_onLanded_2_.motionY = 0.0D;
 		if (UniqueActions.containsKey(triggerName)) 
 		{
-			invokeSpecialEvents(UniqueActions.get(triggerName), p_onLanded_2_, null, p_onLanded_1_);
+			invokeSpecialEvents(UniqueActions.get(triggerName), p_onLanded_2_, null, p_onLanded_1_, null);
 		}
 	}
 
@@ -197,7 +197,7 @@ public abstract class OreWithSpecialEvents extends BlockBase {
 		{
 			if(!p_onBlockHarvested_4_.capabilities.isCreativeMode) 
 			{
-			invokeSpecialEvents(UniqueActions.get(triggerName), p_onBlockHarvested_4_, p_onBlockHarvested_4_, p_onBlockHarvested_1_);
+			invokeSpecialEvents(UniqueActions.get(triggerName), p_onBlockHarvested_4_, p_onBlockHarvested_4_, p_onBlockHarvested_1_, p_onBlockHarvested_2_);
 			}
 		}
 	}
@@ -207,7 +207,7 @@ public abstract class OreWithSpecialEvents extends BlockBase {
 
 		SpecialEventTrigger triggerName = SpecialEventTrigger.ONEXPLODED;
 		if (UniqueActions.containsKey(triggerName)) {
-			invokeSpecialEvents(UniqueActions.get(triggerName), p_onBlockExploded_3_.getExplosivePlacedBy(), p_onBlockExploded_3_.getExplosivePlacedBy(), p_onBlockExploded_1_);
+			invokeSpecialEvents(UniqueActions.get(triggerName), p_onBlockExploded_3_.getExplosivePlacedBy(), p_onBlockExploded_3_.getExplosivePlacedBy(), p_onBlockExploded_1_, p_onBlockExploded_2_);
 		}
 	}
 
@@ -218,7 +218,7 @@ public abstract class OreWithSpecialEvents extends BlockBase {
 		SpecialEventTrigger triggerName = SpecialEventTrigger.ONPLANTGROW;
 		if (UniqueActions.containsKey(triggerName)) 
 		{
-			invokeSpecialEvents(UniqueActions.get(triggerName), null, null, p_onPlantGrow_2_);
+			invokeSpecialEvents(UniqueActions.get(triggerName), null, null, p_onPlantGrow_2_, p_onPlantGrow_4_);
 		}
 	}
 
@@ -228,14 +228,14 @@ public abstract class OreWithSpecialEvents extends BlockBase {
 		SpecialEventTrigger triggerName = SpecialEventTrigger.ONNEIGHBOURCHANGE;
 		if (UniqueActions.containsKey(triggerName)) 
 		{
-			invokeSpecialEvents(UniqueActions.get(triggerName), null, null, null);
+			invokeSpecialEvents(UniqueActions.get(triggerName), null, null, null, p_onNeighborChange_2_);
 		}
     }
     
     @Override
     public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
         SpecialEventTrigger triggerName = SpecialEventTrigger.ONBLOCKADDED;
-			invokeSpecialEvents(UniqueActions.get(triggerName), null, null, worldIn);
+			invokeSpecialEvents(UniqueActions.get(triggerName), null, null, worldIn, pos);
         
         super.onBlockAdded(worldIn, pos, state);
     }

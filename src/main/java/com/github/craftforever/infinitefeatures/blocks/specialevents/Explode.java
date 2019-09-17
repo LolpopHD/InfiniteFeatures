@@ -5,6 +5,8 @@ import com.github.craftforever.infinitefeatures.helpers.RandomHelper;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.passive.EntityBat;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class Explode implements ISpecialEvent {
@@ -42,12 +44,19 @@ public class Explode implements ISpecialEvent {
 
 	@Override
 	public void Execute(OreWithSpecialEvents block, Entity nullable_relatedEntity,
-			EntityLivingBase nullable_relatedLivingEntity, World nullable_world) {
-		if (nullable_world != null){
-			if (nullable_relatedEntity != null){
+			EntityLivingBase nullable_relatedLivingEntity, World nullable_world, BlockPos nullable_blockPos) {
+		if (nullable_world != null){ 
+			if (nullable_blockPos != null)
+			{
+				
 				float strength = (float)RandomHelper.getRandomGaussianInRange(strength_mean, strength_std, strength_min, strength_max);
 				boolean damagesTerrain = RandomHelper.getRandomBoolean(damagesTerrain_prob);
-				nullable_world.createExplosion(nullable_relatedEntity, nullable_relatedEntity.posX, nullable_relatedEntity.posY, nullable_relatedEntity.posZ, strength, damagesTerrain);
+				// TODO: SUPER HACKY WTF, SOMEONE PLEASE FIX THIS OR MY EYES WILL BLEED
+				Entity tempEnt = new EntityBat(nullable_world);
+				tempEnt.setPosition(nullable_blockPos.getX(), nullable_blockPos.getY(), nullable_blockPos.getZ());
+				nullable_world.createExplosion(tempEnt, nullable_blockPos.getX(), nullable_blockPos.getY(), nullable_blockPos.getZ(), strength, damagesTerrain);	
+				nullable_world.setBlockToAir(nullable_blockPos);
+				tempEnt.setDead();
 			}
 		}
 	}

@@ -4,6 +4,7 @@ import com.github.craftforever.infinitefeatures.blocks.OreWithSpecialEvents;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public interface ISpecialEvent 
@@ -19,5 +20,6 @@ public interface ISpecialEvent
 	 * @param  nullable_relatedLivingEntity if the event fired has reference to an LivingEntity it will pass this, else null.
 	 * @param  nullable_world if the event fired has reference to the world it will pass this, else null.
 	 */
-	public void Execute(OreWithSpecialEvents block, Entity nullable_relatedEntity, EntityLivingBase nullable_relatedLivingEntity, World nullable_world);
+	public void Execute(OreWithSpecialEvents block, Entity nullable_relatedEntity, EntityLivingBase nullable_relatedLivingEntity, World nullable_world, 
+	BlockPos nullable_blockPos);
 }
