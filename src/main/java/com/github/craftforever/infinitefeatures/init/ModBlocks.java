@@ -41,9 +41,9 @@ public class ModBlocks
 	//public static final Block RANDOM_BLOCK2 = new RandomBlock(minerals[1]).setCreativeTab(InfiniteFeatures.InfiniTab);
 	//public static final Block RANDOM_BLOCK3 = new RandomBlock(minerals[2]).setCreativeTab(InfiniteFeatures.InfiniTab);
 
-  public static Mineral getRandomMineral() 
+  public static Mineral getRandomMineral(int i) 
   {
-		return RandomFactory.randomMineralFactory(textpartarray);
+		return RandomFactory.randomMineralFactory(textpartarray,i);
 	}
 	
 	private static Mineral[] generatemineralarray()
@@ -52,7 +52,7 @@ public class ModBlocks
 			Mineral[] mineralarray = new Mineral[InfiniteFeatures.ORE_QTY];
 			for (int i = 0; i < InfiniteFeatures.ORE_QTY; i++)
 			{
-				mineralarray[i] = getRandomMineral();
+				mineralarray[i] = getRandomMineral(i);
 			}
 			return mineralarray;
 		}
@@ -71,7 +71,7 @@ public class ModBlocks
 			Block[] ingotblockarray = new Block[InfiniteFeatures.ORE_QTY];
 			for (int i = 0; i < InfiniteFeatures.ORE_QTY; i++) 
 			{
-					ingotblockarray[i] = new BlockBase(minerals[i].name+"_block", Material.IRON).setCreativeTab(InfiniteFeatures.InfiniTab).setHardness(5).setResistance(30);
+					ingotblockarray[i] = new BlockBase(minerals[i].name+"_block", Material.IRON,minerals[i]).setCreativeTab(InfiniteFeatures.InfiniTab).setHardness(5).setResistance(30);
 			}
 			return ingotblockarray;
 		}

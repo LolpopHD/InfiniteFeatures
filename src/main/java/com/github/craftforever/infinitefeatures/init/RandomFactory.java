@@ -23,6 +23,10 @@ public class RandomFactory
 {
 
     private static final int RGB_MAX = 255;
+    
+    
+    //QUALITY_LEVEL_AMMOUNT is better if it can divide InfiniteFeatures.ORE_QTY 
+    private static final int QUALITY_LEVEL_AMMOUNT = 5;
 
     // TODO: allow users to customise min/max values via config file
     private static final int LIGHTLEVEL_MAX = 15;
@@ -218,7 +222,7 @@ public class RandomFactory
         return randomBlock;
     }
 
-    public static Mineral randomMineralFactory(String[] textpartarray) {
+    public static Mineral randomMineralFactory(String[] textpartarray,int i) {
         String randomName = textpartarray[getRandomIntInRange(0, textpartarray.length - 1)]
                 + textpartarray[getRandomIntInRange(0, textpartarray.length - 1)]
                 + textpartarray[getRandomIntInRange(0, textpartarray.length - 1)]
@@ -226,8 +230,7 @@ public class RandomFactory
 
         Color randomColor = new Color(InfiniteFeatures.seededRandom.nextInt(RGB_MAX),
                 InfiniteFeatures.seededRandom.nextInt(RGB_MAX), InfiniteFeatures.seededRandom.nextInt(RGB_MAX));
-
-        Mineral randomMineral = new Mineral(randomName, randomColor);
+        Mineral randomMineral = new Mineral(randomName, randomColor,i/(InfiniteFeatures.ORE_QTY/QUALITY_LEVEL_AMMOUNT)+1);
 
         return randomMineral;
     }

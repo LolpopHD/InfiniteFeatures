@@ -29,6 +29,7 @@ public class ClientProxy extends CommonProxy
 		ModelLoader.setCustomModelResourceLocation(item, meta, new ModelResourceLocation(item.getRegistryName(), id));
 	}
 	
+	@SuppressWarnings("unchecked")
 	public static void registerResources() throws NoSuchFieldException, SecurityException
 	{
 		List<IResourcePack> resourcePacks = null;

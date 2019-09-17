@@ -6,12 +6,8 @@ import java.util.List;
 
 import com.github.craftforever.infinitefeatures.InfiniteFeatures;
 import com.github.craftforever.infinitefeatures.blocks.specialevents.ISpecialEvent;
-import com.github.craftforever.infinitefeatures.init.IHasModel;
-import com.github.craftforever.infinitefeatures.init.ModBlocks;
-import com.github.craftforever.infinitefeatures.init.ModItems;
 import com.github.craftforever.infinitefeatures.util.Mineral;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -19,7 +15,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -30,8 +25,7 @@ import net.minecraft.world.World;
 
 @SuppressWarnings("unlikely-arg-type")
 
-public class RandomIngotOre extends Block implements IHasModel 
-{
+public class RandomIngotOre extends BlockBase{
 	public enum SpecialEventTrigger 
 	{
 		ONDESTROY, ONEXPLODEDESTROY, ONACTIVATED, ONWALKEDON, ONCLICKED, ONCOLLIDED, ONPLACED, ONFALLENON, ONLANDED,
@@ -56,11 +50,11 @@ public class RandomIngotOre extends Block implements IHasModel
 			float ihardness, float iresistance, SoundType isound,
 			HashMap<com.github.craftforever.infinitefeatures.blocks.RandomGemOre.SpecialEventTrigger, List<ISpecialEvent>> randomUniqueActions) 
 	{
-		super(imaterial);
-		setTranslationKey(imineral.name + "_ore");
-		setRegistryName(imineral.name + "_ore");
-		ModBlocks.BLOCKS.add(this);
-		ModItems.ITEMS.add(new ItemBlock(this).setRegistryName(this.getRegistryName()));
+		super(imineral.name + "_ore",imaterial,imineral);
+		//setTranslationKey(imineral.name + "_ore");
+		//setRegistryName(imineral.name + "_ore");
+		//ModBlocks.BLOCKS.add(this);
+		//ModItems.ITEMS.add(new ItemBlock(this).setRegistryName(this.getRegistryName()));
 
 		setSoundType(isound);
 		setHardness(ihardness);
