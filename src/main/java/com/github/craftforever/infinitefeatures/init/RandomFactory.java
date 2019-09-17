@@ -243,11 +243,72 @@ public class RandomFactory
         return randomBlock;
     }
 
-    public static Mineral randomMineralFactory(String[] textpartarray,int quality) {
-        String randomName = textpartarray[getRandomIntInRange(0, textpartarray.length - 1)]
-                + textpartarray[getRandomIntInRange(0, textpartarray.length - 1)]
-                + textpartarray[getRandomIntInRange(0, textpartarray.length - 1)]
-                + textpartarray[getRandomIntInRange(0, textpartarray.length - 1)];
+    public static Mineral randomMineralFactory(String[] one_consonants, String[] two_consonants, String[] vowels,
+                                               int quality) {
+        String randomName;
+
+        String firstSyllable;
+        String secondSyllable;
+        String thirdSyllable;
+        String fourthSyllable;
+        String fifthSyllable;
+        String ending;
+
+        int fourthSyllableChance = getRandomIntInRange(0, 1);
+        int fifthSyllableChance = getRandomIntInRange(0, fourthSyllableChance);
+        int endingChance = getRandomIntInRange(0, fifthSyllableChance);
+
+        // First syllable
+        if (getRandomIntInRange(0, 1) == 0) {
+            firstSyllable = "";
+        } else {
+            if (getRandomIntInRange(0, 1) == 0) {
+                firstSyllable = one_consonants[getRandomIntInRange(0, one_consonants.length - 1)];
+            } else {
+                firstSyllable = two_consonants[getRandomIntInRange(0, two_consonants.length - 1)];
+            }
+        }
+
+        // Second syllable
+        secondSyllable = vowels[getRandomIntInRange(0, one_consonants.length - 1)];
+
+        // Third syllable
+        if (getRandomIntInRange(0, 1) == 0) {
+            thirdSyllable = one_consonants[getRandomIntInRange(0, one_consonants.length - 1)];
+        } else {
+            thirdSyllable = two_consonants[getRandomIntInRange(0, two_consonants.length - 1)];
+        }
+
+        // Fourth syllable
+        if (fourthSyllableChance == 0) {
+            fourthSyllable = "";
+        } else {
+            fourthSyllable = vowels[getRandomIntInRange(0, one_consonants.length - 1)];
+        }
+
+        // Fifth syllable
+        if (fifthSyllableChance == 0) {
+            fifthSyllable = "";
+        } else {
+            if (getRandomIntInRange(0, 1) == 0) {
+                fifthSyllable = one_consonants[getRandomIntInRange(0, one_consonants.length - 1)];
+            } else {
+                fifthSyllable = two_consonants[getRandomIntInRange(0, two_consonants.length - 1)];
+            }
+        }
+
+        // Ending
+        if (endingChance == 0) {
+            ending = "";
+        } else {
+            if (getRandomIntInRange(0, 1) == 0) {
+                ending = "ite";
+            } else {
+                ending = "ium";
+            }
+        }
+
+        randomName = firstSyllable + secondSyllable + thirdSyllable + fourthSyllable + fifthSyllable + ending;
 
         Color randomColor = new Color(InfiniteFeatures.seededRandom.nextInt(RGB_MAX),
                 InfiniteFeatures.seededRandom.nextInt(RGB_MAX), InfiniteFeatures.seededRandom.nextInt(RGB_MAX));
