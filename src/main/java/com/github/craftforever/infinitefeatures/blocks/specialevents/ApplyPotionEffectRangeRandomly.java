@@ -1,12 +1,10 @@
 
 package com.github.craftforever.infinitefeatures.blocks.specialevents;
 
-import com.github.craftforever.infinitefeatures.blocks.OreWithSpecialEvents;
+import com.github.craftforever.infinitefeatures.blocks.RandomIngotOre;
 import com.github.craftforever.infinitefeatures.helpers.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 
 public class ApplyPotionEffectRangeRandomly extends ApplyPotionEffectRange implements ISpecialEvent {
 
@@ -30,9 +28,10 @@ public class ApplyPotionEffectRangeRandomly extends ApplyPotionEffectRange imple
     
 
     @Override
-    public void Execute(OreWithSpecialEvents block, Entity nullable_relatedEntity, EntityLivingBase nullable_relatedLivingEntity, World nullable_world, BlockPos nullable_blockPos) {
+    public void Execute(RandomIngotOre block, boolean livingEntity, Entity relatedEntity,
+            EntityLivingBase relatedLivingEntity) {
         if (RandomHelper.getRandomBoolean(probability)) {
-            super.Execute(block, nullable_relatedEntity, nullable_relatedLivingEntity, nullable_world, nullable_blockPos);
+            super.Execute(block, livingEntity, relatedEntity, relatedLivingEntity);
         }
     }
 }
