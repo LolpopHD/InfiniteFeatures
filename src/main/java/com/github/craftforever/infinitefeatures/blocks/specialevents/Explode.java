@@ -54,8 +54,9 @@ public class Explode implements ISpecialEvent {
 				// TODO: SUPER HACKY WTF, SOMEONE PLEASE FIX THIS OR MY EYES WILL BLEED
 				Entity tempEnt = new EntityBat(nullable_world);
 				tempEnt.setPosition(nullable_blockPos.getX(), nullable_blockPos.getY(), nullable_blockPos.getZ());
-				nullable_world.createExplosion(tempEnt, nullable_blockPos.getX(), nullable_blockPos.getY(), nullable_blockPos.getZ(), strength, damagesTerrain);	
 				nullable_world.setBlockToAir(nullable_blockPos);
+				nullable_world.createExplosion(tempEnt, nullable_blockPos.getX(), nullable_blockPos.getY(), nullable_blockPos.getZ(), strength, damagesTerrain);	
+				
 				tempEnt.setDead();
 			}
 		}
