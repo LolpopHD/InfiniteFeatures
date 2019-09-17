@@ -54,6 +54,10 @@ public class RandomFactory
     private static final float POT_TRIGGER_PROBABILITY_MAX = 1f;
     private static final float POT_TRIGGER_PROBABILITY_MIN = 0f;
 
+    private static final float EXPLODE_POWER_MIN = 1;
+    private static final float EXPLODE_POWER_MAX = 20;
+    private static final float EXPLODE_DESTROY_BLOCKS_PROB = 0.8f;
+
     private static List<ISpecialEvent> GenerateAllPossibleEvents()
     {
         List<ISpecialEvent> allEvents = new ArrayList<ISpecialEvent>();
@@ -98,6 +102,10 @@ public class RandomFactory
             getRandomBoolean(POT_AMBIENT_PROBABILITY),
             getRandomBoolean(POT_PARTICLES_PROBABILITY),
             getRandomFloatInRange(POT_TRIGGER_PROBABILITY_MIN, POT_TRIGGER_PROBABILITY_MAX)));
+
+        allEvents.add(new Explode(
+            getRandomFloatInRange(EXPLODE_POWER_MIN, EXPLODE_POWER_MAX), 
+            getRandomBoolean(EXPLODE_DESTROY_BLOCKS_PROB)));
 
         return allEvents;
     }
