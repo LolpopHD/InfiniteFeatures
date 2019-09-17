@@ -85,10 +85,7 @@ public abstract class OreWithSpecialEvents extends BlockBase {
 		SpecialEventTrigger triggerName = SpecialEventTrigger.ONREMOVEDBYPLAYER;
 		if (UniqueActions.containsKey(triggerName)) 
 		{
-			if(!p_removedByPlayer_4_.capabilities.isCreativeMode) 
-			{
 			invokeSpecialEvents(UniqueActions.get(triggerName), p_removedByPlayer_4_, p_removedByPlayer_4_, p_removedByPlayer_2_, p_removedByPlayer_3_);
-			}
 		}
 		return super.removedByPlayer(p_removedByPlayer_1_, p_removedByPlayer_2_, p_removedByPlayer_3_, p_removedByPlayer_4_,
 				p_removedByPlayer_5_);
@@ -111,10 +108,8 @@ public abstract class OreWithSpecialEvents extends BlockBase {
 		SpecialEventTrigger triggerName = SpecialEventTrigger.ONACTIVATED;
 		if (UniqueActions.containsKey(triggerName)) 
 		{
-			if(!p_onBlockActivated_4_.capabilities.isCreativeMode) 
-			{
 			invokeSpecialEvents(UniqueActions.get(triggerName), p_onBlockActivated_4_, p_onBlockActivated_4_, p_onBlockActivated_1_, p_onBlockActivated_2_);
-			}
+			
 		}
 		return false;
 	}
@@ -136,10 +131,8 @@ public abstract class OreWithSpecialEvents extends BlockBase {
 		SpecialEventTrigger triggerName = SpecialEventTrigger.ONCLICKED;
 		if (UniqueActions.containsKey(triggerName)) 
 		{
-			if(!p_onBlockClicked_3_.capabilities.isCreativeMode)
-		    {
 			invokeSpecialEvents(UniqueActions.get(triggerName), p_onBlockClicked_3_, p_onBlockClicked_3_, p_onBlockClicked_1_, p_onBlockClicked_2_);
-		    }
+		    
 		}
 	}
 
@@ -195,10 +188,8 @@ public abstract class OreWithSpecialEvents extends BlockBase {
 		SpecialEventTrigger triggerName = SpecialEventTrigger.ONHARVESTED;
 		if (UniqueActions.containsKey(triggerName)) 
 		{
-			if(!p_onBlockHarvested_4_.capabilities.isCreativeMode) 
-			{
 			invokeSpecialEvents(UniqueActions.get(triggerName), p_onBlockHarvested_4_, p_onBlockHarvested_4_, p_onBlockHarvested_1_, p_onBlockHarvested_2_);
-			}
+			
 		}
 	}
 
