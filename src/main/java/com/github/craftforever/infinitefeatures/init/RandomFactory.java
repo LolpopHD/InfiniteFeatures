@@ -2,8 +2,8 @@ package com.github.craftforever.infinitefeatures.init;
 
 import com.github.craftforever.infinitefeatures.InfiniteFeatures;
 import com.github.craftforever.infinitefeatures.blocks.RandomGemOre;
-import com.github.craftforever.infinitefeatures.blocks.RandomGemOre.SpecialEventTrigger;
 import com.github.craftforever.infinitefeatures.blocks.RandomIngotOre;
+import com.github.craftforever.infinitefeatures.blocks.OreWithSpecialEvents.SpecialEventTrigger;
 import com.github.craftforever.infinitefeatures.blocks.specialevents.*;
 import com.github.craftforever.infinitefeatures.helpers.RandomHelper;
 import com.github.craftforever.infinitefeatures.util.Mineral;
@@ -222,7 +222,7 @@ public class RandomFactory
         return randomBlock;
     }
 
-    public static Mineral randomMineralFactory(String[] textpartarray,int i) {
+    public static Mineral randomMineralFactory(String[] textpartarray,int quality) {
         String randomName = textpartarray[getRandomIntInRange(0, textpartarray.length - 1)]
                 + textpartarray[getRandomIntInRange(0, textpartarray.length - 1)]
                 + textpartarray[getRandomIntInRange(0, textpartarray.length - 1)]
@@ -230,7 +230,7 @@ public class RandomFactory
 
         Color randomColor = new Color(InfiniteFeatures.seededRandom.nextInt(RGB_MAX),
                 InfiniteFeatures.seededRandom.nextInt(RGB_MAX), InfiniteFeatures.seededRandom.nextInt(RGB_MAX));
-        Mineral randomMineral = new Mineral(randomName, randomColor,i/(InfiniteFeatures.ORE_QTY/QUALITY_LEVEL_AMMOUNT)+1);
+        Mineral randomMineral = new Mineral(randomName, randomColor,quality/(InfiniteFeatures.ORE_QTY/QUALITY_LEVEL_AMMOUNT)+1);
 
         return randomMineral;
     }
