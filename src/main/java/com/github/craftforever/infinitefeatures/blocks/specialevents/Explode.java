@@ -5,7 +5,6 @@ import com.github.craftforever.infinitefeatures.helpers.RandomHelper;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.passive.EntityBat;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 

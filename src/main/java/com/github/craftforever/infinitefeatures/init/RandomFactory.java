@@ -58,10 +58,10 @@ public class RandomFactory
     private static final float EXPLODE_POWER_MAX = 20;
     private static final float EXPLODE_DESTROY_BLOCKS_PROB = 0.8f;
 
-    private static final int GAS_CLOUD_SIZE_MIN = 1f;
-    private static final int GAS_CLOUD_SIZE_MAX = 10f;
+    private static final int GAS_CLOUD_SIZE_MIN = 1;
+    private static final int GAS_CLOUD_SIZE_MAX = 10;
     private static final int GAS_CLOUD_DURATION_MIN = 0;
-    private static final int GAS_CLOUD_DURATION_MAX = 1200;
+    private static final int GAS_CLOUD_DURATION_MAX = 200;
 
     private static List<ISpecialEvent> GenerateAllPossibleEvents()
     {
@@ -118,7 +118,7 @@ public class RandomFactory
             7f, 
             getRandomIntInRange(POT_ID_MIN, POT_ID_MAX), 
             getRandomFloatInRange(POT_DURATION_MIN, POT_DURATION_MAX), 
-            getRandomIntInRange(0, POT_DURATION_MAX)));
+            getRandomIntInRange(0, POT_LEVEL_MAX)));
 
         return allEvents;
     }
