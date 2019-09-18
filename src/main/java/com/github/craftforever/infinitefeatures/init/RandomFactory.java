@@ -12,12 +12,12 @@ import net.minecraft.block.material.Material;
 import net.minecraft.item.Item;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.awt.*;
 
 import static com.github.craftforever.infinitefeatures.helpers.RandomHelper.*;
-import static com.github.craftforever.infinitefeatures.helpers.RandomHelper.getRandomIntInRange;
 
 public class RandomFactory 
 {
@@ -254,54 +254,58 @@ public class RandomFactory
         String fifthSyllable;
         String ending;
 
-        int fourthSyllableChance = getRandomIntInRange(0, 1);
-        int fifthSyllableChance = getRandomIntInRange(0, fourthSyllableChance);
-        int endingChance = getRandomIntInRange(0, fifthSyllableChance);
+        boolean fourthSyllableChance = getRandomBoolean(0.5F);
+        boolean fifthSyllableChance = getRandomBoolean(0.5F);
+        boolean endingChance = getRandomBoolean(0.5F);
+
+        List<String> one_consonants_list = Arrays.asList(one_consonants);
+        List<String> two_consonants_list = Arrays.asList(two_consonants);
+        List<String> vowels_list = Arrays.asList(vowels);
 
         // First syllable
-        if (getRandomIntInRange(0, 1) == 0) {
+        if (getRandomBoolean(0.5F)) {
             firstSyllable = "";
         } else {
-            if (getRandomIntInRange(0, 1) == 0) {
-                firstSyllable = one_consonants[getRandomIntInRange(0, one_consonants.length - 1)];
+            if (getRandomBoolean(0.5F)) {
+                firstSyllable = getRandomItem(one_consonants_list);
             } else {
-                firstSyllable = two_consonants[getRandomIntInRange(0, two_consonants.length - 1)];
+                firstSyllable = getRandomItem(two_consonants_list);
             }
         }
 
         // Second syllable
-        secondSyllable = vowels[getRandomIntInRange(0, one_consonants.length - 1)];
+        secondSyllable = getRandomItem(vowels_list);
 
         // Third syllable
-        if (getRandomIntInRange(0, 1) == 0) {
-            thirdSyllable = one_consonants[getRandomIntInRange(0, one_consonants.length - 1)];
+        if (getRandomBoolean(0.5F)) {
+            thirdSyllable = getRandomItem(one_consonants_list);
         } else {
-            thirdSyllable = two_consonants[getRandomIntInRange(0, two_consonants.length - 1)];
+            thirdSyllable = getRandomItem(two_consonants_list);
         }
 
         // Fourth syllable
-        if (fourthSyllableChance == 0) {
+        if (fourthSyllableChance) {
             fourthSyllable = "";
         } else {
-            fourthSyllable = vowels[getRandomIntInRange(0, one_consonants.length - 1)];
+            fourthSyllable = getRandomItem(vowels_list);
         }
 
         // Fifth syllable
-        if (fifthSyllableChance == 0) {
+        if (fifthSyllableChance) {
             fifthSyllable = "";
         } else {
-            if (getRandomIntInRange(0, 1) == 0) {
-                fifthSyllable = one_consonants[getRandomIntInRange(0, one_consonants.length - 1)];
+            if (getRandomBoolean(0.5F)) {
+                fifthSyllable = getRandomItem(one_consonants_list);
             } else {
-                fifthSyllable = two_consonants[getRandomIntInRange(0, two_consonants.length - 1)];
+                fifthSyllable = getRandomItem(two_consonants_list);
             }
         }
 
         // Ending
-        if (endingChance == 0) {
+        if (endingChance) {
             ending = "";
         } else {
-            if (getRandomIntInRange(0, 1) == 0) {
+            if (getRandomBoolean(0.5F)) {
                 ending = "ite";
             } else {
                 ending = "ium";
