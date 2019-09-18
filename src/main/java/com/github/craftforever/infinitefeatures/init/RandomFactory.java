@@ -2,8 +2,8 @@ package com.github.craftforever.infinitefeatures.init;
 
 import com.github.craftforever.infinitefeatures.InfiniteFeatures;
 import com.github.craftforever.infinitefeatures.blocks.RandomGemOre;
-import com.github.craftforever.infinitefeatures.blocks.RandomGemOre.SpecialEventTrigger;
 import com.github.craftforever.infinitefeatures.blocks.RandomIngotOre;
+import com.github.craftforever.infinitefeatures.blocks.OreWithSpecialEvents.SpecialEventTrigger;
 import com.github.craftforever.infinitefeatures.blocks.specialevents.*;
 import com.github.craftforever.infinitefeatures.helpers.RandomHelper;
 import com.github.craftforever.infinitefeatures.util.Mineral;
@@ -12,12 +12,12 @@ import net.minecraft.block.material.Material;
 import net.minecraft.item.Item;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.awt.*;
 
 import static com.github.craftforever.infinitefeatures.helpers.RandomHelper.*;
-import static com.github.craftforever.infinitefeatures.helpers.RandomHelper.getRandomIntInRange;
 
 public class RandomFactory 
 {
@@ -53,6 +53,15 @@ public class RandomFactory
     private static final float POT_PARTICLES_PROBABILITY = 0.9f;
     private static final float POT_TRIGGER_PROBABILITY_MAX = 1f;
     private static final float POT_TRIGGER_PROBABILITY_MIN = 0f;
+
+    private static final float EXPLODE_POWER_MIN = 1;
+    private static final float EXPLODE_POWER_MAX = 20;
+    private static final float EXPLODE_DESTROY_BLOCKS_PROB = 0.8f;
+
+    private static final int GAS_CLOUD_SIZE_MIN = 1;
+    private static final int GAS_CLOUD_SIZE_MAX = 10;
+    private static final int GAS_CLOUD_DURATION_MIN = 0;
+    private static final int GAS_CLOUD_DURATION_MAX = 200;
 
     private static List<ISpecialEvent> GenerateAllPossibleEvents()
     {
@@ -98,6 +107,18 @@ public class RandomFactory
             getRandomBoolean(POT_AMBIENT_PROBABILITY),
             getRandomBoolean(POT_PARTICLES_PROBABILITY),
             getRandomFloatInRange(POT_TRIGGER_PROBABILITY_MIN, POT_TRIGGER_PROBABILITY_MAX)));
+
+        allEvents.add(new Explode(
+            getRandomFloatInRange(EXPLODE_POWER_MIN, EXPLODE_POWER_MAX), 
+            getRandomBoolean(EXPLODE_DESTROY_BLOCKS_PROB)));
+
+        allEvents.add(new GasCloud(
+            getRandomFloatInRange(GAS_CLOUD_SIZE_MIN, GAS_CLOUD_SIZE_MAX), 
+            getRandomIntInRange(GAS_CLOUD_DURATION_MIN, GAS_CLOUD_DURATION_MAX), 
+            7f, 
+            getRandomIntInRange(POT_ID_MIN, POT_ID_MAX), 
+            getRandomFloatInRange(POT_DURATION_MIN, POT_DURATION_MAX), 
+            getRandomIntInRange(0, POT_LEVEL_MAX)));
 
         return allEvents;
     }
@@ -222,15 +243,80 @@ public class RandomFactory
         return randomBlock;
     }
 
-    public static Mineral randomMineralFactory(String[] textpartarray,int i) {
-        String randomName = textpartarray[getRandomIntInRange(0, textpartarray.length - 1)]
-                + textpartarray[getRandomIntInRange(0, textpartarray.length - 1)]
-                + textpartarray[getRandomIntInRange(0, textpartarray.length - 1)]
-                + textpartarray[getRandomIntInRange(0, textpartarray.length - 1)];
+    public static Mineral randomMineralFactory(String[] one_consonants, String[] two_consonants, String[] vowels,
+                                               int quality) {
+        String randomName;
+
+        String firstSyllable;
+        String secondSyllable;
+        String thirdSyllable;
+        String fourthSyllable;
+        String fifthSyllable;
+        String ending;
+
+        boolean fourthSyllableChance = getRandomBoolean(0.5F);
+        boolean fifthSyllableChance = getRandomBoolean(0.5F);
+        boolean endingChance = getRandomBoolean(0.5F);
+
+        List<String> one_consonants_list = Arrays.asList(one_consonants);
+        List<String> two_consonants_list = Arrays.asList(two_consonants);
+        List<String> vowels_list = Arrays.asList(vowels);
+
+        // First syllable
+        if (getRandomBoolean(0.5F)) {
+            firstSyllable = "";
+        } else {
+            if (getRandomBoolean(0.5F)) {
+                firstSyllable = getRandomItem(one_consonants_list);
+            } else {
+                firstSyllable = getRandomItem(two_consonants_list);
+            }
+        }
+
+        // Second syllable
+        secondSyllable = getRandomItem(vowels_list);
+
+        // Third syllable
+        if (getRandomBoolean(0.5F)) {
+            thirdSyllable = getRandomItem(one_consonants_list);
+        } else {
+            thirdSyllable = getRandomItem(two_consonants_list);
+        }
+
+        // Fourth syllable
+        if (fourthSyllableChance) {
+            fourthSyllable = "";
+        } else {
+            fourthSyllable = getRandomItem(vowels_list);
+        }
+
+        // Fifth syllable
+        if (fifthSyllableChance) {
+            fifthSyllable = "";
+        } else {
+            if (getRandomBoolean(0.5F)) {
+                fifthSyllable = getRandomItem(one_consonants_list);
+            } else {
+                fifthSyllable = getRandomItem(two_consonants_list);
+            }
+        }
+
+        // Ending
+        if (endingChance) {
+            ending = "";
+        } else {
+            if (getRandomBoolean(0.5F)) {
+                ending = "ite";
+            } else {
+                ending = "ium";
+            }
+        }
+
+        randomName = firstSyllable + secondSyllable + thirdSyllable + fourthSyllable + fifthSyllable + ending;
 
         Color randomColor = new Color(InfiniteFeatures.seededRandom.nextInt(RGB_MAX),
                 InfiniteFeatures.seededRandom.nextInt(RGB_MAX), InfiniteFeatures.seededRandom.nextInt(RGB_MAX));
-        Mineral randomMineral = new Mineral(randomName, randomColor,i/(InfiniteFeatures.ORE_QTY/QUALITY_LEVEL_AMMOUNT)+1);
+        Mineral randomMineral = new Mineral(randomName, randomColor,quality/(InfiniteFeatures.ORE_QTY/QUALITY_LEVEL_AMMOUNT)+1);
 
         return randomMineral;
     }
