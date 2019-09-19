@@ -1,9 +1,8 @@
 package com.github.craftforever.infinitefeatures.init;
 
 import com.github.craftforever.infinitefeatures.InfiniteFeatures;
-import com.github.craftforever.infinitefeatures.blocks.RandomGemOre;
-import com.github.craftforever.infinitefeatures.blocks.RandomGemOre.SpecialEventTrigger;
-import com.github.craftforever.infinitefeatures.blocks.RandomIngotOre;
+import com.github.craftforever.infinitefeatures.blocks.RandomOre;
+import com.github.craftforever.infinitefeatures.blocks.RandomOre.SpecialEventTrigger;
 import com.github.craftforever.infinitefeatures.blocks.specialevents.*;
 import com.github.craftforever.infinitefeatures.helpers.RandomHelper;
 import com.github.craftforever.infinitefeatures.util.Mineral;
@@ -102,9 +101,8 @@ public class RandomFactory
         return allEvents;
     }
 
-    public static RandomIngotOre randomIngotOreFactory(Mineral imineral) {
+    public static RandomOre randomOreFactory(Mineral imineral, Material imaterial, Item itemdrop) {
         // TODO: randomly pick a material
-        Material randomMaterial = Material.ROCK;
         // ...
 
         float randomLightLevel = 0F;
@@ -155,69 +153,9 @@ public class RandomFactory
         ISpecialEvent selectedEvent = RandomHelper.getRandomItem(allPossibleEvents);
 
         randomUniqueActions.get(randomTrigger).add(selectedEvent);
-
-        RandomIngotOre randomBlock = new RandomIngotOre(imineral, randomMaterial, randomLightLevel, randomToolType,
-                randomHarvestLevel, randomHardness, randomBlastResistance, randomSoundType, randomUniqueActions);
-
-        return randomBlock;
-    }
-    
-    public static RandomGemOre randomGemOreFactory(Mineral imineral,Item iitem) {
-        // TODO: randomly pick a material
-        Material randomMaterial = Material.ROCK;
-        // ...
-
-        float randomLightLevel = 0F;
-        if (getRandomBoolean((float) LIGHTLEVEL_GLOW_PROBABILITY)) {
-            // The ore will glow
-            randomLightLevel = (float)getRandomIntInRange(LIGHTLEVEL_MIN,LIGHTLEVEL_MAX) / 15;
-        }
-        else 
-        {
-            // The ore won't glow
-            randomLightLevel = 0F;
-        }
-
-        // TODO: pick tool type based off the base texture, (sand/dirt base textures
-        // probably makes sense to use a shovel)
-        // Depending on the direction/extent you want to take the randomisation this
-        // could be generated randomly although that would make for poor experiences
-        String randomToolType = "pickaxe";
-        // ...
-
-        int randomHarvestLevel = getRandomIntInRange(HARVEST_LEVEL_MIN, HARVEST_LEVEL_MAX);
-
-        // How long it takes to mine
-        float randomHardness = (float) getRandomIntInRange(HARDNESS_MIN, HARDNESS_MAX);
-
-        // Blast resistance
-        float randomBlastResistance = (float) getRandomGaussianInRange(BLAST_RESISTANCE_MEAN, BLAST_RESISTANCE_STD,
-                BLAST_RESISTANCE_MIN, BLAST_RESISTANCE_MAX);
-
-        // TODO: pick a sound type randomly or based on something
-        SoundType randomSoundType = SoundType.STONE;
-        // ...
-
-        // Initialize the mappings between event triggers and events
-        HashMap<com.github.craftforever.infinitefeatures.blocks.RandomGemOre.SpecialEventTrigger, List<ISpecialEvent>> randomUniqueActions = new HashMap<SpecialEventTrigger, List<ISpecialEvent>>();
-
-        for (com.github.craftforever.infinitefeatures.blocks.RandomGemOre.SpecialEventTrigger trigger : SpecialEventTrigger.values())
-        {
-            List<ISpecialEvent> events = new ArrayList<ISpecialEvent>();
-            randomUniqueActions.put(trigger, events);
-        }
-
-        // Assign the TestEvent to a random trigger
-        SpecialEventTrigger randomTrigger = randomEnum(SpecialEventTrigger.class);
-
-        List<ISpecialEvent> allPossibleEvents = GenerateAllPossibleEvents();
-
-        ISpecialEvent selectedEvent = RandomHelper.getRandomItem(allPossibleEvents);
-
-        randomUniqueActions.get(randomTrigger).add(selectedEvent);
-
-        RandomGemOre randomBlock = new RandomGemOre(imineral, randomMaterial, randomLightLevel, randomToolType,
-                randomHarvestLevel, randomHardness, randomBlastResistance, randomSoundType, randomUniqueActions, iitem);
+        
+        RandomOre randomBlock = new RandomOre(imineral, imaterial, randomLightLevel, randomToolType,
+                randomHarvestLevel, randomHardness, randomBlastResistance, randomSoundType, randomUniqueActions, itemdrop);
 
         return randomBlock;
     }

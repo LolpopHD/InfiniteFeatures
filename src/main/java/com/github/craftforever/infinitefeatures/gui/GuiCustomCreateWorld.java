@@ -15,6 +15,7 @@ import net.minecraft.world.storage.ISaveFormat;
 import net.minecraft.world.storage.WorldInfo;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
 import org.apache.commons.lang3.StringUtils;
 import org.lwjgl.input.Keyboard;
 
@@ -505,7 +506,7 @@ public class GuiCustomCreateWorld extends GuiScreen
 				this.worldSeedField.textboxKeyTyped(typedChar, keyCode);
 				this.worldSeed = this.worldSeedField.getText();
 			}
-
+			
 			if (keyCode == 28 || keyCode == 156)
 			{
 				this.actionPerformed(this.buttonList.get(0));
