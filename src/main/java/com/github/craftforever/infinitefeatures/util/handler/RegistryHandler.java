@@ -11,6 +11,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.text.WordUtils;
 
 import com.github.craftforever.infinitefeatures.InfiniteFeatures;
+import com.github.craftforever.infinitefeatures.helpers.RandomHelper;
 import com.github.craftforever.infinitefeatures.init.IHasModel;
 import com.github.craftforever.infinitefeatures.init.ModBlocks;
 import com.github.craftforever.infinitefeatures.init.ModItems;
@@ -147,7 +148,7 @@ public class RegistryHandler
 		for(int i = 0; i < ModBlocks.gemorecount; i++)
 		{
 			Item item = ModItems.gemArray[i];
-			String itemName = item.getTranslationKey().substring(5);
+			String itemName = item.getTranslationKey().substring(5, item.getTranslationKey().toString().length()-4);
 			itemName = itemName.replace("_", " ");
 			itemName = WordUtils.capitalize(itemName);
 			String langinput = item.getTranslationKey()+".name="+itemName+"\n";
@@ -201,9 +202,10 @@ public class RegistryHandler
 		//Creating Textures for the Ores and Ingots
 		for(int i = 0; i < InfiniteFeatures.ORE_QTY; i++)
 		{
+			int num = RandomHelper.getRandomIntInRange(0, 4);
 			InputStream stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/block/base/"+ModBlocks.minerals[i].underlay+".png");
 			BufferedImage baseImg = ImageIO.read(stream);
-			stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/block/ore/generic.png");
+			stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/block/ore/ore_"+num+".png");
 			BufferedImage oreImg = ImageIO.read(stream);
 			BufferedImage finalImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
 			Graphics g = finalImg.getGraphics();
@@ -228,7 +230,8 @@ public class RegistryHandler
 		}
 		for(int i = 0; i < ModBlocks.gemorecount; i++)
 		{
-			InputStream stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/item/gem/generic_diamond.png");
+			int rand = RandomHelper.getRandomIntInRange(1, 3);
+			InputStream stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/item/gem/generic"+rand+".png");
 			BufferedImage gemImg = ImageIO.read(stream);
 			stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/block/storage/generic_diamond_old.png");
 			BufferedImage ingotblockImg = ImageIO.read(stream);
@@ -240,9 +243,10 @@ public class RegistryHandler
 		}
 		for(int i = 0; i < ModItems.ToolOres; i++)
 		{
-			InputStream stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/item/tool/axe_handle.png");
+			int axenum = RandomHelper.getRandomIntInRange(0, 3);
+			InputStream stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/item/tool/axe/axe_handle.png");
 			BufferedImage baseImg = ImageIO.read(stream);
-			stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/item/tool/axe_head.png");
+			stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/item/tool/axe/axehead"+axenum+".png");
 			BufferedImage headImg = ImageIO.read(stream);
 			BufferedImage finalImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
 			Graphics g = finalImg.getGraphics();
@@ -252,9 +256,9 @@ public class RegistryHandler
 			g.drawImage(headImg, 0, 0, null);
 			ImageIO.write(finalImg, "PNG", new File("InfiniCraft/Resources/assets/infeatures/textures/items/"+ModItems.axeArray[i].getTranslationKey().substring(5)+".png"));
 			
-			stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/item/tool/hoe_handle.png");
+			stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/item/tool/hoe/hoe_handle.png");
 			baseImg = ImageIO.read(stream);
-			stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/item/tool/hoe_blade.png");
+			stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/item/tool/hoe/hoe_blade.png");
 			headImg = ImageIO.read(stream);
 			finalImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
 			g = finalImg.getGraphics();
@@ -263,9 +267,10 @@ public class RegistryHandler
 			g.drawImage(headImg, 0, 0, null);
 			ImageIO.write(finalImg, "PNG", new File("InfiniCraft/Resources/assets/infeatures/textures/items/"+ModItems.hoeArray[i].getTranslationKey().substring(5)+".png"));
 			
-			stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/item/tool/pickaxe_handle.png");
+			int picknum = RandomHelper.getRandomIntInRange(0, 11);
+			stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/item/tool/pickaxe/pickaxe_handle.png");
 			baseImg = ImageIO.read(stream);
-			stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/item/tool/pickaxe_head.png");
+			stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/item/tool/pickaxe/pickhead"+picknum+".png");
 			headImg = ImageIO.read(stream);
 			finalImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
 			g = finalImg.getGraphics();
@@ -274,9 +279,10 @@ public class RegistryHandler
 			g.drawImage(headImg, 0, 0, null);
 			ImageIO.write(finalImg, "PNG", new File("InfiniCraft/Resources/assets/infeatures/textures/items/"+ModItems.pickaxeArray[i].getTranslationKey().substring(5)+".png"));
 			
-			stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/item/tool/sword_handle.png");
+			int swordnum = RandomHelper.getRandomIntInRange(0, 9);
+			stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/item/tool/sword/sword_handle.png");
 			baseImg = ImageIO.read(stream);
-			stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/item/tool/sword_blade.png");
+			stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/item/tool/sword/sword"+swordnum+".png");
 			headImg = ImageIO.read(stream);
 			finalImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
 			g = finalImg.getGraphics();
@@ -285,9 +291,9 @@ public class RegistryHandler
 			g.drawImage(headImg, 0, 0, null);
 			ImageIO.write(finalImg, "PNG", new File("InfiniCraft/Resources/assets/infeatures/textures/items/"+ModItems.swordArray[i].getTranslationKey().substring(5)+".png"));
 		
-			stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/item/tool/shovel_handle.png");
+			stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/item/tool/shovel/shovel_handle.png");
 			baseImg = ImageIO.read(stream);
-			stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/item/tool/shovel_head.png");
+			stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/item/tool/shovel/shovel_head.png");
 			headImg = ImageIO.read(stream);
 			finalImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
 			g = finalImg.getGraphics();
