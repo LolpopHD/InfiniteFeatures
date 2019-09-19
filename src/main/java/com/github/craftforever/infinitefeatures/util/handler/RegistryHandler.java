@@ -91,7 +91,7 @@ public class RegistryHandler
 		BufferedWriter writer = Files.newBufferedWriter(langFile.toPath(), charset);
 		for(int i = 0; i < InfiniteFeatures.ORE_QTY; i++)
 		{
-			Block block = ModBlocks.blockArray[i];
+			Block block = ModBlocks.oreArray[i];
 			String blockName = block.getTranslationKey().substring(5);
 			blockName = blockName.replace("_", " ");
 			blockName = WordUtils.capitalize(blockName);
@@ -201,7 +201,7 @@ public class RegistryHandler
 		//Creating Textures for the Ores and Ingots
 		for(int i = 0; i < InfiniteFeatures.ORE_QTY; i++)
 		{
-			InputStream stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/block/base/stone.png");
+			InputStream stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/block/base/"+ModBlocks.minerals[i].underlay+".png");
 			BufferedImage baseImg = ImageIO.read(stream);
 			stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/block/ore/generic.png");
 			BufferedImage oreImg = ImageIO.read(stream);
@@ -211,7 +211,7 @@ public class RegistryHandler
 			Color color = ModBlocks.minerals[i].color;
 			dye(oreImg,color);
 			g.drawImage(oreImg, 0, 0, null);
-			ImageIO.write(finalImg, "PNG", new File("InfiniCraft/Resources/assets/infeatures/textures/blocks/"+ModBlocks.blockArray[i].getTranslationKey().substring(5)+".png"));
+			ImageIO.write(finalImg, "PNG", new File("InfiniCraft/Resources/assets/infeatures/textures/blocks/"+ModBlocks.oreArray[i].getTranslationKey().substring(5)+".png"));
 			
 		}
 		for(int i = 0; i < ModBlocks.ingotorecount; i++)

@@ -1,6 +1,7 @@
 package com.github.craftforever.infinitefeatures.blocks;
 
 import java.util.HashMap;
+
 import java.util.List;
 import java.util.Random;
 
@@ -23,7 +24,7 @@ import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class RandomGemOre extends BlockBase{
+public class RandomOre extends FallingBase{
 	public enum SpecialEventTrigger 
 	{
 		ONDESTROY, ONEXPLODEDESTROY, ONACTIVATED, ONWALKEDON, ONCLICKED, ONCOLLIDED, ONPLACED, ONFALLENON, ONLANDED,
@@ -31,25 +32,24 @@ public class RandomGemOre extends BlockBase{
 	}
 
 	public Mineral mineral;
-
+	public Item dropitem;
 	public String toolType;
 	public Material material;
 	public float lightlevel, hardness, resistance;
 	public int harvestLevel;
 	public SoundType sound;
 	public HashMap<SpecialEventTrigger, List<ISpecialEvent>> UniqueActions;
-	public Item dropitem;
 
 	private void invokeSpecialEvents(List<ISpecialEvent> events, boolean hasLivingEntity, Entity relatedEntity, EntityLivingBase relatedLivingEntity) 
 	{
-		events.forEach(event -> event.ExecuteGem(this, hasLivingEntity, relatedEntity, relatedLivingEntity));
+		events.forEach(event -> event.Execute(this, hasLivingEntity, relatedEntity, relatedLivingEntity));
 	}
 
-	public RandomGemOre(Mineral imineral, Material imaterial, float ilightLevel, String itoolType, int iharvestLevel,
+	public RandomOre(Mineral imineral, Material imaterial, float ilightLevel, String itoolType, int iharvestLevel,
 			float ihardness, float iresistance, SoundType isound,
-			HashMap<SpecialEventTrigger, List<ISpecialEvent>> randomUniqueActions, Item drop) 
+			HashMap<SpecialEventTrigger, List<ISpecialEvent>> randomUniqueActions, Item item) 
 	{
-		super(imineral.name + "_ore",imaterial,imineral);
+		super(imineral.name + "_ore", imaterial, imineral);
 		//setTranslationKey(imineral.name + "_ore");
 		//setRegistryName(imineral.name + "_ore");
 		//ModBlocks.BLOCKS.add(this);
@@ -61,6 +61,7 @@ public class RandomGemOre extends BlockBase{
 		setHarvestLevel(itoolType, iharvestLevel);
 		setLightLevel(ilightLevel);
 
+		this.dropitem = item;
 		this.UniqueActions = randomUniqueActions;
 		this.mineral = imineral;
 		this.toolType = itoolType;
@@ -70,18 +71,30 @@ public class RandomGemOre extends BlockBase{
 		this.resistance = iresistance;
 		this.harvestLevel = iharvestLevel;
 		this.sound = isound;
-		this.dropitem = drop;
 	}
 
-	public static int fortuneLvl;
-	
+	// #region Potential function overrides
 	@Override
-	public Item getItemDropped(IBlockState state, Random rand, int fortune) 
+	public void onPlayerDestroy(World p_onPlayerDestroy_1_,BlockPos p_onPlayerDestroy_2_,IBlockState p_onPlayerDestroy_3_) 
 	{
-		fortuneLvl = fortune;
-		return dropitem;
-		
+		SpecialEventTrigger triggerName = SpecialEventTrigger.ONDESTROY;
+
+		if (UniqueActions.containsKey(triggerName)) 
+		{
+			invokeSpecialEvents(UniqueActions.get(triggerName), false, null, null);
+		}
 	}
+
+	@Override
+	public Item getItemDropped(IBlockState state,Random rand, int fortune) 
+	{
+		if(mineral.isGem) 
+		{
+			return this.dropitem;
+		}
+		return Item.getItemFromBlock(this);
+	}
+	
 	@Override
 	public int quantityDroppedWithBonus(int fortune, Random random) 
 	{
@@ -102,23 +115,10 @@ public class RandomGemOre extends BlockBase{
         }
 	}
 	
-	// #region Potential function overrides
-	@Override
-	public void onPlayerDestroy(World p_onPlayerDestroy_1_,BlockPos p_onPlayerDestroy_2_,IBlockState p_onPlayerDestroy_3_) 
-	{
-		SpecialEventTrigger triggerName = SpecialEventTrigger.ONDESTROY;
-
-		if (UniqueActions.containsKey(triggerName)) 
-		{
-			invokeSpecialEvents(UniqueActions.get(triggerName), false, null, null);
-		}
-	}
-
 	@Override
 	public boolean removedByPlayer(IBlockState p_removedByPlayer_1_, World p_removedByPlayer_2_,
 			BlockPos p_removedByPlayer_3_, EntityPlayer p_removedByPlayer_4_, boolean p_removedByPlayer_5_) 
 	{
-		
 
 		SpecialEventTrigger triggerName = SpecialEventTrigger.ONREMOVEDBYPLAYER;
 		if (UniqueActions.containsKey(triggerName)) 
@@ -242,8 +242,7 @@ public class RandomGemOre extends BlockBase{
 
 	@Override
 	public void onBlockExploded(World p_onBlockExploded_1_,BlockPos p_onBlockExploded_2_, Explosion p_onBlockExploded_3_) {
-		p_onBlockExploded_1_.setBlockToAir(p_onBlockExploded_2_);
-        onExplosionDestroy(p_onBlockExploded_1_, p_onBlockExploded_2_, p_onBlockExploded_3_);
+
 		SpecialEventTrigger triggerName = SpecialEventTrigger.ONEXPLODED;
 		if (UniqueActions.containsKey(triggerName)) {
 			invokeSpecialEvents(UniqueActions.get(triggerName), true, p_onBlockExploded_3_.getExplosivePlacedBy(), p_onBlockExploded_3_.getExplosivePlacedBy());

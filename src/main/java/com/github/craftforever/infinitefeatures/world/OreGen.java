@@ -3,7 +3,7 @@ package com.github.craftforever.infinitefeatures.world;
 import java.util.Random;
 
 import com.github.craftforever.infinitefeatures.InfiniteFeatures;
-import com.github.craftforever.infinitefeatures.blocks.BlockBase;
+import com.github.craftforever.infinitefeatures.blocks.FallingBase;
 import com.github.craftforever.infinitefeatures.init.ModBlocks;
 import com.github.craftforever.infinitefeatures.util.Mineral;
 
@@ -31,8 +31,8 @@ public class OreGen implements IWorldGenerator
 	{
 		for(int i = 0; i < InfiniteFeatures.ORE_QTY; i++) 
 		{
-			Mineral blockmineral = ((BlockBase)ModBlocks.blockArray[i]).mineral;
-			generateOre(ModBlocks.blockArray[i].getDefaultState(), world, random, chunkX * 16, chunkZ * 16, 0, blockmineral.genmaxy, random.nextInt(blockmineral.gensize+1) + blockmineral.gensize+1, blockmineral.genrarity+1);
+			Mineral blockmineral = ((FallingBase)ModBlocks.oreArray[i]).mineral;
+			generateOre(ModBlocks.oreArray[i].getDefaultState(), world, random, chunkX * 16, chunkZ * 16, 0, blockmineral.genmaxy, random.nextInt(blockmineral.gensize+1) + blockmineral.gensize+1, blockmineral.genrarity+1);
 			//System.out.print(ModBlocks.blockArray[i].getRegistryName()+"\n");
 		}
 	}
