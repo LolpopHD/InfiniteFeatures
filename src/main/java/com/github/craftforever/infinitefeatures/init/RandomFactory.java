@@ -120,7 +120,6 @@ public class RandomFactory
         // probably makes sense to use a shovel)
         // Depending on the direction/extent you want to take the randomisation this
         // could be generated randomly although that would make for poor experiences
-        
         String randomToolType;
         if(imineral.material.equals(Material.ROCK)) 
         {
