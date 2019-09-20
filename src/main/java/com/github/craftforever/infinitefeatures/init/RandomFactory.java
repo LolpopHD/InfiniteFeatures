@@ -116,18 +116,24 @@ public class RandomFactory
             randomLightLevel = 0F;
         }
 
-        // TODO: pick tool type based off the base texture, (sand/dirt base textures
-        // probably makes sense to use a shovel)
         // Depending on the direction/extent you want to take the randomisation this
         // could be generated randomly although that would make for poor experiences
-        String randomToolType;
+        String randomToolType = "pickaxe";
+        SoundType randomSoundType = SoundType.STONE;
         if(imineral.material.equals(Material.ROCK)) 
         {
         	randomToolType = "pickaxe";
+        	randomSoundType = SoundType.STONE;
         }
-        else 
+        else if(imineral.material.equals(Material.SAND))
         {
         	randomToolType = "shovel";
+        	randomSoundType = SoundType.SAND;
+        }
+        else if(imineral.material.equals(Material.GROUND))
+        {
+        	randomToolType = "shovel";
+        	randomSoundType = SoundType.GROUND;
         }
         // ...
 
@@ -139,10 +145,6 @@ public class RandomFactory
         // Blast resistance
         float randomBlastResistance = (float) getRandomGaussianInRange(BLAST_RESISTANCE_MEAN, BLAST_RESISTANCE_STD,
                 BLAST_RESISTANCE_MIN, BLAST_RESISTANCE_MAX);
-
-        // TODO: pick a sound type randomly or based on something
-        SoundType randomSoundType = SoundType.STONE;
-        // ...
 
         // Initialize the mappings between event triggers and events
         HashMap<SpecialEventTrigger, List<ISpecialEvent>> randomUniqueActions = new HashMap<SpecialEventTrigger, List<ISpecialEvent>>();
