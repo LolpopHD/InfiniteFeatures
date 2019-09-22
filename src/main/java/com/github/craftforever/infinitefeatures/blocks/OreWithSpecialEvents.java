@@ -94,27 +94,9 @@ public abstract class OreWithSpecialEvents extends BlockBase {
 			}
 			System.out.println(dependencies.isEmpty());
 			if (dependencies.isEmpty()) {
-				if (event == null){
-					System.out.println("~~~~~~~~~~EVENT IS NULL");
-				}
-				else{
-					System.out.println(event.getDescription());
-					event.Execute(
-						block, 
-						relatedEntity, 
-						relatedLivingEntity, 
-						world, 
-						blockPos, 
-						bool, 
-						explosion, 
-						blockState,
-						player, 
-						hand, 
-						facing, 
-						stack, 
-						unkFloat, 
-						blockAccess);
-				}
+				System.out.println(event.getDescription());
+				event.Execute(block, relatedEntity, relatedLivingEntity, world, blockPos, bool, explosion, blockState,
+						player, hand, facing, stack, unkFloat, blockAccess);
 			}
 		}
 	}
