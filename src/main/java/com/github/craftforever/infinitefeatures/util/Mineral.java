@@ -22,8 +22,8 @@ public class Mineral
 	public String underlay;
 	public Material material;
 	private int randNum;
-	private String[] underlays = new String[] {"dirt","sand","stone"};
-	private Material[] materials = new Material[] {Material.GROUND,Material.SAND,Material.ROCK};
+	private String[] underlays = new String[] {"dirt","sand","stone","netherrack","endstone"};
+	private Material[] materials = new Material[] {Material.GROUND,Material.SAND,Material.ROCK,Material.ROCK,Material.ROCK};
 	//smaller is rarer
 
 	public Mineral(String iname, Color icolor,int iquality)
@@ -35,7 +35,7 @@ public class Mineral
 		gensize = getRandomIntInRange(5,10)/iquality;
 		genrarity = getRandomIntInRange(25,50)/iquality;
 		edible = getRandomBoolean(0.5F);
-		randNum = getRandomIntInRange(0,2);
+		randNum = getRandomIntInRange(0,3);
 		underlay = underlays[randNum];
 		material = materials[randNum];
 		isGem = getRandomBoolean(0.5F);
