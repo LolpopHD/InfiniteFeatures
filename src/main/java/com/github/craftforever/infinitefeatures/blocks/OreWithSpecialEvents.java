@@ -63,7 +63,6 @@ public abstract class OreWithSpecialEvents extends BlockBase {
 			BlockPos blockPos, Boolean bool, Explosion explosion, IBlockState blockState, EntityPlayer player,
 			EnumHand hand, EnumFacing facing, ItemStack stack, Float unkFloat, IBlockAccess blockAccess) {
 
-				
 		if (player != null){
 			if (relatedLivingEntity == null){
 				relatedLivingEntity = player;
@@ -84,17 +83,38 @@ public abstract class OreWithSpecialEvents extends BlockBase {
 		
 		List<ICallbackEvent> events = UniqueActions.get(triggerName);
 		for (ICallbackEvent event : events) {
+			
+
 			EnumSet<CallbackDependencies> dependencies = EnumSet.copyOf(event.getCallbackDependencies());
 
 			try {
 				dependencies.removeAll(CallbackDependencies.fromBlockCallback(triggerName));
 			} catch (Exception e) {
-				e.printStackTrace();
+				System.out.println(e.getMessage());
 			}
-
-			if (dependencies == CallbackDependencies.NO_OPTS) {
-				event.Execute(block, relatedEntity, relatedLivingEntity, world, blockPos, bool, explosion, blockState,
-						player, hand, facing, stack, unkFloat, blockAccess);
+			System.out.println(dependencies.isEmpty());
+			if (dependencies.isEmpty()) {
+				if (event == null){
+					System.out.println("~~~~~~~~~~EVENT IS NULL");
+				}
+				else{
+					System.out.println(event.getDescription());
+					event.Execute(
+						block, 
+						relatedEntity, 
+						relatedLivingEntity, 
+						world, 
+						blockPos, 
+						bool, 
+						explosion, 
+						blockState,
+						player, 
+						hand, 
+						facing, 
+						stack, 
+						unkFloat, 
+						blockAccess);
+				}
 			}
 		}
 	}
@@ -279,18 +299,18 @@ public abstract class OreWithSpecialEvents extends BlockBase {
 		super.onNeighborChange(p_onNeighborChange_1_, p_onNeighborChange_2_, p_onNeighborChange_3_);
 	}
 
-	@Override
-	public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
-		BlockCallbacks triggerName = BlockCallbacks.ONBLOCKADDED;
+	// @Override
+	// public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
+	// 	BlockCallbacks triggerName = BlockCallbacks.ONBLOCKADDED;
 
-		invokeSpecialEvents(triggerName,
+	// 	invokeSpecialEvents(triggerName,
 
-		this, null, null, worldIn,
-		pos, null, null, state, null,
-		null, null, null, null, null);
+	// 	this, null, null, worldIn,
+	// 	pos, null, null, state, null,
+	// 	null, null, null, null, null);
 
-		super.onBlockAdded(worldIn, pos, state);
-	}
+	// 	super.onBlockAdded(worldIn, pos, state);
+	// }
 	// #endregion
 
 	@Override

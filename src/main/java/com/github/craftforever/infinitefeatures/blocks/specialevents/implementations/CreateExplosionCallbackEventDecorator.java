@@ -36,8 +36,8 @@ public class CreateExplosionCallbackEventDecorator extends CallbackDecorator {
 
 	@Override
 	public void Execute(OreWithSpecialEvents block, Entity relatedEntity, EntityLivingBase relatedLivingEntity,
-			World world, BlockPos blockPos, boolean bool, Explosion explosion, IBlockState blockState,
-			EntityPlayer player, EnumHand hand, EnumFacing facing, ItemStack stack, float unkFloat,
+			World world, BlockPos blockPos, Boolean bool, Explosion explosion, IBlockState blockState,
+			EntityPlayer player, EnumHand hand, EnumFacing facing, ItemStack stack, Float unkFloat,
 			IBlockAccess blockAccess) {
 
 		if (world != null && blockPos != null) {
@@ -46,5 +46,10 @@ public class CreateExplosionCallbackEventDecorator extends CallbackDecorator {
 		}
 		
 		super.child.Execute(block, relatedEntity, relatedLivingEntity, world, blockPos, bool, explosion, blockState, player, hand, facing, stack, unkFloat, blockAccess);
+	}
+
+	@Override
+	public String getDescription() {
+		return "CreateExplosion" + " : " + child.getDescription();
 	}
 }

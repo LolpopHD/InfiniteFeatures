@@ -23,6 +23,8 @@ public interface ICallbackEvent
 	// which callbacks this specialevent is compatable with
 	public EnumSet<CallbackDependencies> getCallbackDependencies();
 
+	public String getDescription();
+
 	/**
 	 * Interface to implement when adding a random functionaility to a block.
 	 * <p>
@@ -36,8 +38,8 @@ public interface ICallbackEvent
 	 */
 	public void Execute(OreWithSpecialEvents block, @Nullable Entity relatedEntity, 
 	@Nullable EntityLivingBase relatedLivingEntity, @Nullable World world, 
-	@Nullable BlockPos blockPos, @Nullable boolean bool, @Nullable Explosion explosion,
+	@Nullable BlockPos blockPos, @Nullable Boolean bool, @Nullable Explosion explosion,
 	@Nullable IBlockState blockState, @Nullable EntityPlayer player, @Nullable EnumHand hand, 
-	@Nullable EnumFacing facing, @Nullable ItemStack stack, @Nullable float unkFloat, 
+	@Nullable EnumFacing facing, @Nullable ItemStack stack, @Nullable Float unkFloat, 
 	@Nullable IBlockAccess blockAccess);
 }

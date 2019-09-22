@@ -32,8 +32,8 @@ public class ApplyRandomlyCallbackEventDecorator extends CallbackDecorator {
 
     @Override
     public void Execute(OreWithSpecialEvents block, Entity relatedEntity, EntityLivingBase relatedLivingEntity,
-            World world, BlockPos blockPos, boolean bool, Explosion explosion, IBlockState blockState,
-            EntityPlayer player, EnumHand hand, EnumFacing facing, ItemStack stack, float unkFloat,
+            World world, BlockPos blockPos, Boolean bool, Explosion explosion, IBlockState blockState,
+            EntityPlayer player, EnumHand hand, EnumFacing facing, ItemStack stack, Float unkFloat,
             IBlockAccess blockAccess) {
 
         if (applyRandomlyPicker.getBoolean()) {
@@ -41,5 +41,10 @@ public class ApplyRandomlyCallbackEventDecorator extends CallbackDecorator {
         }
 
     }
+
+    @Override
+	public String getDescription() {
+		return "ApplyRandomly" + " : " + child.getDescription();
+	}
 
 }
