@@ -3,7 +3,8 @@ package com.github.craftforever.infinitefeatures.blocks;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
-import com.github.craftforever.infinitefeatures.blocks.specialevents.ISpecialEvent;
+
+import com.github.craftforever.infinitefeatures.blocks.specialevents.ICallbackEvent;
 import com.github.craftforever.infinitefeatures.util.Mineral;
 
 import net.minecraft.block.SoundType;
@@ -15,7 +16,7 @@ public class RandomGemOre extends OreWithSpecialEvents{
 
 	public RandomGemOre(Mineral imineral, Material imaterial, float ilightLevel, String itoolType, int iharvestLevel,
 			float ihardness, float iresistance, SoundType isound,
-			HashMap<SpecialEventTrigger, List<ISpecialEvent>> randomUniqueActions, Item drop) 
+			HashMap<BlockCallbacks, List<ICallbackEvent>> randomUniqueActions, Item drop) 
 	{
 		super(imineral, imaterial, ilightLevel, itoolType, iharvestLevel, ihardness, iresistance, isound, randomUniqueActions);
 		this.dropitem = drop;
