@@ -6,6 +6,7 @@ import com.github.craftforever.infinitefeatures.blocks.RandomOre.SpecialEventTri
 import com.github.craftforever.infinitefeatures.blocks.specialevents.*;
 import com.github.craftforever.infinitefeatures.helpers.RandomHelper;
 import com.github.craftforever.infinitefeatures.util.Mineral;
+
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.Item;
@@ -53,15 +54,6 @@ public class RandomFactory
     private static final float POT_TRIGGER_PROBABILITY_MAX = 1f;
     private static final float POT_TRIGGER_PROBABILITY_MIN = 0f;
 
-    private static final float EXPLODE_POWER_MIN = 1;
-    private static final float EXPLODE_POWER_MAX = 20;
-    private static final float EXPLODE_DESTROY_BLOCKS_PROB = 0.8f;
-
-    private static final int GAS_CLOUD_SIZE_MIN = 1;
-    private static final int GAS_CLOUD_SIZE_MAX = 10;
-    private static final int GAS_CLOUD_DURATION_MIN = 0;
-    private static final int GAS_CLOUD_DURATION_MAX = 200;
-
     private static List<ISpecialEvent> GenerateAllPossibleEvents()
     {
         List<ISpecialEvent> allEvents = new ArrayList<ISpecialEvent>();
@@ -107,18 +99,6 @@ public class RandomFactory
             getRandomBoolean(POT_PARTICLES_PROBABILITY),
             getRandomFloatInRange(POT_TRIGGER_PROBABILITY_MIN, POT_TRIGGER_PROBABILITY_MAX)));
 
-        allEvents.add(new Explode(
-            getRandomFloatInRange(EXPLODE_POWER_MIN, EXPLODE_POWER_MAX), 
-            getRandomBoolean(EXPLODE_DESTROY_BLOCKS_PROB)));
-
-        allEvents.add(new GasCloud(
-            getRandomFloatInRange(GAS_CLOUD_SIZE_MIN, GAS_CLOUD_SIZE_MAX), 
-            getRandomIntInRange(GAS_CLOUD_DURATION_MIN, GAS_CLOUD_DURATION_MAX), 
-            7f, 
-            getRandomIntInRange(POT_ID_MIN, POT_ID_MAX), 
-            getRandomFloatInRange(POT_DURATION_MIN, POT_DURATION_MAX), 
-            getRandomIntInRange(0, POT_LEVEL_MAX)));
-
         return allEvents;
     }
 
@@ -142,7 +122,7 @@ public class RandomFactory
         // Depending on the direction/extent you want to take the randomisation this
         // could be generated randomly although that would make for poor experiences
         String randomToolType;
-        if(imineral.material.equals(Material.ROCK)) 
+        if(imineral.material==Material.ROCK) 
         {
         	randomToolType = "pickaxe";
         }
@@ -161,8 +141,19 @@ public class RandomFactory
         float randomBlastResistance = (float) getRandomGaussianInRange(BLAST_RESISTANCE_MEAN, BLAST_RESISTANCE_STD,
                 BLAST_RESISTANCE_MIN, BLAST_RESISTANCE_MAX);
 
-        // TODO: pick a sound type randomly or based on something
-        SoundType randomSoundType = SoundType.STONE;
+        SoundType randomSoundType = null;
+        if(imineral.material==Material.GROUND) 
+        {
+        	randomSoundType = SoundType.GROUND;
+        }
+        else if(imineral.material==Material.SAND) 
+        {
+        	randomSoundType = SoundType.SAND;
+        }
+        else if(imineral.material==Material.ROCK) 
+        {
+        	randomSoundType = SoundType.STONE;
+        }
         // ...
 
         // Initialize the mappings between event triggers and events

@@ -7,6 +7,7 @@ import com.github.craftforever.infinitefeatures.blocks.FallingBase;
 import com.github.craftforever.infinitefeatures.init.ModBlocks;
 import com.github.craftforever.infinitefeatures.util.Mineral;
 
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -21,13 +22,13 @@ public class OreGen implements IWorldGenerator
 	@Override
 	public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator,IChunkProvider chunkProvider) 
 	{
-		if(world.provider.getDimension() == 0) 
+		if(world.provider.getDimension() == 0||world.provider.getDimension() == 1||world.provider.getDimension() == 2) 
 		{
-			generateOverworld(random, chunkX, chunkZ, world, chunkGenerator, chunkProvider);
+			generateWorld(random, chunkX, chunkZ, world, chunkGenerator, chunkProvider);
 		}
 		
 	}
-	private void generateOverworld(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator,IChunkProvider chunkProvider) 
+	private void generateWorld(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator,IChunkProvider chunkProvider) 
 	{
 		for(int i = 0; i < InfiniteFeatures.ORE_QTY; i++) 
 		{
@@ -44,8 +45,12 @@ public class OreGen implements IWorldGenerator
 		for(int i = 0;i < chances ;i++) 
 		{
 			BlockPos pos = new BlockPos(x + random.nextInt(16),minY + random.nextInt(deltaY),z + random.nextInt(16));
-			
-			WorldGenMinable generator = new WorldGenMinable(ore,size);
+			if(!(ore.getMaterial()==Material.ROCK)) 
+			{
+				pos = new BlockPos(x + random.nextInt(16),random.nextInt(255),z + random.nextInt(16));
+			}
+			OrePredicate.block = ore;
+			WorldGenMinable generator = new WorldGenMinable(ore,size,new OrePredicate());
 			generator.generate(world, random, pos);
 		}
 	}
