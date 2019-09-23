@@ -35,7 +35,7 @@ public class Mineral
 		gensize = getRandomIntInRange(5,10)/iquality;
 		genrarity = getRandomIntInRange(25,50)/iquality;
 		edible = getRandomBoolean(0.5F);
-		randNum = getRandomIntInRange(0,3);
+		randNum = getRandomIntInRange(0,4);
 		underlay = underlays[randNum];
 		material = materials[randNum];
 		isGem = getRandomBoolean(0.5F);

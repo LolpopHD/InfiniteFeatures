@@ -11,7 +11,8 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.text.WordUtils;
 
 import com.github.craftforever.infinitefeatures.InfiniteFeatures;
-import com.github.craftforever.infinitefeatures.helpers.RandomHelper;
+import static com.github.craftforever.infinitefeatures.helpers.RandomHelper.getRandomIntInRange;
+import static com.github.craftforever.infinitefeatures.helpers.RandomHelper.getRandomFloatInRange;
 import com.github.craftforever.infinitefeatures.init.IHasModel;
 import com.github.craftforever.infinitefeatures.init.ModBlocks;
 import com.github.craftforever.infinitefeatures.init.ModItems;
@@ -202,7 +203,7 @@ public class RegistryHandler
 		//Creating Textures for the Ores and Ingots
 		for(int i = 0; i < InfiniteFeatures.ORE_QTY; i++)
 		{
-			int num = RandomHelper.getRandomIntInRange(0, 4);
+			int num = getRandomIntInRange(0, 4);
 			InputStream stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/block/base/"+ModBlocks.minerals[i].underlay+".png");
 			BufferedImage baseImg = ImageIO.read(stream);
 			stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/block/ore/ore_"+num+".png");
@@ -216,34 +217,81 @@ public class RegistryHandler
 			ImageIO.write(finalImg, "PNG", new File("InfiniCraft/Resources/assets/infeatures/textures/blocks/"+ModBlocks.oreArray[i].getTranslationKey().substring(5)+".png"));
 			
 		}
-		for(int i = 0; i < ModBlocks.ingotorecount; i++)
+		for(int i = 0; i < InfiniteFeatures.ORE_QTY; i++)
 		{
-			InputStream stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/item/ingot/generic.png");
-			BufferedImage ingotImg = ImageIO.read(stream);
-			stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/block/storage/generic_iron_old.png");
-			BufferedImage ingotblockImg = ImageIO.read(stream);
 			Color color = ModBlocks.minerals[i].color;
-			dye(ingotImg, color);
-			dye(ingotblockImg, color);
-			ImageIO.write(ingotblockImg, "PNG", new File("InfiniCraft/Resources/assets/infeatures/textures/blocks/"+ModBlocks.ingotblockArray[i].getTranslationKey().substring(5)+".png"));
-			ImageIO.write(ingotImg, "PNG", new File("InfiniCraft/Resources/assets/infeatures/textures/items/"+ModItems.ingotArray[i].getTranslationKey().substring(5)+".png"));
+			BufferedImage Img;
+			if(ModBlocks.minerals[i].isGem) 
+			{
+				int rand = getRandomIntInRange(1, 3);
+				InputStream stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/item/gem/generic"+rand+".png");
+				Img = ImageIO.read(stream);
+			}
+			else 
+			{
+				InputStream stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/item/ingot/generic.png");
+				Img = ImageIO.read(stream);
+			}
+			dye(Img, color);
+			ImageIO.write(Img, "PNG", new File("InfiniCraft/Resources/assets/infeatures/textures/items/"+ModItems.itemArray[i].getTranslationKey().substring(5)+".png"));
 		}
-		for(int i = 0; i < ModBlocks.gemorecount; i++)
+		for(int i = 0; i < InfiniteFeatures.ORE_QTY; i++)
 		{
-			int rand = RandomHelper.getRandomIntInRange(1, 3);
-			InputStream stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/item/gem/generic"+rand+".png");
-			BufferedImage gemImg = ImageIO.read(stream);
-			stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/block/storage/generic_diamond_old.png");
-			BufferedImage ingotblockImg = ImageIO.read(stream);
-			Color color = ModBlocks.minerals[i+ModBlocks.ingotorecount].color;
-			dye(gemImg, color);
-			dye(ingotblockImg, color);
-			ImageIO.write(ingotblockImg, "PNG", new File("InfiniCraft/Resources/assets/infeatures/textures/blocks/"+ModBlocks.ingotblockArray[i+ModBlocks.ingotorecount].getTranslationKey().substring(5)+".png"));
-			ImageIO.write(gemImg, "PNG", new File("InfiniCraft/Resources/assets/infeatures/textures/items/"+ModItems.gemArray[i].getTranslationKey().substring(5)+".png"));
+			int a = getRandomIntInRange(10,22);
+			int b1 = getRandomIntInRange(13,27);
+			int c = getRandomIntInRange(13,27);
+			
+			
+			InputStream stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/block/decorativebase/base_"+a+".png");
+			BufferedImage BaseImg = ImageIO.read(stream);
+			stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/block/decorativetransparent/overlay_"+b1+".png");
+			BufferedImage transparentImg = ImageIO.read(stream);
+			stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/block/decorativetransparent/overlay_"+c+".png");
+			BufferedImage transparentImg2 = ImageIO.read(stream);
+			
+			Color color = ModBlocks.minerals[i].color;
+			float r = getRandomFloatInRange(0.0F,1.0F);
+			float g1 = getRandomFloatInRange(0.0F,1.0F);
+			float b = getRandomFloatInRange(0.0F,1.0F);
+			
+			Color randomColor = new Color(r, g1, b);
+
+			dye(BaseImg, color);
+			dye(transparentImg, randomColor);
+			dye(transparentImg, color);
+			
+			
+			dye(transparentImg2, randomColor);
+			dye(transparentImg2, color);
+			
+			
+			int w = Math.max(transparentImg2.getWidth(), transparentImg.getWidth());
+			int h = Math.max(transparentImg2.getHeight(), transparentImg.getHeight());
+			BufferedImage combined1 = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+
+			// paint both images, preserving the alpha channels
+			Graphics gr = combined1.getGraphics();
+			gr.drawImage(transparentImg2, 0, 0, null);
+			gr.drawImage(transparentImg, 0, 0, null);
+			
+			
+			w = Math.max(BaseImg.getWidth(), combined1.getWidth());
+			h = Math.max(BaseImg.getHeight(), combined1.getHeight());
+			BufferedImage combined = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+
+			// paint both images, preserving the alpha channels
+		    gr = combined.getGraphics();
+			gr.drawImage(BaseImg, 0, 0, null);
+			gr.drawImage(combined1, 0, 0, null);
+			
+			
+			
+			ImageIO.write(combined, "PNG", new File("InfiniCraft/Resources/assets/infeatures/textures/blocks/"+ModBlocks.ingotblockArray[i].getTranslationKey().substring(5)+".png"));
+			
 		}
 		for(int i = 0; i < ModItems.ToolOres; i++)
 		{
-			int axenum = RandomHelper.getRandomIntInRange(0, 3);
+			int axenum = getRandomIntInRange(0, 3);
 			InputStream stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/item/tool/axe/axe_handle.png");
 			BufferedImage baseImg = ImageIO.read(stream);
 			stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/item/tool/axe/axehead"+axenum+".png");
@@ -267,7 +315,7 @@ public class RegistryHandler
 			g.drawImage(headImg, 0, 0, null);
 			ImageIO.write(finalImg, "PNG", new File("InfiniCraft/Resources/assets/infeatures/textures/items/"+ModItems.hoeArray[i].getTranslationKey().substring(5)+".png"));
 			
-			int picknum = RandomHelper.getRandomIntInRange(0, 11);
+			int picknum = getRandomIntInRange(0, 11);
 			stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/item/tool/pickaxe/pickaxe_handle.png");
 			baseImg = ImageIO.read(stream);
 			stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/item/tool/pickaxe/pickhead"+picknum+".png");
@@ -279,7 +327,7 @@ public class RegistryHandler
 			g.drawImage(headImg, 0, 0, null);
 			ImageIO.write(finalImg, "PNG", new File("InfiniCraft/Resources/assets/infeatures/textures/items/"+ModItems.pickaxeArray[i].getTranslationKey().substring(5)+".png"));
 			
-			int swordnum = RandomHelper.getRandomIntInRange(0, 9);
+			int swordnum = getRandomIntInRange(0, 9);
 			stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/item/tool/sword/sword_handle.png");
 			baseImg = ImageIO.read(stream);
 			stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/item/tool/sword/sword"+swordnum+".png");
