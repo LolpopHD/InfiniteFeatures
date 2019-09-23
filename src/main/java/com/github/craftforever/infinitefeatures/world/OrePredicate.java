@@ -24,7 +24,7 @@ public class OrePredicate implements Predicate<IBlockState>
 		{
 			return true;
 		}
-		else 
+		else
 		{
 			return false;
 		}
