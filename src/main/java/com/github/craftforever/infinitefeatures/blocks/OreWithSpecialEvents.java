@@ -92,7 +92,6 @@ public abstract class OreWithSpecialEvents extends BlockBase {
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
 			}
-			System.out.println(dependencies.isEmpty());
 			if (dependencies.isEmpty()) {
 				System.out.println(event.getDescription());
 				event.Execute(block, relatedEntity, relatedLivingEntity, world, blockPos, bool, explosion, blockState,
