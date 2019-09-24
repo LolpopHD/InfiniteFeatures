@@ -89,7 +89,7 @@ public class ModBlocks
 			Block[] blockarray = new Block[ingotorecount];
 			for (int i = 0; i < ingotorecount; i++) 
 			{
-				blockarray[i] = RandomFactory.randomIngotOreFactory(minerals[i]).setCreativeTab(InfiniteFeatures.InfiniTab);
+				blockarray[i] = RandomFactory.randomOreFactory(minerals[i], false, null).setCreativeTab(InfiniteFeatures.InfiniTab);
 			}
 			return blockarray;
 		}
@@ -108,7 +108,7 @@ public class ModBlocks
 			Block[] blockarray = new Block[gemorecount];
 			for (int i = 0; i < gemorecount; i++) 
 			{
-				blockarray[i] = RandomFactory.randomGemOreFactory(minerals[i+ingotorecount],ModItems.gemArray[i]).setCreativeTab(InfiniteFeatures.InfiniTab);
+				blockarray[i] = RandomFactory.randomOreFactory(minerals[i+ingotorecount], true, ModItems.gemArray[i]).setCreativeTab(InfiniteFeatures.InfiniTab);
 			}
 			return blockarray;
 		}
