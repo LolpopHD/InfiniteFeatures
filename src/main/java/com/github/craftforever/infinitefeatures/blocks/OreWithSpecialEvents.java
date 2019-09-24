@@ -2,7 +2,6 @@ package com.github.craftforever.infinitefeatures.blocks;
 
 import java.util.EnumSet;
 import java.util.HashMap;
-import java.util.List;
 
 import com.github.craftforever.infinitefeatures.InfiniteFeatures;
 import com.github.craftforever.infinitefeatures.blocks.specialevents.CallbackDependencies;
@@ -26,7 +25,7 @@ import net.minecraft.world.World;
 
 public abstract class OreWithSpecialEvents extends BlockBase {
 
-	public HashMap<BlockCallbacks, List<ICallbackEvent>> UniqueActions;
+	public HashMap<BlockCallbacks, ICallbackEvent> UniqueActions;
 	public Mineral mineral;
 	public String toolType;
 	public Material material;
@@ -37,7 +36,7 @@ public abstract class OreWithSpecialEvents extends BlockBase {
 	public OreWithSpecialEvents(Mineral imineral, Material imaterial, float ilightLevel, String itoolType,
 			int iharvestLevel, float ihardness, float iresistance, SoundType isound,
 
-			HashMap<BlockCallbacks, List<ICallbackEvent>> randomUniqueActions) {
+			HashMap<BlockCallbacks, ICallbackEvent> randomUniqueActions) {
 		super(imineral.name + "_ore", imaterial, imineral);
 
 		setSoundType(isound);
@@ -81,12 +80,9 @@ public abstract class OreWithSpecialEvents extends BlockBase {
 			}
 		}
 		
-		List<ICallbackEvent> events = UniqueActions.get(triggerName);
-		for (ICallbackEvent event : events) {
-			
-
+		ICallbackEvent event = UniqueActions.get(triggerName);
+		if (event != null){
 			EnumSet<CallbackDependencies> dependencies = EnumSet.copyOf(event.getCallbackDependencies());
-
 			try {
 				dependencies.removeAll(CallbackDependencies.fromBlockCallback(triggerName));
 			} catch (Exception e) {

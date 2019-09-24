@@ -1,6 +1,6 @@
 package com.github.craftforever.infinitefeatures.helpers.valuepickers.returntypes;
 
-public interface IDoubleValuePicker
+public interface INumberValuePicker
 {
-    public double getDouble();
+    public Number getNumber();
 }

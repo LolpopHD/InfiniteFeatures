@@ -7,19 +7,17 @@ import com.github.craftforever.infinitefeatures.blocks.RandomGemOre;
 import com.github.craftforever.infinitefeatures.blocks.RandomIngotOre;
 import com.github.craftforever.infinitefeatures.blocks.specialevents.*;
 import com.github.craftforever.infinitefeatures.helpers.valuepickers.BernoulliBoolValuePicker;
+import com.github.craftforever.infinitefeatures.helpers.valuepickers.ConstantValuePicker;
 import com.github.craftforever.infinitefeatures.helpers.valuepickers.GaussianValuePicker;
 import com.github.craftforever.infinitefeatures.helpers.valuepickers.UniformValuePicker;
 import com.github.craftforever.infinitefeatures.helpers.valuepickers.returntypes.IBoolValuePicker;
-import com.github.craftforever.infinitefeatures.helpers.valuepickers.returntypes.IFloatValuePicker;
-import com.github.craftforever.infinitefeatures.helpers.valuepickers.returntypes.IIntValuePicker;
+import com.github.craftforever.infinitefeatures.helpers.valuepickers.returntypes.INumberValuePicker;
 import com.github.craftforever.infinitefeatures.util.Mineral;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.Item;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.awt.*;
 
 import static com.github.craftforever.infinitefeatures.helpers.RandomHelper.*;
@@ -36,11 +34,11 @@ public class RandomFactory
 
     // TODO: allow users to customise min/max values via config file
 
-    private static IIntValuePicker LightLevel;
+    private static INumberValuePicker LightLevel;
     private static IBoolValuePicker LightLevelProbability;
-    private static IFloatValuePicker Hardness;
-    private static IFloatValuePicker BlastResistance;
-    private static IIntValuePicker HarvestLevel;
+    private static INumberValuePicker Hardness;
+    private static INumberValuePicker BlastResistance;
+    private static INumberValuePicker HarvestLevel;
     private static final int LIGHTLEVEL_MAX = 15;
     private static final int LIGHTLEVEL_MIN = 1;
     private static final float LIGHTLEVEL_GLOW_PROBABILITY = 0.1f;
@@ -54,26 +52,6 @@ public class RandomFactory
     private static final int HARVEST_LEVEL_MIN = 0;
     private static final int HARVEST_LEVEL_MAX = 3;
 
-    // ALL_POSSIBLE_EVENT_PARAMETERS (THIS SHOULD ABSOLUTLY BE MOVED SOMEWHERE ELSE)
-    // private static final int POT_ID_MIN = 1;
-    // private static final int POT_ID_MAX = 32;
-    // private static final int POT_DURATION_MIN = 0;
-    // private static final int POT_DURATION_MAX = 600;
-    // private static final int POT_LEVEL_MIN = 1;
-    // private static final int POT_LEVEL_MAX = 2;
-    // private static final float POT_AMBIENT_PROBABILITY = 0.2f;
-    // private static final float POT_PARTICLES_PROBABILITY = 0.9f;
-    // private static final float POT_TRIGGER_PROBABILITY_MAX = 1f;
-    // private static final float POT_TRIGGER_PROBABILITY_MIN = 0f;
-
-    // private static final float EXPLODE_POWER_MIN = 1;
-    // private static final float EXPLODE_POWER_MAX = 20;
-    // private static final float EXPLODE_DESTROY_BLOCKS_PROB = 0.8f;
-
-    // private static final int GAS_CLOUD_SIZE_MIN = 1;
-    // private static final int GAS_CLOUD_SIZE_MAX = 10;
-    // private static final int GAS_CLOUD_DURATION_MIN = 0;
-    // private static final int GAS_CLOUD_DURATION_MAX = 200;
 
     public static OreWithSpecialEvents randomOreFactory(Mineral imineral, boolean gem, Item gemItem) {
         // TODO: randomly pick a material
@@ -81,11 +59,14 @@ public class RandomFactory
         // ...
 
         float randomLightLevel = 0F;
-        LightLevelProbability = new BernoulliBoolValuePicker(LIGHTLEVEL_GLOW_PROBABILITY);
+        LightLevelProbability = new BernoulliBoolValuePicker(
+           new ConstantValuePicker(LIGHTLEVEL_GLOW_PROBABILITY));
         if (LightLevelProbability.getBoolean()) {
             // The ore will glow
-            LightLevel = new UniformValuePicker(LIGHTLEVEL_MIN, LIGHTLEVEL_MAX);
-            randomLightLevel = LightLevel.getInt() / 15;
+            LightLevel = new UniformValuePicker(
+                new ConstantValuePicker(LIGHTLEVEL_MIN), 
+                new ConstantValuePicker(LIGHTLEVEL_MAX));
+            randomLightLevel = LightLevel.getNumber().intValue() / 15;
         }
         else 
         {
@@ -100,28 +81,36 @@ public class RandomFactory
         String randomToolType = "pickaxe";
         // ...
 
-        HarvestLevel = new UniformValuePicker(HARVEST_LEVEL_MIN, HARVEST_LEVEL_MAX);
-        int randomHarvestLevel = HarvestLevel.getInt();
+        HarvestLevel = new UniformValuePicker(
+            new ConstantValuePicker(HARVEST_LEVEL_MIN), 
+            new ConstantValuePicker(HARVEST_LEVEL_MAX));
+        int randomHarvestLevel = HarvestLevel.getNumber().intValue();
 
         // How long it takes to mine
-        Hardness = new UniformValuePicker(HARDNESS_MIN, HARDNESS_MAX);
-        float randomHardness = Hardness.getFloat();
+        Hardness = new UniformValuePicker(
+            new ConstantValuePicker(HARDNESS_MIN), 
+            new ConstantValuePicker(HARDNESS_MAX));
+        float randomHardness = Hardness.getNumber().floatValue();
 
         // Blast resistance
-        BlastResistance = new GaussianValuePicker(BLAST_RESISTANCE_MEAN, BLAST_RESISTANCE_STD);
-        float randomBlastResistance = (float)Math.min(Math.max(BlastResistance.getFloat(), BLAST_RESISTANCE_MIN), BLAST_RESISTANCE_MAX);
+        BlastResistance = new GaussianValuePicker(
+            new ConstantValuePicker(BLAST_RESISTANCE_MEAN), 
+            new ConstantValuePicker(BLAST_RESISTANCE_STD),
+            new ConstantValuePicker(BLAST_RESISTANCE_MIN),
+            new ConstantValuePicker(BLAST_RESISTANCE_MAX));
+        
+        float randomBlastResistance = BlastResistance.getNumber().floatValue();
 
         // TODO: pick a sound type randomly or based on something
         SoundType randomSoundType = SoundType.STONE;
         // ...
 
         // Initialize the mappings between event triggers and events
-        HashMap<BlockCallbacks, List<ICallbackEvent>> randomUniqueActions = new HashMap<BlockCallbacks, List<ICallbackEvent>>();
+        HashMap<BlockCallbacks, ICallbackEvent> randomUniqueActions = new HashMap<BlockCallbacks, ICallbackEvent>();
 
         for (BlockCallbacks trigger : BlockCallbacks.values())
         {
-            List<ICallbackEvent> events = new ArrayList<ICallbackEvent>();
-            randomUniqueActions.put(trigger, events);
+            randomUniqueActions.put(trigger, null);
         }
 
         // Assign the TestEvent to a random trigger
@@ -131,7 +120,7 @@ public class RandomFactory
 
         ICallbackEvent selectedEvent = CallbackEventFactory.CreateRandomCallbackEvent();
 
-        randomUniqueActions.get(randomTrigger).add(selectedEvent);
+        randomUniqueActions.put(randomTrigger, selectedEvent);
         OreWithSpecialEvents randomBlock;
         if (!gem){
             randomBlock = new RandomIngotOre(imineral, randomMaterial, randomLightLevel, randomToolType,

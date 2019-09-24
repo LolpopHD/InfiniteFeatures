@@ -7,7 +7,8 @@ import com.github.craftforever.infinitefeatures.blocks.specialevents.CallbackDec
 import com.github.craftforever.infinitefeatures.blocks.specialevents.CallbackDependencies;
 import com.github.craftforever.infinitefeatures.blocks.specialevents.ICallbackEvent;
 import com.github.craftforever.infinitefeatures.helpers.valuepickers.returntypes.IBoolValuePicker;
-import com.github.craftforever.infinitefeatures.helpers.valuepickers.returntypes.IFloatValuePicker;
+import com.github.craftforever.infinitefeatures.helpers.valuepickers.returntypes.INumberValuePicker;
+
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -22,13 +23,13 @@ import net.minecraft.world.World;
 
 public class CreateExplosionCallbackEventDecorator extends CallbackDecorator {
 
-	protected IFloatValuePicker strength;
+	protected INumberValuePicker strength;
 	protected IBoolValuePicker damagesTerrain;
 
 	private static final EnumSet<CallbackDependencies> dependencies = EnumSet.of(CallbackDependencies.WORLD,
 			CallbackDependencies.BLOCKPOS);
 
-	public CreateExplosionCallbackEventDecorator(IFloatValuePicker strength, IBoolValuePicker damagesTerrain, ICallbackEvent child) {
+	public CreateExplosionCallbackEventDecorator(INumberValuePicker strength, IBoolValuePicker damagesTerrain, ICallbackEvent child) {
 		super(child, dependencies);
 		this.strength = strength;
 		this.damagesTerrain = damagesTerrain;
@@ -42,7 +43,7 @@ public class CreateExplosionCallbackEventDecorator extends CallbackDecorator {
 
 		if (world != null && blockPos != null) {
 			world.setBlockToAir(blockPos);
-			world.createExplosion(null, blockPos.getX(), blockPos.getY(), blockPos.getZ(), strength.getFloat(), damagesTerrain.getBoolean());
+			world.createExplosion(null, blockPos.getX(), blockPos.getY(), blockPos.getZ(), strength.getNumber().floatValue(), damagesTerrain.getBoolean());
 		}
 		
 		super.child.Execute(block, relatedEntity, relatedLivingEntity, world, blockPos, bool, explosion, blockState, player, hand, facing, stack, unkFloat, blockAccess);

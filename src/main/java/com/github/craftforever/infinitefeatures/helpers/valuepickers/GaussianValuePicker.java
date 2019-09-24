@@ -1,38 +1,27 @@
 package com.github.craftforever.infinitefeatures.helpers.valuepickers;
 
 import com.github.craftforever.infinitefeatures.InfiniteFeatures;
-import com.github.craftforever.infinitefeatures.helpers.valuepickers.returntypes.IDoubleValuePicker;
-import com.github.craftforever.infinitefeatures.helpers.valuepickers.returntypes.IFloatValuePicker;
-import com.github.craftforever.infinitefeatures.helpers.valuepickers.returntypes.IIntValuePicker;
+import com.github.craftforever.infinitefeatures.helpers.valuepickers.returntypes.INumberValuePicker;
 
-public class GaussianValuePicker implements IFloatValuePicker, IIntValuePicker, IDoubleValuePicker {
+public class GaussianValuePicker implements INumberValuePicker {
 
-    public double mean;
-    public double std;
+    private INumberValuePicker mean;
+    private INumberValuePicker std;
+    private INumberValuePicker min;
+    private INumberValuePicker max;
 
-    public GaussianValuePicker(double mean, double std)
+    public GaussianValuePicker(INumberValuePicker mean, INumberValuePicker std, INumberValuePicker min, INumberValuePicker max)
     {
         this.mean = mean;
         this.std = std;
+        this.min = min;
+        this.max = max;
     }
 
     @Override
-    public double getDouble() {
-        double randomValue = mean + InfiniteFeatures.seededRandom.nextGaussian() * std;
-        return randomValue;
-    }
-
-    @Override
-    public int getInt() {
-        int randomValue = (int)Math.round( mean + InfiniteFeatures.seededRandom.nextGaussian() * std );
-        return randomValue;
-    }
-
-    @Override
-    public float getFloat() {
-        double randomValue = mean + InfiniteFeatures.seededRandom.nextGaussian() * std;
-        return (float)randomValue;
-    }
-
-    
+    public Number getNumber() {
+        Number gaussian = InfiniteFeatures.seededRandom.nextGaussian();
+        Number randomValue = mean.getNumber().doubleValue() + gaussian.doubleValue() * std.getNumber().doubleValue();
+        return Math.min(Math.max(randomValue.doubleValue(), min.getNumber().doubleValue()), max.getNumber().doubleValue());
+    }    
 }

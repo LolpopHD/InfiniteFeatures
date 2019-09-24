@@ -6,7 +6,7 @@ import com.github.craftforever.infinitefeatures.blocks.OreWithSpecialEvents;
 import com.github.craftforever.infinitefeatures.blocks.specialevents.CallbackDecorator;
 import com.github.craftforever.infinitefeatures.blocks.specialevents.CallbackDependencies;
 import com.github.craftforever.infinitefeatures.blocks.specialevents.ICallbackEvent;
-import com.github.craftforever.infinitefeatures.helpers.valuepickers.returntypes.IIntValuePicker;
+import com.github.craftforever.infinitefeatures.helpers.valuepickers.returntypes.INumberValuePicker;
 import com.github.craftforever.infinitefeatures.helpers.valuepickers.returntypes.IBoolValuePicker;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -24,16 +24,16 @@ import net.minecraft.world.World;
 
 public class ApplyPotionEffectCallbackEventDecorator extends CallbackDecorator {
 
-    protected IIntValuePicker potionID;
-    protected IIntValuePicker duration;
-    protected IIntValuePicker potionLevel;
+    protected INumberValuePicker potionID;
+    protected INumberValuePicker duration;
+    protected INumberValuePicker potionLevel;
     protected IBoolValuePicker ambient;
     protected IBoolValuePicker particles;
 
     private static final EnumSet<CallbackDependencies> dependencies = EnumSet.of(CallbackDependencies.ENTITYLIVINGBASE);
 
-    public ApplyPotionEffectCallbackEventDecorator(IIntValuePicker potionID, IIntValuePicker duration,
-    IIntValuePicker potionLevel, IBoolValuePicker ambient, IBoolValuePicker particles, ICallbackEvent child) {
+    public ApplyPotionEffectCallbackEventDecorator(INumberValuePicker potionID, INumberValuePicker duration,
+    INumberValuePicker potionLevel, IBoolValuePicker ambient, IBoolValuePicker particles, ICallbackEvent child) {
         super(child, dependencies);
         this.potionID = potionID;
         this.duration = duration;
@@ -53,9 +53,9 @@ public class ApplyPotionEffectCallbackEventDecorator extends CallbackDecorator {
 
             relatedLivingEntity.addPotionEffect(
                 new PotionEffect(
-                    Potion.getPotionById(potionID.getInt()),
-                    duration.getInt(), 
-                    potionLevel.getInt() - 1,
+                    Potion.getPotionById(potionID.getNumber().intValue() - 1),
+                    duration.getNumber().intValue(), 
+                    potionLevel.getNumber().intValue(),
                     ambient.getBoolean(), 
                     particles.getBoolean()
                 )

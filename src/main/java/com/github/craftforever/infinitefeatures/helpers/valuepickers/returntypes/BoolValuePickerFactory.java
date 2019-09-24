@@ -8,20 +8,30 @@ import com.github.craftforever.infinitefeatures.helpers.valuepickers.BernoulliBo
 import com.github.craftforever.infinitefeatures.helpers.valuepickers.ConstantBoolValuePicker;
 
 public class BoolValuePickerFactory {
-    IFloatValuePicker bernoulliProb;
+    INumberValuePicker probabilityDistribution;
+
+    public BoolValuePickerFactory(INumberValuePicker probabilityDistribution){
+        this.probabilityDistribution = probabilityDistribution;
+    }
 
     public IBoolValuePicker getBoolValuePicker(){
 
         List<IBoolValuePicker> AllBoolPickers = new ArrayList<IBoolValuePicker>();
         AllBoolPickers.add(
-            new BernoulliBoolValuePicker(bernoulliProb.getFloat())
+            new BernoulliBoolValuePicker(
+                probabilityDistribution
+                )
         );
         AllBoolPickers.add(
             new ConstantBoolValuePicker(
-                new BernoulliBoolValuePicker(0.5f).getBoolean()
+                true
             )
         );
-
+        AllBoolPickers.add(
+            new ConstantBoolValuePicker(
+                false
+            )
+        );
         return RandomHelper.getRandomItem(AllBoolPickers);
     }
 }

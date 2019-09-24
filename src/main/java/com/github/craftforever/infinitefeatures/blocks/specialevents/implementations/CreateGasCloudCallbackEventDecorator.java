@@ -6,8 +6,7 @@ import com.github.craftforever.infinitefeatures.blocks.OreWithSpecialEvents;
 import com.github.craftforever.infinitefeatures.blocks.specialevents.CallbackDecorator;
 import com.github.craftforever.infinitefeatures.blocks.specialevents.CallbackDependencies;
 import com.github.craftforever.infinitefeatures.blocks.specialevents.ICallbackEvent;
-import com.github.craftforever.infinitefeatures.helpers.valuepickers.returntypes.IIntValuePicker;
-import com.github.craftforever.infinitefeatures.helpers.valuepickers.returntypes.IFloatValuePicker;
+import com.github.craftforever.infinitefeatures.helpers.valuepickers.returntypes.INumberValuePicker;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAreaEffectCloud;
@@ -25,19 +24,19 @@ import net.minecraft.world.World;
 
 public class CreateGasCloudCallbackEventDecorator extends CallbackDecorator {
 
-	protected IFloatValuePicker radius;
-	protected IIntValuePicker duration;
-	protected IFloatValuePicker expansion_modifier;
-	protected IIntValuePicker potionID;
-	protected IIntValuePicker effect_duration;
-	protected IIntValuePicker effect_level;
+	protected INumberValuePicker radius;
+	protected INumberValuePicker duration;
+	protected INumberValuePicker expansion_modifier;
+	protected INumberValuePicker potionID;
+	protected INumberValuePicker effect_duration;
+	protected INumberValuePicker effect_level;
 
 	private static final EnumSet<CallbackDependencies> dependencies = EnumSet.of(CallbackDependencies.WORLD,
 			CallbackDependencies.BLOCKPOS);
 
-	public CreateGasCloudCallbackEventDecorator(IFloatValuePicker radius, IIntValuePicker duration,
-			IFloatValuePicker expansion_modifier, IIntValuePicker potionID, IIntValuePicker effect_duration,
-			IIntValuePicker effect_level, ICallbackEvent child) {
+	public CreateGasCloudCallbackEventDecorator(INumberValuePicker radius, INumberValuePicker duration,
+	INumberValuePicker expansion_modifier, INumberValuePicker potionID, INumberValuePicker effect_duration,
+	INumberValuePicker effect_level, ICallbackEvent child) {
 
 		super(child, dependencies);
 		this.radius = radius;
@@ -58,16 +57,16 @@ public class CreateGasCloudCallbackEventDecorator extends CallbackDecorator {
 			EntityAreaEffectCloud entityareaeffectcloud = new EntityAreaEffectCloud(world, blockPos.getX(),
 					blockPos.getY(), blockPos.getZ());
 			entityareaeffectcloud.setOwner(null);
-			entityareaeffectcloud.setRadius(radius.getFloat());
-			entityareaeffectcloud.setDuration(duration.getInt());
-			entityareaeffectcloud.setRadiusPerTick((expansion_modifier.getFloat() - entityareaeffectcloud.getRadius())
+			entityareaeffectcloud.setRadius(radius.getNumber().floatValue());
+			entityareaeffectcloud.setDuration(duration.getNumber().intValue());
+			entityareaeffectcloud.setRadiusPerTick((expansion_modifier.getNumber().floatValue() - entityareaeffectcloud.getRadius())
 					/ (float) entityareaeffectcloud.getDuration());
-
+					
 			entityareaeffectcloud.addEffect(
 				new PotionEffect(
-					Potion.getPotionById(potionID.getInt()), 
-					duration.getInt(), 
-					effect_level.getInt()
+					Potion.getPotionById(potionID.getNumber().intValue() - 1), 
+					duration.getNumber().intValue(), 
+					effect_level.getNumber().intValue()
 				)
 			);
 

@@ -1,32 +1,20 @@
 package com.github.craftforever.infinitefeatures.helpers.valuepickers;
 
 import com.github.craftforever.infinitefeatures.helpers.RandomHelper;
-import com.github.craftforever.infinitefeatures.helpers.valuepickers.returntypes.IDoubleValuePicker;
-import com.github.craftforever.infinitefeatures.helpers.valuepickers.returntypes.IFloatValuePicker;
-import com.github.craftforever.infinitefeatures.helpers.valuepickers.returntypes.IIntValuePicker;
+import com.github.craftforever.infinitefeatures.helpers.valuepickers.returntypes.INumberValuePicker;
 
-public class UniformValuePicker implements IFloatValuePicker, IDoubleValuePicker, IIntValuePicker {
+public class UniformValuePicker implements INumberValuePicker {
 
-    public float min;
-    public float max;
-    public UniformValuePicker(float min, float max)
+    public INumberValuePicker min;
+    public INumberValuePicker max;
+    public UniformValuePicker(INumberValuePicker min, INumberValuePicker max)
     {
         this.min = min;
         this.max = max;
     }
 
     @Override
-    public double getDouble() {
-        return RandomHelper.getRandomFloatInRange(min, max);
-    }
-
-    @Override
-    public float getFloat() {
-        return RandomHelper.getRandomFloatInRange(min, max);
-    }
-
-    @Override
-    public int getInt() {
-        return Math.round(RandomHelper.getRandomFloatInRange(min, max));
+    public Number getNumber() {
+        return RandomHelper.getRandomFloatInRange(min.getNumber().floatValue(), max.getNumber().floatValue());
     }
 }

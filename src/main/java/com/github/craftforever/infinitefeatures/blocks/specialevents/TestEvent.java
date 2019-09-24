@@ -3,7 +3,7 @@ package com.github.craftforever.infinitefeatures.blocks.specialevents;
 import java.util.EnumSet;
 
 import com.github.craftforever.infinitefeatures.blocks.OreWithSpecialEvents;
-import com.github.craftforever.infinitefeatures.helpers.valuepickers.returntypes.IFloatValuePicker;
+import com.github.craftforever.infinitefeatures.helpers.valuepickers.returntypes.INumberValuePicker;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -21,9 +21,9 @@ public class TestEvent extends CallbackDecorator {
 
 	private static final EnumSet<CallbackDependencies> dependencies = EnumSet.of(CallbackDependencies.BLOCK);
 
-	protected IFloatValuePicker lightLevel;
+	protected INumberValuePicker lightLevel;
 
-	public TestEvent(ICallbackEvent child, IFloatValuePicker lightLevel)
+	public TestEvent(ICallbackEvent child, INumberValuePicker lightLevel)
 	{
 		super(child, dependencies);
 		this.lightLevel = lightLevel;
@@ -36,7 +36,7 @@ public class TestEvent extends CallbackDecorator {
 			IBlockAccess blockAccess) {
 		
 		if (block != null){
-			block.setLightLevel(lightLevel.getFloat());
+			block.setLightLevel(lightLevel.getNumber().floatValue());
 		}
 
 		super.child.Execute(block, relatedEntity, relatedLivingEntity, world, blockPos, bool, explosion, blockState, player, hand, facing, stack, unkFloat, blockAccess);
