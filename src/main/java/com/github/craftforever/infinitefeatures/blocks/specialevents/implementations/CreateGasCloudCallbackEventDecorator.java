@@ -52,8 +52,8 @@ public class CreateGasCloudCallbackEventDecorator extends CallbackDecorator {
 			World world, BlockPos blockPos, Boolean bool, Explosion explosion, IBlockState blockState,
 			EntityPlayer player, EnumHand hand, EnumFacing facing, ItemStack stack, Float unkFloat,
 			IBlockAccess blockAccess) {
-		if (world != null && blockPos != null) {
-
+		if (world != null && blockPos != null&&!world.isRemote) {
+			
 			EntityAreaEffectCloud entityareaeffectcloud = new EntityAreaEffectCloud(world, blockPos.getX(),
 					blockPos.getY(), blockPos.getZ());
 			entityareaeffectcloud.setOwner(null);
@@ -71,7 +71,6 @@ public class CreateGasCloudCallbackEventDecorator extends CallbackDecorator {
 			);
 
 			world.spawnEntity(entityareaeffectcloud);
-
 		}
 		super.child.Execute(block, relatedEntity, relatedLivingEntity, world, blockPos, bool, explosion, blockState, player, hand, facing, stack, unkFloat, blockAccess);
 		

@@ -49,7 +49,7 @@ public class ApplyPotionEffectCallbackEventDecorator extends CallbackDecorator {
             EntityPlayer player, EnumHand hand, EnumFacing facing, ItemStack stack, Float unkFloat,
             IBlockAccess blockAccess) {
 
-        if (relatedLivingEntity != null) {
+        if (relatedLivingEntity != null&&!world.isRemote) {
 
             relatedLivingEntity.addPotionEffect(
                 new PotionEffect(

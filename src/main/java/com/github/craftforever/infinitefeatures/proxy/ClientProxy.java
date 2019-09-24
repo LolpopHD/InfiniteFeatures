@@ -35,7 +35,7 @@ public class ClientProxy extends CommonProxy
 		List<IResourcePack> resourcePacks = null;
 		//replace "defaultResourcePacks" with "field_110449_ao" when you want to build it
 		//replace "defaultResourcePacks" with "field_110449_ao" when you want to build it
-		Field field = Minecraft.class.getDeclaredField("field_110449_ao");
+		Field field = Minecraft.class.getDeclaredField("defaultResourcePacks");
 		//replace "defaultResourcePacks" with "field_110449_ao" when you want to build it
 		//replace "defaultResourcePacks" with "field_110449_ao" when you want to build it
 		field.setAccessible(true);
