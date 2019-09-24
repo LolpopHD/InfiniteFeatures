@@ -56,8 +56,6 @@ public class RandomHelper
         if (mean - 3*standardDeviation < min || mean + 3*standardDeviation > max)
         {
             // There is a > 0.3% chance that when a number is generated it will lie outside the min-max range
-
-            // TODO: The user has picked risky/poor parameters which will lead to the randomness not being correct, idk what to do here.
         }
 
         double randomValue = 0D;

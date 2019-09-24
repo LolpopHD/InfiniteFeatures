@@ -1,10 +1,11 @@
 package com.github.craftforever.infinitefeatures.blocks;
 
+import java.util.EnumSet;
 import java.util.HashMap;
-import java.util.List;
 
 import com.github.craftforever.infinitefeatures.InfiniteFeatures;
-import com.github.craftforever.infinitefeatures.blocks.specialevents.ISpecialEvent;
+import com.github.craftforever.infinitefeatures.blocks.specialevents.CallbackDependencies;
+import com.github.craftforever.infinitefeatures.blocks.specialevents.ICallbackEvent;
 import com.github.craftforever.infinitefeatures.util.Mineral;
 
 import net.minecraft.block.SoundType;
@@ -24,20 +25,21 @@ import net.minecraft.world.World;
 
 public abstract class OreWithSpecialEvents extends BlockBase {
 
-    public HashMap<com.github.craftforever.infinitefeatures.blocks.RandomGemOre.SpecialEventTrigger, List<ISpecialEvent>> UniqueActions;
-    public Mineral mineral;
+	public HashMap<BlockCallbacks, ICallbackEvent> UniqueActions;
+	public Mineral mineral;
 	public String toolType;
 	public Material material;
 	public float lightlevel, hardness, resistance;
 	public int harvestLevel;
 	public SoundType sound;
 
-    public OreWithSpecialEvents(Mineral imineral, Material imaterial, float ilightLevel, String itoolType, int iharvestLevel,
-    float ihardness, float iresistance, SoundType isound,
-    HashMap<com.github.craftforever.infinitefeatures.blocks.RandomGemOre.SpecialEventTrigger, List<ISpecialEvent>> randomUniqueActions) {
-        super(imineral.name + "_ore",imaterial,imineral);
+	public OreWithSpecialEvents(Mineral imineral, Material imaterial, float ilightLevel, String itoolType,
+			int iharvestLevel, float ihardness, float iresistance, SoundType isound,
 
-        setSoundType(isound);
+			HashMap<BlockCallbacks, ICallbackEvent> randomUniqueActions) {
+		super(imineral.name + "_ore", imaterial, imineral);
+
+		setSoundType(isound);
 		setHardness(ihardness);
 		setResistance(iresistance);
 		setHarvestLevel(itoolType, iharvestLevel);
@@ -52,201 +54,244 @@ public abstract class OreWithSpecialEvents extends BlockBase {
 		this.resistance = iresistance;
 		this.harvestLevel = iharvestLevel;
 		this.sound = isound;
-    }
-
-    public enum SpecialEventTrigger 
-	{
-		ONDESTROY, ONEXPLODEDESTROY, ONACTIVATED, ONWALKEDON, ONCLICKED, ONCOLLIDED, ONPLACED, ONFALLENON, ONLANDED,
-		ONHARVESTED, ONEXPLODED, ONPLANTGROW, ONNEIGHBOURCHANGE, ONREMOVEDBYPLAYER, ONBLOCKADDED
-    }
-    
-    private void invokeSpecialEvents(List<ISpecialEvent> events, Entity relatedEntity, EntityLivingBase relatedLivingEntity, World world, BlockPos blockPos) 
-	{
-		events.forEach(event -> event.Execute(this, relatedEntity, relatedLivingEntity, world, blockPos));
 	}
 
-    // #region Potential function overrides
-	@Override
-	public void onPlayerDestroy(World p_onPlayerDestroy_1_,BlockPos p_onPlayerDestroy_2_,IBlockState p_onPlayerDestroy_3_) 
-	{
-		SpecialEventTrigger triggerName = SpecialEventTrigger.ONDESTROY;
+	private void invokeSpecialEvents(BlockCallbacks triggerName,
 
-		if (UniqueActions.containsKey(triggerName)) 
-		{
-			invokeSpecialEvents(UniqueActions.get(triggerName), null, null, p_onPlayerDestroy_1_, p_onPlayerDestroy_2_);
+			OreWithSpecialEvents block, Entity relatedEntity, EntityLivingBase relatedLivingEntity, World world,
+			BlockPos blockPos, Boolean bool, Explosion explosion, IBlockState blockState, EntityPlayer player,
+			EnumHand hand, EnumFacing facing, ItemStack stack, Float unkFloat, IBlockAccess blockAccess) {
+
+		if (player != null){
+			if (relatedLivingEntity == null){
+				relatedLivingEntity = player;
+			}
 		}
+		
+		if (explosion != null){
+			if (relatedLivingEntity == null){
+				relatedLivingEntity = explosion.getExplosivePlacedBy();
+			}
+		}
+
+		if (relatedLivingEntity != null){
+			if (relatedEntity == null){
+				relatedEntity = relatedLivingEntity;
+			}
+		}
+		
+		ICallbackEvent event = UniqueActions.get(triggerName);
+		if (event != null){
+			EnumSet<CallbackDependencies> dependencies = EnumSet.copyOf(event.getCallbackDependencies());
+			try {
+				dependencies.removeAll(CallbackDependencies.fromBlockCallback(triggerName));
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+			}
+			if (dependencies.isEmpty()) {
+				System.out.println(event.getDescription());
+				event.Execute(block, relatedEntity, relatedLivingEntity, world, blockPos, bool, explosion, blockState,
+						player, hand, facing, stack, unkFloat, blockAccess);
+			}
+		}
+	}
+
+	// #region Potential function overrides
+	@Override
+	public void onPlayerDestroy(World p_onPlayerDestroy_1_, BlockPos p_onPlayerDestroy_2_,
+			IBlockState p_onPlayerDestroy_3_) {
+		BlockCallbacks triggerName = BlockCallbacks.ONDESTROY;
+
+		invokeSpecialEvents(triggerName,
+
+				this, null, null, p_onPlayerDestroy_1_, p_onPlayerDestroy_2_, null, null,
+				p_onPlayerDestroy_3_, null, null, null, null, null, null);
+
 		super.onPlayerDestroy(p_onPlayerDestroy_1_, p_onPlayerDestroy_2_, p_onPlayerDestroy_3_);
 	}
 
 	@Override
 	public boolean removedByPlayer(IBlockState p_removedByPlayer_1_, World p_removedByPlayer_2_,
-			BlockPos p_removedByPlayer_3_, EntityPlayer p_removedByPlayer_4_, boolean p_removedByPlayer_5_) 
-	{
+			BlockPos p_removedByPlayer_3_, EntityPlayer p_removedByPlayer_4_, boolean p_removedByPlayer_5_) {
 
-		SpecialEventTrigger triggerName = SpecialEventTrigger.ONREMOVEDBYPLAYER;
-		if (UniqueActions.containsKey(triggerName)) 
-		{
-			invokeSpecialEvents(UniqueActions.get(triggerName), p_removedByPlayer_4_, p_removedByPlayer_4_, p_removedByPlayer_2_, p_removedByPlayer_3_);
-		}
-		return super.removedByPlayer(p_removedByPlayer_1_, p_removedByPlayer_2_, p_removedByPlayer_3_, p_removedByPlayer_4_,
-				p_removedByPlayer_5_);
+		BlockCallbacks triggerName = BlockCallbacks.ONREMOVEDBYPLAYER;
+		invokeSpecialEvents(triggerName,
+
+		this, null, null, p_removedByPlayer_2_,
+		p_removedByPlayer_3_, p_removedByPlayer_5_, null, p_removedByPlayer_1_, p_removedByPlayer_4_,
+		null, null, null, null, null);
+		return super.removedByPlayer(p_removedByPlayer_1_, p_removedByPlayer_2_, p_removedByPlayer_3_,
+				p_removedByPlayer_4_, p_removedByPlayer_5_);
 	}
 
 	@Override
-	public void onExplosionDestroy(World p_onExplosionDestroy_1_,BlockPos p_onExplosionDestroy_2_, Explosion p_onExplosionDestroy_3_) 
-	{
-		SpecialEventTrigger triggerName = SpecialEventTrigger.ONEXPLODEDESTROY;
-		if (UniqueActions.containsKey(triggerName)) 
-		{
-			invokeSpecialEvents(UniqueActions.get(triggerName), p_onExplosionDestroy_3_.getExplosivePlacedBy(), p_onExplosionDestroy_3_.getExplosivePlacedBy(), p_onExplosionDestroy_1_, p_onExplosionDestroy_2_);
-		}
+	public void onExplosionDestroy(World p_onExplosionDestroy_1_, BlockPos p_onExplosionDestroy_2_,
+			Explosion p_onExplosionDestroy_3_) {
+		BlockCallbacks triggerName = BlockCallbacks.ONEXPLODEDESTROY;
+		invokeSpecialEvents(triggerName,
+
+		this, null, null, p_onExplosionDestroy_1_,
+		p_onExplosionDestroy_2_, null, p_onExplosionDestroy_3_, null, null,
+		null, null, null, null, null);
 		super.onExplosionDestroy(p_onExplosionDestroy_1_, p_onExplosionDestroy_2_, p_onExplosionDestroy_3_);
 	}
 
 	@Override
-	public boolean onBlockActivated(World p_onBlockActivated_1_,BlockPos p_onBlockActivated_2_, IBlockState p_onBlockActivated_3_, EntityPlayer p_onBlockActivated_4_, EnumHand p_onBlockActivated_5_, EnumFacing p_onBlockActivated_6_,
-			float p_onBlockActivated_7_, float p_onBlockActivated_8_, float p_onBlockActivated_9_) 
-	{
-		SpecialEventTrigger triggerName = SpecialEventTrigger.ONACTIVATED;
-		if (UniqueActions.containsKey(triggerName)) 
-		{
-			invokeSpecialEvents(UniqueActions.get(triggerName), p_onBlockActivated_4_, p_onBlockActivated_4_, p_onBlockActivated_1_, p_onBlockActivated_2_);
-		}
-		return super.onBlockActivated(p_onBlockActivated_1_, p_onBlockActivated_2_, p_onBlockActivated_3_, p_onBlockActivated_4_, p_onBlockActivated_5_, p_onBlockActivated_6_, p_onBlockActivated_7_, p_onBlockActivated_8_, p_onBlockActivated_9_);
+	public boolean onBlockActivated(World p_onBlockActivated_1_, BlockPos p_onBlockActivated_2_,
+			IBlockState p_onBlockActivated_3_, EntityPlayer p_onBlockActivated_4_, EnumHand p_onBlockActivated_5_,
+			EnumFacing p_onBlockActivated_6_, float p_onBlockActivated_7_, float p_onBlockActivated_8_,
+			float p_onBlockActivated_9_) {
+		BlockCallbacks triggerName = BlockCallbacks.ONACTIVATED;
+		invokeSpecialEvents(triggerName,
+
+		this, null, null, p_onBlockActivated_1_,
+		p_onBlockActivated_2_, null, null, p_onBlockActivated_3_, p_onBlockActivated_4_,
+		p_onBlockActivated_5_, p_onBlockActivated_6_, null, p_onBlockActivated_7_, null);
+		return super.onBlockActivated(p_onBlockActivated_1_, p_onBlockActivated_2_, p_onBlockActivated_3_,
+				p_onBlockActivated_4_, p_onBlockActivated_5_, p_onBlockActivated_6_, p_onBlockActivated_7_,
+				p_onBlockActivated_8_, p_onBlockActivated_9_);
 	}
 
 	@Override
-	public void onEntityWalk(World p_onEntityWalk_1_, BlockPos p_onEntityWalk_2_, Entity p_onEntityWalk_3_) 
-	{
+	public void onEntityWalk(World p_onEntityWalk_1_, BlockPos p_onEntityWalk_2_, Entity p_onEntityWalk_3_) {
 
-		SpecialEventTrigger triggerName = SpecialEventTrigger.ONWALKEDON;
-		if (UniqueActions.containsKey(triggerName)) 
-		{
-			invokeSpecialEvents(UniqueActions.get(triggerName), p_onEntityWalk_3_, null, p_onEntityWalk_1_, p_onEntityWalk_2_);
-		}
+		BlockCallbacks triggerName = BlockCallbacks.ONWALKEDON;
+		invokeSpecialEvents(triggerName,
+
+		this, p_onEntityWalk_3_, null, p_onEntityWalk_1_,
+		p_onEntityWalk_2_, null, null, null, null,
+		null, null, null, null, null);
 		super.onEntityWalk(p_onEntityWalk_1_, p_onEntityWalk_2_, p_onEntityWalk_3_);
 	}
 
 	@Override
-	public void onBlockClicked(World p_onBlockClicked_1_,BlockPos p_onBlockClicked_2_,EntityPlayer p_onBlockClicked_3_) 
-	{
-		SpecialEventTrigger triggerName = SpecialEventTrigger.ONCLICKED;
-		if (UniqueActions.containsKey(triggerName)) 
-		{
-			invokeSpecialEvents(UniqueActions.get(triggerName), p_onBlockClicked_3_, p_onBlockClicked_3_, p_onBlockClicked_1_, p_onBlockClicked_2_);   
-		}
+	public void onBlockClicked(World p_onBlockClicked_1_, BlockPos p_onBlockClicked_2_,
+			EntityPlayer p_onBlockClicked_3_) {
+		BlockCallbacks triggerName = BlockCallbacks.ONCLICKED;
+		invokeSpecialEvents(triggerName,
+
+		this, null, null, p_onBlockClicked_1_,
+		p_onBlockClicked_2_, null, null, null, p_onBlockClicked_3_,
+		null, null, null, null, null);
 		super.onBlockClicked(p_onBlockClicked_1_, p_onBlockClicked_2_, p_onBlockClicked_3_);
 	}
 
 	@Override
-	public void onEntityCollision(World p_onEntityCollision_1_,BlockPos p_onEntityCollision_2_,IBlockState p_onEntityCollision_3_,
-			Entity p_onEntityCollision_4_) 
-	{
-        
-		SpecialEventTrigger triggerName = SpecialEventTrigger.ONCOLLIDED;
-		if (UniqueActions.containsKey(triggerName)) 
-		{
-			invokeSpecialEvents(UniqueActions.get(triggerName), p_onEntityCollision_4_, null, p_onEntityCollision_1_, p_onEntityCollision_2_);
-		}
-		super.onEntityCollision(p_onEntityCollision_1_,p_onEntityCollision_2_,p_onEntityCollision_3_,p_onEntityCollision_4_);
+	public void onEntityCollision(World p_onEntityCollision_1_, BlockPos p_onEntityCollision_2_,
+			IBlockState p_onEntityCollision_3_, Entity p_onEntityCollision_4_) {
+
+		BlockCallbacks triggerName = BlockCallbacks.ONCOLLIDED;
+		invokeSpecialEvents(triggerName,
+
+		this, p_onEntityCollision_4_, null, p_onEntityCollision_1_,
+		p_onEntityCollision_2_, null, null, p_onEntityCollision_3_, null,
+		null, null, null, null, null);
+		super.onEntityCollision(p_onEntityCollision_1_, p_onEntityCollision_2_, p_onEntityCollision_3_,
+				p_onEntityCollision_4_);
 	}
 
 	@Override
-	public void onBlockPlacedBy(World p_onBlockPlacedBy_1_,BlockPos p_onBlockPlacedBy_2_,
-			IBlockState p_onBlockPlacedBy_3_, EntityLivingBase p_onBlockPlacedBy_4_, ItemStack p_onBlockPlacedBy_5_) 
-	{
-		SpecialEventTrigger triggerName = SpecialEventTrigger.ONPLACED;
-		if (UniqueActions.containsKey(triggerName)) 
-		{
-			invokeSpecialEvents(UniqueActions.get(triggerName), p_onBlockPlacedBy_4_, p_onBlockPlacedBy_4_, p_onBlockPlacedBy_1_, p_onBlockPlacedBy_2_);
-		}
-		super.onBlockPlacedBy(p_onBlockPlacedBy_1_,p_onBlockPlacedBy_2_,p_onBlockPlacedBy_3_,p_onBlockPlacedBy_4_,p_onBlockPlacedBy_5_);
+	public void onBlockPlacedBy(World p_onBlockPlacedBy_1_, BlockPos p_onBlockPlacedBy_2_,
+			IBlockState p_onBlockPlacedBy_3_, EntityLivingBase p_onBlockPlacedBy_4_, ItemStack p_onBlockPlacedBy_5_) {
+		BlockCallbacks triggerName = BlockCallbacks.ONPLACED;
+		invokeSpecialEvents(triggerName,
+
+		this, null, p_onBlockPlacedBy_4_, p_onBlockPlacedBy_1_,
+		p_onBlockPlacedBy_2_, null, null, p_onBlockPlacedBy_3_, null,
+		null, null, p_onBlockPlacedBy_5_, null, null);
+		super.onBlockPlacedBy(p_onBlockPlacedBy_1_, p_onBlockPlacedBy_2_, p_onBlockPlacedBy_3_, p_onBlockPlacedBy_4_,
+				p_onBlockPlacedBy_5_);
 	}
 
 	@Override
 	public void onFallenUpon(World p_onFallenUpon_1_, BlockPos p_onFallenUpon_2_, Entity p_onFallenUpon_3_,
-			float p_onFallenUpon_4_) 
-	{
-		SpecialEventTrigger triggerName = SpecialEventTrigger.ONFALLENON;
-		if (UniqueActions.containsKey(triggerName)) 
-		{
-			invokeSpecialEvents(UniqueActions.get(triggerName), p_onFallenUpon_3_, null, p_onFallenUpon_1_, p_onFallenUpon_2_);
-		}
-		super.onFallenUpon(p_onFallenUpon_1_, p_onFallenUpon_2_, p_onFallenUpon_3_,p_onFallenUpon_4_);
+			float p_onFallenUpon_4_) {
+		BlockCallbacks triggerName = BlockCallbacks.ONFALLENON;
+		invokeSpecialEvents(triggerName,
+
+		this, p_onFallenUpon_3_, null, p_onFallenUpon_1_,
+		p_onFallenUpon_2_, null, null, null, null,
+		null, null, null, p_onFallenUpon_4_, null);
+		super.onFallenUpon(p_onFallenUpon_1_, p_onFallenUpon_2_, p_onFallenUpon_3_, p_onFallenUpon_4_);
 	}
 
 	@Override
-	public void onLanded(World p_onLanded_1_, Entity p_onLanded_2_) 
-	{
-		SpecialEventTrigger triggerName = SpecialEventTrigger.ONLANDED;
-		p_onLanded_2_.motionY = 0.0D;
-		if (UniqueActions.containsKey(triggerName)) 
-		{
-			invokeSpecialEvents(UniqueActions.get(triggerName), p_onLanded_2_, null, p_onLanded_1_, null);
-		}
+	public void onLanded(World p_onLanded_1_, Entity p_onLanded_2_) {
+		BlockCallbacks triggerName = BlockCallbacks.ONLANDED;
+		invokeSpecialEvents(triggerName,
+
+		this, p_onLanded_2_, null, p_onLanded_1_,
+		null, null, null, null, null,
+		null, null, null, null, null);
 		super.onLanded(p_onLanded_1_, p_onLanded_2_);
 	}
 
 	@Override
-	public void onBlockHarvested(World p_onBlockHarvested_1_,BlockPos p_onBlockHarvested_2_,
-			IBlockState p_onBlockHarvested_3_,EntityPlayer p_onBlockHarvested_4_) 
-	{
-		SpecialEventTrigger triggerName = SpecialEventTrigger.ONHARVESTED;
-		if (UniqueActions.containsKey(triggerName)) 
-		{
-			invokeSpecialEvents(UniqueActions.get(triggerName), p_onBlockHarvested_4_, p_onBlockHarvested_4_, p_onBlockHarvested_1_, p_onBlockHarvested_2_);
-		}
-		super.onBlockHarvested(p_onBlockHarvested_1_, p_onBlockHarvested_2_, p_onBlockHarvested_3_, p_onBlockHarvested_4_);
+	public void onBlockHarvested(World p_onBlockHarvested_1_, BlockPos p_onBlockHarvested_2_,
+			IBlockState p_onBlockHarvested_3_, EntityPlayer p_onBlockHarvested_4_) {
+		BlockCallbacks triggerName = BlockCallbacks.ONHARVESTED;
+		invokeSpecialEvents(triggerName,
+
+		this, null, null, p_onBlockHarvested_1_,
+		p_onBlockHarvested_2_, null, null, p_onBlockHarvested_3_, p_onBlockHarvested_4_,
+		null, null, null, null, null	);
+		super.onBlockHarvested(p_onBlockHarvested_1_, p_onBlockHarvested_2_, p_onBlockHarvested_3_,
+				p_onBlockHarvested_4_);
 	}
 
 	@Override
-	public void onBlockExploded(World p_onBlockExploded_1_,BlockPos p_onBlockExploded_2_, Explosion p_onBlockExploded_3_) {
+	public void onBlockExploded(World p_onBlockExploded_1_, BlockPos p_onBlockExploded_2_,
+			Explosion p_onBlockExploded_3_) {
 
-		SpecialEventTrigger triggerName = SpecialEventTrigger.ONEXPLODED;
-		if (UniqueActions.containsKey(triggerName)) {
-			invokeSpecialEvents(UniqueActions.get(triggerName), p_onBlockExploded_3_.getExplosivePlacedBy(), p_onBlockExploded_3_.getExplosivePlacedBy(), p_onBlockExploded_1_, p_onBlockExploded_2_);
-		}
-		super.onBlockExploded(p_onBlockExploded_1_, p_onBlockExploded_2_,p_onBlockExploded_3_);
+		BlockCallbacks triggerName = BlockCallbacks.ONEXPLODED;
+		invokeSpecialEvents(triggerName,
+
+		this, null, null, p_onBlockExploded_1_,
+		p_onBlockExploded_2_, null, p_onBlockExploded_3_, null, null,
+		null, null, null, null, null);
+		super.onBlockExploded(p_onBlockExploded_1_, p_onBlockExploded_2_, p_onBlockExploded_3_);
 	}
 
 	@Override
 	public void onPlantGrow(IBlockState p_onPlantGrow_1_, World p_onPlantGrow_2_, BlockPos p_onPlantGrow_3_,
-			BlockPos p_onPlantGrow_4_) 
-	{
-		SpecialEventTrigger triggerName = SpecialEventTrigger.ONPLANTGROW;
-		if (UniqueActions.containsKey(triggerName)) 
-		{
-			invokeSpecialEvents(UniqueActions.get(triggerName), null, null, p_onPlantGrow_2_, p_onPlantGrow_4_);
-		}
-		super.onPlantGrow(p_onPlantGrow_1_,p_onPlantGrow_2_,p_onPlantGrow_3_,p_onPlantGrow_4_);
+			BlockPos p_onPlantGrow_4_) {
+		BlockCallbacks triggerName = BlockCallbacks.ONPLANTGROW;
+		invokeSpecialEvents(triggerName,
+
+		this, null, null, p_onPlantGrow_2_,
+		p_onPlantGrow_3_, null, null, p_onPlantGrow_1_, null,
+		null, null, null, null, null);
+		super.onPlantGrow(p_onPlantGrow_1_, p_onPlantGrow_2_, p_onPlantGrow_3_, p_onPlantGrow_4_);
 	}
 
 	@Override
-	public void onNeighborChange(IBlockAccess p_onNeighborChange_1_, BlockPos p_onNeighborChange_2_, BlockPos p_onNeighborChange_3_) 
-	{
-		SpecialEventTrigger triggerName = SpecialEventTrigger.ONNEIGHBOURCHANGE;
-		if (UniqueActions.containsKey(triggerName)) 
-		{
-			invokeSpecialEvents(UniqueActions.get(triggerName), null, null, null, p_onNeighborChange_2_);
-		}
-		super.onNeighborChange(p_onNeighborChange_1_, p_onNeighborChange_2_, p_onNeighborChange_3_);
-    }
-    
-    @Override
-    public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
-		SpecialEventTrigger triggerName = SpecialEventTrigger.ONBLOCKADDED;
-		
-			invokeSpecialEvents(UniqueActions.get(triggerName), null, null, worldIn, pos);
-        
-        super.onBlockAdded(worldIn, pos, state);
-    }
-    // #endregion
-    
-   
+	public void onNeighborChange(IBlockAccess p_onNeighborChange_1_, BlockPos p_onNeighborChange_2_,
+			BlockPos p_onNeighborChange_3_) {
+		BlockCallbacks triggerName = BlockCallbacks.ONNEIGHBOURCHANGE;
+		invokeSpecialEvents(triggerName,
 
-    @Override
-	public void registerModels() 
-	{
+		this, null, null, null,
+		p_onNeighborChange_2_, null, null, null, null,
+		null, null, null, null, p_onNeighborChange_1_);
+		super.onNeighborChange(p_onNeighborChange_1_, p_onNeighborChange_2_, p_onNeighborChange_3_);
+	}
+
+	// @Override
+	// public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
+	// 	BlockCallbacks triggerName = BlockCallbacks.ONBLOCKADDED;
+
+	// 	invokeSpecialEvents(triggerName,
+
+	// 	this, null, null, worldIn,
+	// 	pos, null, null, state, null,
+	// 	null, null, null, null, null);
+
+	// 	super.onBlockAdded(worldIn, pos, state);
+	// }
+	// #endregion
+
+	@Override
+	public void registerModels() {
 		InfiniteFeatures.proxy.registerItemRenderer(Item.getItemFromBlock(this), 0, "inventory");
 	}
 
