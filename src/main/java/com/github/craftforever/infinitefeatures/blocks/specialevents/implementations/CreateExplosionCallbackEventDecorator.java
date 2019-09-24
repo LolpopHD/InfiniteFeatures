@@ -41,9 +41,9 @@ public class CreateExplosionCallbackEventDecorator extends CallbackDecorator {
 			EntityPlayer player, EnumHand hand, EnumFacing facing, ItemStack stack, Float unkFloat,
 			IBlockAccess blockAccess) {
 
-		if (world != null && blockPos != null) {
-			world.setBlockToAir(blockPos);
-			world.createExplosion(null, blockPos.getX(), blockPos.getY(), blockPos.getZ(), strength.getNumber().floatValue(), damagesTerrain.getBoolean());
+		if (world != null && blockPos != null&&!world.isRemote) {
+				world.setBlockToAir(blockPos);
+				world.createExplosion(null, blockPos.getX(), blockPos.getY(), blockPos.getZ(), strength.getNumber().floatValue(), damagesTerrain.getBoolean());
 		}
 		
 		super.child.Execute(block, relatedEntity, relatedLivingEntity, world, blockPos, bool, explosion, blockState, player, hand, facing, stack, unkFloat, blockAccess);
