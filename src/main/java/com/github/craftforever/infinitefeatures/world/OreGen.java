@@ -40,7 +40,10 @@ public class OreGen implements IWorldGenerator
 		for(int i = 0; i < InfiniteFeatures.ORE_QTY; i++) 
 		{
 			Mineral blockmineral = ((FallingBase)ModBlocks.oreArray[i]).mineral;
-			generateOre(ModBlocks.oreArray[i].getDefaultState(), world, random, chunkX * 16, chunkZ * 16, 0, blockmineral.genmaxy, random.nextInt(blockmineral.gensize+1) + blockmineral.gensize+1, blockmineral.genrarity+1);
+			if(blockmineral.underlay.equals("stone")||blockmineral.underlay.equals("sand")||blockmineral.underlay.equals("dirt")) 
+			{
+				generateOre(ModBlocks.oreArray[i].getDefaultState(), world, random, chunkX * 16, chunkZ * 16, 0, blockmineral.genmaxy, random.nextInt(blockmineral.gensize+1) + blockmineral.gensize+1, blockmineral.genrarity+1);
+			}
 			//System.out.print(ModBlocks.blockArray[i].getRegistryName()+"\n");
 		}
 	}
