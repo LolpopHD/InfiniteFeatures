@@ -203,7 +203,7 @@ public class RegistryHandler
 		//Creating Textures for the Ores and Ingots
 		for(int i = 0; i < InfiniteFeatures.ORE_QTY; i++)
 		{
-			int num = getRandomIntInRange(0, 4);
+			int num = getRandomIntInRange(0, 13);
 			InputStream stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/block/base/"+ModBlocks.minerals[i].underlay+".png");
 			BufferedImage baseImg = ImageIO.read(stream);
 			stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/block/ore/ore_"+num+".png");
@@ -223,7 +223,7 @@ public class RegistryHandler
 			BufferedImage Img;
 			if(ModBlocks.minerals[i].isGem) 
 			{
-				int rand = getRandomIntInRange(1, 3);
+				int rand = getRandomIntInRange(1, 28);
 				InputStream stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/item/gem/generic"+rand+".png");
 				Img = ImageIO.read(stream);
 			}
@@ -339,9 +339,10 @@ public class RegistryHandler
 			g.drawImage(headImg, 0, 0, null);
 			ImageIO.write(finalImg, "PNG", new File("InfiniCraft/Resources/assets/infeatures/textures/items/"+ModItems.swordArray[i].getTranslationKey().substring(5)+".png"));
 		
+			int shovelnum = getRandomIntInRange(0, 11);
 			stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/item/tool/shovel/shovel_handle.png");
 			baseImg = ImageIO.read(stream);
-			stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/item/tool/shovel/shovel_head.png");
+			stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/item/tool/shovel/shovel_head_"+shovelnum+".png");
 			headImg = ImageIO.read(stream);
 			finalImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
 			g = finalImg.getGraphics();
