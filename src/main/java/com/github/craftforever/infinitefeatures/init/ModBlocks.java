@@ -6,6 +6,8 @@ import java.util.List;
 import com.github.craftforever.infinitefeatures.InfiniteFeatures;
 import com.github.craftforever.infinitefeatures.blocks.BlockBase;
 import com.github.craftforever.infinitefeatures.util.Mineral;
+import com.github.craftforever.infinitefeatures.util.Wood;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.Item;
@@ -47,9 +49,14 @@ public class ModBlocks
 	//public static final Block RANDOM_BLOCK2 = new RandomBlock(minerals[1]).setCreativeTab(InfiniteFeatures.InfiniTab);
 	//public static final Block RANDOM_BLOCK3 = new RandomBlock(minerals[2]).setCreativeTab(InfiniteFeatures.InfiniTab);
 
-  public static Mineral getRandomMineral(int i) 
-  {
-		return RandomFactory.randomMineralFactory(one_consonants, two_consonants, vowels, i);
+	
+	public static Wood[] woods = generatewoodarray();
+	
+	public static final Block[] logArray = generatelogarray();
+	
+    public static Mineral getRandomMineral(int i) 
+    {
+    	return RandomFactory.randomMineralFactory(one_consonants, two_consonants, vowels, i);
 	}
 	
 	private static Mineral[] generatemineralarray()
@@ -115,4 +122,47 @@ public class ModBlocks
 		}
 		
 	}
+	
+	
+	public static Wood getRandomWood() 
+	{
+		return RandomFactory.randomWoodFactory(one_consonants, two_consonants, vowels);
+	}
+	
+	public static Wood[] generatewoodarray() 
+	{
+		if(InfiniteFeatures.continueRandomGeneration) {
+			Wood[] woodarray = new Wood[InfiniteFeatures.WOOD_QTY];
+			for (int i = 0; i < InfiniteFeatures.ORE_QTY; i++)
+			{
+				woodarray[i] = getRandomWood();
+			}
+			return woodarray;
+		}
+		
+		else 
+		{
+			Wood[] woodarray = null;
+			return woodarray;
+		}	
+	}
+	
+	public static Block[] generatelogarray() 
+	{
+		if(InfiniteFeatures.continueRandomGeneration) 
+		{	
+			Block[] logarray = new Block[InfiniteFeatures.WOOD_QTY];
+			for(int i = 0; i < InfiniteFeatures.WOOD_QTY; i++) 
+			{
+				logarray[i] = RandomFactory.randomLogFactory(woods[i]);
+			}
+			return logarray;
+		}
+		else 
+		{
+			Block[] logarray = null;
+			return logarray;
+		}
+	}		
 }
+	

@@ -264,7 +264,6 @@ public class RegistryHandler
 			dye(transparentImg2, randomColor);
 			dye(transparentImg2, color);
 			
-			
 			int w = Math.max(transparentImg2.getWidth(), transparentImg.getWidth());
 			int h = Math.max(transparentImg2.getHeight(), transparentImg.getHeight());
 			BufferedImage combined1 = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
@@ -446,7 +445,7 @@ public class RegistryHandler
 			writer.close();
 		}
 		
-		for(Block block : ModBlocks.BLOCKS)
+		for(Block block : ModBlocks.oreArray)
 		{
 			File blockModelFile = new File("InfiniCraft/Resources/assets/infeatures/models/block/"+block.getTranslationKey().substring(5)+".json");
 			File itemModelFile = new File("InfiniCraft/Resources/assets/infeatures/models/item/"+block.getTranslationKey().substring(5)+".json");
