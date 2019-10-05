@@ -19,7 +19,7 @@ import com.github.craftforever.infinitefeatures.blocks.RandomOre.SpecialEventTri
 import com.github.craftforever.infinitefeatures.blocks.specialevents.ApplyPotionEffectRange;
 import com.github.craftforever.infinitefeatures.blocks.specialevents.ApplyPotionEffectRangeRandomly;
 import com.github.craftforever.infinitefeatures.blocks.specialevents.ISpecialEvent;
-import com.github.craftforever.infinitefeatures.blocks;
+import com.github.craftforever.infinitefeatures.blocks.tree.RandomLog;
 import com.github.craftforever.infinitefeatures.helpers.RandomHelper;
 import com.github.craftforever.infinitefeatures.util.Mineral;
 import com.github.craftforever.infinitefeatures.util.Wood;
@@ -375,7 +375,11 @@ public class RandomFactory
         
         Color randomColor = new Color(InfiniteFeatures.seededRandom.nextInt(RGB_MAX),
                 InfiniteFeatures.seededRandom.nextInt(RGB_MAX), InfiniteFeatures.seededRandom.nextInt(RGB_MAX));
-        Wood randomWood = new Wood(randomName, randomColor);
+        Color leaveColor = new Color(InfiniteFeatures.seededRandom.nextInt(RGB_MAX),
+                InfiniteFeatures.seededRandom.nextInt(RGB_MAX), InfiniteFeatures.seededRandom.nextInt(RGB_MAX));
+        Color plankColor = new Color(InfiniteFeatures.seededRandom.nextInt(RGB_MAX),
+                InfiniteFeatures.seededRandom.nextInt(RGB_MAX), InfiniteFeatures.seededRandom.nextInt(RGB_MAX));
+        Wood randomWood = new Wood(randomName, randomColor, leaveColor, plankColor);
 
         return randomWood;
     }

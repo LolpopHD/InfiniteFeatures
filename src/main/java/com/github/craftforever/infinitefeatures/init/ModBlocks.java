@@ -5,6 +5,8 @@ import java.util.List;
 
 import com.github.craftforever.infinitefeatures.InfiniteFeatures;
 import com.github.craftforever.infinitefeatures.blocks.BlockBase;
+import com.github.craftforever.infinitefeatures.blocks.tree.LeaveBase;
+import com.github.craftforever.infinitefeatures.blocks.tree.SaplingBase;
 import com.github.craftforever.infinitefeatures.util.Mineral;
 import com.github.craftforever.infinitefeatures.util.Wood;
 
@@ -43,7 +45,6 @@ public class ModBlocks
 	public static int ingotorecount;
 	
 	public static final Block[] oreArray = generateorearray();
-	
 	public static final Block[] ingotblockArray = generateingotblockarray();
 	//public static final Block RANDOM_BLOCK = new RandomBlock(minerals[0]).setCreativeTab(InfiniteFeatures.InfiniTab);
 	//public static final Block RANDOM_BLOCK2 = new RandomBlock(minerals[1]).setCreativeTab(InfiniteFeatures.InfiniTab);
@@ -51,8 +52,10 @@ public class ModBlocks
 
 	
 	public static Wood[] woods = generatewoodarray();
-	
+
+	public static Block[] saplingArray = generatesaplingarray();
 	public static final Block[] logArray = generatelogarray();
+	public static final Block[] leaveArray = generateleavearray();
 	
     public static Mineral getRandomMineral(int i) 
     {
@@ -154,7 +157,7 @@ public class ModBlocks
 			Block[] logarray = new Block[InfiniteFeatures.WOOD_QTY];
 			for(int i = 0; i < InfiniteFeatures.WOOD_QTY; i++) 
 			{
-				logarray[i] = RandomFactory.randomLogFactory(woods[i]);
+				logarray[i] = RandomFactory.randomLogFactory(woods[i]).setCreativeTab(InfiniteFeatures.InfiniTab);
 			}
 			return logarray;
 		}
@@ -163,6 +166,42 @@ public class ModBlocks
 			Block[] logarray = null;
 			return logarray;
 		}
-	}		
+	}
+	
+	public static Block[] generateleavearray() 
+	{
+		if(InfiniteFeatures.continueRandomGeneration) 
+		{
+			Block[] leavearray = new Block[InfiniteFeatures.WOOD_QTY];
+			for(int i = 0; i < InfiniteFeatures.WOOD_QTY; i++) 
+			{
+				leavearray[i] = new LeaveBase(woods[i]).setCreativeTab(InfiniteFeatures.InfiniTab);
+			}
+			return leavearray;
+		}
+		else
+		{
+			Block[] array = null;
+			return array;
+		}
+	}
+	
+	public static Block[] generatesaplingarray() 
+	{
+		if(InfiniteFeatures.continueRandomGeneration) 
+		{
+			Block[] saparray = new Block[InfiniteFeatures.WOOD_QTY];
+			for(int i = 0; i < InfiniteFeatures.WOOD_QTY; i++) 
+			{
+				saparray[i] = new SaplingBase(woods[i]).setCreativeTab(InfiniteFeatures.InfiniTab);
+			}
+			return saparray;
+		}
+		else
+		{
+			Block[] array = null;
+			return array;
+		}
+	}
 }
 	

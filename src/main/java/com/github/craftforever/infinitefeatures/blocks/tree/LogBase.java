@@ -7,6 +7,9 @@ import com.github.craftforever.infinitefeatures.init.ModItems;
 import com.github.craftforever.infinitefeatures.util.Wood;
 
 import net.minecraft.block.SoundType;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.block.BlockLog;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -21,12 +24,53 @@ public Wood wood;
 		setSoundType(SoundType.WOOD);
 		setTranslationKey(name);
 		setRegistryName(name);
-		setDefaultState(this.blockState.getBaseState().withProperty(LOG_AXIS, EnumAxis.Y));
 		
 		ModBlocks.BLOCKS.add(this);
 		ModItems.ITEMS.add(new ItemBlock(this).setRegistryName(this.getRegistryName()));
 	}
 
+	public IBlockState getStateFromMeta(int meta)
+    {
+        IBlockState state = this.getDefaultState();
+
+        switch (meta & 12)
+        {
+            case 0:
+                state = state.withProperty(LOG_AXIS, BlockLog.EnumAxis.Y);
+                break;
+
+            case 4:
+                state = state.withProperty(LOG_AXIS, BlockLog.EnumAxis.X);
+                break;
+
+            case 8:
+                state = state.withProperty(LOG_AXIS, BlockLog.EnumAxis.Z);
+                break;
+
+            default:
+                state = state.withProperty(LOG_AXIS, BlockLog.EnumAxis.NONE);
+        }
+
+        return state;
+    }
+	
+	public int getMetaFromState(IBlockState state)
+    {
+        switch ((BlockLog.EnumAxis)state.getValue(LOG_AXIS))
+        {
+            case X: return 4;
+            case Y: return 0;
+            case Z: return 8;
+            case NONE: return 12;
+        }
+		return 0;
+    }
+
+    protected BlockStateContainer createBlockState()
+    {
+        return new BlockStateContainer(this, new IProperty[] {LOG_AXIS});
+    }
+	
 	@Override
 	public void registerModels() 
 	{

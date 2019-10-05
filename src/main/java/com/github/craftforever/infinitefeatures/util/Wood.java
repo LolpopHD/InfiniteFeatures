@@ -5,12 +5,16 @@ import java.awt.Color;
 public class Wood 
 {
 	public String name;
-	public Color color;
+	public Color woodcolor;
+	public Color leavecolor;
+	public Color plankcolor;
 
-	public Wood(String iname, Color icolor)
+	public Wood(String iname, Color iwoodcolor, Color ileavecolor, Color iplankcolor)
 	{
 		name = iname;
-		color = icolor;
+		woodcolor = iwoodcolor;
+		leavecolor = ileavecolor;
+		plankcolor = iplankcolor;
 	}
 		
 }
