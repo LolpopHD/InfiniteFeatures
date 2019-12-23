@@ -35,8 +35,7 @@ public class InfiniteFeatures
 	public static Random seededRandomClient = new Random(currentWorldSeed+123456);
 	public static Logger logger = LogManager.getLogger();
 	public static boolean continueRandomGeneration = true;
-	//public static long currentServerSeed = 0;
-	
+
 	//fast start variables
 	public static int PLANT_QTY = 20;
 	public static int ORE_QTY = 20;
