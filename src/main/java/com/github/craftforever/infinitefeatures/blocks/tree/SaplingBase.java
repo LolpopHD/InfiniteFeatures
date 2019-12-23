@@ -6,26 +6,21 @@ import com.github.craftforever.infinitefeatures.InfiniteFeatures;
 import com.github.craftforever.infinitefeatures.init.IHasModel;
 import com.github.craftforever.infinitefeatures.init.ModBlocks;
 import com.github.craftforever.infinitefeatures.init.ModItems;
-import com.github.craftforever.infinitefeatures.util.Wood;
-import com.github.craftforever.infinitefeatures.world.WorldGenRandomTree;
+import com.github.craftforever.infinitefeatures.util.Plant;
 
 import net.minecraft.block.BlockBush;
 import net.minecraft.block.IGrowable;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.feature.WorldGenBigTree;
-import net.minecraft.world.gen.feature.WorldGenTrees;
-import net.minecraft.world.gen.feature.WorldGenerator;
-import net.minecraftforge.event.terraingen.TerrainGen;
 
 public class SaplingBase extends BlockBush implements IGrowable,IHasModel
 {
@@ -33,10 +28,14 @@ public class SaplingBase extends BlockBush implements IGrowable,IHasModel
 	public static final PropertyInteger STAGE = PropertyInteger.create("stage", 0, 1);
     protected static final AxisAlignedBB SAPLING_AABB = new AxisAlignedBB(0.09999999403953552D, 0.0D, 0.09999999403953552D, 0.8999999761581421D, 0.800000011920929D, 0.8999999761581421D);
 	
-    public SaplingBase(Wood wood) 
+    public static Plant plant;
+    
+    public SaplingBase(Plant plant) 
     {
-    	setTranslationKey(wood.name+"_sapling");
-    	setRegistryName(wood.name+"_sapling");
+    	SaplingBase.plant = plant;
+    	setSoundType(SoundType.PLANT);
+    	setTranslationKey(plant.name+"_sapling");
+    	setRegistryName(plant.name+"_sapling");
     	this.setDefaultState(this.blockState.getBaseState().withProperty(STAGE, Integer.valueOf(0)));
     	
     	ModBlocks.BLOCKS.add(this);
@@ -96,49 +95,48 @@ public class SaplingBase extends BlockBush implements IGrowable,IHasModel
 		{
 			worldIn.setBlockState(pos, state.cycleProperty(STAGE), 4);
 		}
-		else 
-		{
-			this.generateTree(worldIn, rand, pos, state);
-		}
+//		else 
+//		{
+//			this.generateTree(worldIn, rand, pos, state);
+//		}
 	}
 	
-	public void generateTree(World worldIn, Random rand, BlockPos pos, IBlockState state) 
-	{
-		if(TerrainGen.saplingGrowTree(worldIn, rand, pos)) {return;}
-		WorldGenerator gen = (WorldGenerator)(rand.nextInt(10) == 0 ? new WorldGenBigTree(false) : new WorldGenTrees(false));
-		int i = 0,j = 0;
-		boolean flag = false;
-		
-		gen = new WorldGenRandomTree();
-		
-		IBlockState iblockstate = Blocks.AIR.getDefaultState();
-		if(flag) 
-		{
-			worldIn.setBlockState(pos.add(0, 0, 0), iblockstate, 4);
-			worldIn.setBlockState(pos.add(1, 0, 0), iblockstate, 4);
-			worldIn.setBlockState(pos.add(0, 0, 1), iblockstate, 4);
-			worldIn.setBlockState(pos.add(1, 0, 1), iblockstate, 4);
-		}
-		else 
-		{
-			worldIn.setBlockState(pos, iblockstate, 4);
-		}
-		
-		if(!gen.generate(worldIn, rand, pos)) 
-		{
-			if(flag) 
-			{
-				worldIn.setBlockState(pos.add(0, 0, 0), iblockstate, 4);
-				worldIn.setBlockState(pos.add(1, 0, 0), iblockstate, 4);
-				worldIn.setBlockState(pos.add(0, 0, 1), iblockstate, 4);
-				worldIn.setBlockState(pos.add(1, 0, 1), iblockstate, 4);
-			}
-			else 
-			{
-				worldIn.setBlockState(pos, iblockstate, 4);
-			}
-		}
-	}
+//	public void generateTree(World worldIn, Random rand, BlockPos pos, IBlockState state) 
+//	{
+//		if(TerrainGen.saplingGrowTree(worldIn, rand, pos)) {return;}
+//		WorldGenerator gen = (WorldGenerator)(rand.nextInt(10) == 0 ? new WorldGenBigTree(false) : new WorldGenTrees(false));
+//		boolean flag = false;
+//		
+//		gen = new WorldGenRandomTree(plant.name);
+//		
+//		IBlockState iblockstate = Blocks.AIR.getDefaultState();
+//		if(flag) 
+//		{
+//			worldIn.setBlockState(pos.add(0, 0, 0), iblockstate, 4);
+//			worldIn.setBlockState(pos.add(1, 0, 0), iblockstate, 4);
+//			worldIn.setBlockState(pos.add(0, 0, 1), iblockstate, 4);
+//			worldIn.setBlockState(pos.add(1, 0, 1), iblockstate, 4);
+//		}
+//		else 
+//		{
+//			worldIn.setBlockState(pos, iblockstate, 4);
+//		}
+//		
+//		if(!gen.generate(worldIn, rand, pos)) 
+//		{
+//			if(flag) 
+//			{
+//				worldIn.setBlockState(pos.add(0, 0, 0), iblockstate, 4);
+//				worldIn.setBlockState(pos.add(1, 0, 0), iblockstate, 4);
+//				worldIn.setBlockState(pos.add(0, 0, 1), iblockstate, 4);
+//				worldIn.setBlockState(pos.add(1, 0, 1), iblockstate, 4);
+//			}
+//			else 
+//			{
+//				worldIn.setBlockState(pos, iblockstate, 4);
+//			}
+//		}
+//	}
 	
 	@Override
 	public boolean canGrow(World worldIn, BlockPos pos, IBlockState state, boolean isClient) 

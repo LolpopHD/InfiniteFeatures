@@ -22,7 +22,7 @@ import com.github.craftforever.infinitefeatures.blocks.specialevents.ISpecialEve
 import com.github.craftforever.infinitefeatures.blocks.tree.RandomLog;
 import com.github.craftforever.infinitefeatures.helpers.RandomHelper;
 import com.github.craftforever.infinitefeatures.util.Mineral;
-import com.github.craftforever.infinitefeatures.util.Wood;
+import com.github.craftforever.infinitefeatures.util.Plant;
 
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -189,7 +189,7 @@ public class RandomFactory
         return randomBlock;
     }
 
-    public static RandomLog randomLogFactory(Wood iwood) 
+    public static RandomLog randomLogFactory(Plant iplant) 
     {
     	float randomLightLevel = 0F;
         if (getRandomBoolean((float) LIGHTLEVEL_GLOW_PROBABILITY)) 
@@ -230,7 +230,7 @@ public class RandomFactory
 
         randomUniqueActions.get(randomTrigger).add(selectedEvent);
     	
-    	RandomLog randomBlock = new RandomLog(iwood, randomLightLevel, randomHarvestLevel, randomHardness, randomUniqueActions);
+    	RandomLog randomBlock = new RandomLog(iplant, randomLightLevel, randomHarvestLevel, randomHardness, randomUniqueActions);
     	
     	
     	
@@ -315,7 +315,7 @@ public class RandomFactory
         return randomMineral;
     }
 
-    public static Wood randomWoodFactory(String[] one_consonants, String[] two_consonants, String[] vowels) 
+    public static Plant randomPlantFactory(String[] one_consonants, String[] two_consonants, String[] vowels) 
     {
     	String randomName;
 
@@ -379,7 +379,7 @@ public class RandomFactory
                 InfiniteFeatures.seededRandom.nextInt(RGB_MAX), InfiniteFeatures.seededRandom.nextInt(RGB_MAX));
         Color plankColor = new Color(InfiniteFeatures.seededRandom.nextInt(RGB_MAX),
                 InfiniteFeatures.seededRandom.nextInt(RGB_MAX), InfiniteFeatures.seededRandom.nextInt(RGB_MAX));
-        Wood randomWood = new Wood(randomName, randomColor, leaveColor, plankColor);
+        Plant randomWood = new Plant(randomName, randomColor, leaveColor, plankColor);
 
         return randomWood;
     }

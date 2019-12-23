@@ -68,5 +68,10 @@ public class RecipeHandler
 			GameRegistry.addShapedRecipe(new ResourceLocation("infeatures:"+helmet), new ResourceLocation("infeatures:"+helmet.substring(0,helmet.length()-7)+"_items"),
 			new ItemStack(ModItems.helmetArray[i],1),new Object[] {"III","I I",'I', ModItems.itemArray[i]});
 		}
+		for(int i = 0; i < InfiniteFeatures.PLANT_QTY; i++) 
+		{
+			GameRegistry.addShapelessRecipe(new ResourceLocation("infeatures:"+ModBlocks.plants[i].name+"_planks"), new ResourceLocation("infeatures:"+ModBlocks.plants[i]+"_blocks"), 
+			new ItemStack(ModBlocks.plankArray[i],4), (Ingredient[]) new Ingredient[] {Ingredient.fromItem(Item.getItemFromBlock(ModBlocks.logArray[i]))});
+		}
 	}
 }

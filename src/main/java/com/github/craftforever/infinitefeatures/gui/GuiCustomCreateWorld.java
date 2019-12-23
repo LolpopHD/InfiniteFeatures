@@ -19,7 +19,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.StringUtils;
 import org.lwjgl.input.Keyboard;
 
-import com.github.craftforever.infinitefeatures.InfiniteFeatures;
+import com.github.craftforever.infinitefeatures.proxy.ClientProxy;
 
 @SideOnly(Side.CLIENT)
 public class GuiCustomCreateWorld extends GuiScreen
@@ -77,7 +77,7 @@ public class GuiCustomCreateWorld extends GuiScreen
 	@Override
 	public void updateScreen()
 	{
-		if(!InfiniteFeatures.fastStart)
+		if(!ClientProxy.fastStart)
 		{
 			this.worldNameField.updateCursorCounter();
 			this.worldSeedField.updateCursorCounter();
@@ -91,7 +91,7 @@ public class GuiCustomCreateWorld extends GuiScreen
 	@Override
 	public void initGui()
 	{
-		if(!InfiniteFeatures.fastStart)
+		if(!ClientProxy.fastStart)
 		{
 			Keyboard.enableRepeatEvents(true);
 			this.buttonList.clear();
@@ -138,7 +138,7 @@ public class GuiCustomCreateWorld extends GuiScreen
 			//this.btnCustomizeType.enabled = false;
 			this.worldNameField = new GuiTextField(9, this.fontRenderer, this.width / 2 - 100, 60, 200, 20);
 			this.worldNameField.setFocused(false);
-			this.worldNameField.setText(InfiniteFeatures.fastWorldName);
+			this.worldNameField.setText(ClientProxy.fastWorldName);
 			this.worldNameField.setEnabled(false);
 			//this.worldSeedField = new GuiTextField(10, this.fontRenderer, this.width / 2 - 100, 60, 200, 20);
 			//this.worldSeedField.setText(this.worldSeed);
@@ -262,7 +262,7 @@ public class GuiCustomCreateWorld extends GuiScreen
 				}
 
 				this.alreadyGenerated = true;
-				if(!InfiniteFeatures.fastStart) {
+				if(!ClientProxy.fastStart) {
 					long i = (new Random()).nextLong();
 					String s = this.worldSeedField.getText();
 
@@ -298,16 +298,12 @@ public class GuiCustomCreateWorld extends GuiScreen
 					{
 						worldsettings.enableCommands();
 					}
-					//InfiniteFeatures.saveInfFile(finalseed,Paths.get(saveDirName).toFile(),worldNameField.getText().trim());
-					InfiniteFeatures.saveInfFile(finalseed,saveDirName,worldNameField.getText().trim(),mc,worldsettings,this.selectedIndex,this.chunkProviderSettingsJson);
+					ClientProxy.saveInfFile(finalseed,saveDirName,worldNameField.getText().trim(),mc,worldsettings,this.selectedIndex,this.chunkProviderSettingsJson);
 					this.mc.launchIntegratedServer(this.saveDirName, this.worldNameField.getText().trim(), worldsettings);
 				}else {
-					WorldType.WORLD_TYPES[InfiniteFeatures.fastWorldTypeIndex].onGUICreateWorldPress();
-					InfiniteFeatures.fastStart = false;
-					//WorldSettings worldsettings = InfiniteFeatures.fastWorldSettings;
-					//InfiniteFeatures.saveInfFile(finalseed,Paths.get(saveDirName).toFile(),worldNameField.getText().trim());
-					//InfiniteFeatures.saveInfFile(finalseed,saveDirName,worldNameField.getText().trim(),mc,worldsettings,this.selectedIndex,this.chunkProviderSettingsJson);
-					this.mc.launchIntegratedServer(InfiniteFeatures.currentWorldFolderName, InfiniteFeatures.fastWorldName, InfiniteFeatures.fastWorldSettings);
+					WorldType.WORLD_TYPES[ClientProxy.fastWorldTypeIndex].onGUICreateWorldPress();
+					ClientProxy.fastStart = false;
+					this.mc.launchIntegratedServer(ClientProxy.currentWorldFolderName, ClientProxy.fastWorldName, ClientProxy.fastWorldSettings);
 				}
 			}
 			else if (button.id == 3)
@@ -494,7 +490,7 @@ public class GuiCustomCreateWorld extends GuiScreen
 	@Override
 	protected void keyTyped(char typedChar, int keyCode) throws IOException
 	{
-		if(!InfiniteFeatures.fastStart)
+		if(!ClientProxy.fastStart)
 		{
 			if (this.worldNameField.isFocused() && !this.inMoreWorldOptionsDisplay)
 			{

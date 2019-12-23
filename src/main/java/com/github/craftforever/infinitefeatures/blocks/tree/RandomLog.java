@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.github.craftforever.infinitefeatures.InfiniteFeatures;
 import com.github.craftforever.infinitefeatures.blocks.specialevents.ISpecialEvent;
-import com.github.craftforever.infinitefeatures.util.Wood;
+import com.github.craftforever.infinitefeatures.util.Plant;
 
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
@@ -30,7 +30,7 @@ public class RandomLog extends LogBase
 		ONHARVESTED, ONEXPLODED, ONPLANTGROW, ONNEIGHBOURCHANGE, ONREMOVEDBYPLAYER
 	}
 
-	public Wood wood;
+	public Plant plant;
 	public float lightlevel;
 	public int harvestLevel;
 	public HashMap<com.github.craftforever.infinitefeatures.blocks.RandomOre.SpecialEventTrigger, List<ISpecialEvent>> UniqueActions;
@@ -40,11 +40,11 @@ public class RandomLog extends LogBase
 		events.forEach(event -> event.ExecuteLog(this, hasLivingEntity, relatedEntity, relatedLivingEntity));
 	}
 
-	public RandomLog(Wood iwood, float ilightLevel, int iharvestLevel,
+	public RandomLog(Plant iplant, float ilightLevel, int iharvestLevel,
 			float ihardness,
 			HashMap<com.github.craftforever.infinitefeatures.blocks.RandomOre.SpecialEventTrigger, List<ISpecialEvent>> randomUniqueActions) 
 	{
-		super(iwood.name + "_log", iwood);
+		super(iplant.name + "_log", iplant);
 		//setTranslationKey(imineral.name + "_ore");
 		//setRegistryName(imineral.name + "_ore");
 		//ModBlocks.BLOCKS.add(this);
@@ -57,7 +57,7 @@ public class RandomLog extends LogBase
 		setLightLevel(ilightLevel);
 
 		this.UniqueActions = randomUniqueActions;
-		this.wood = iwood;
+		this.plant = iplant;
 		this.lightlevel = ilightLevel;;
 		this.harvestLevel = iharvestLevel;
 	}

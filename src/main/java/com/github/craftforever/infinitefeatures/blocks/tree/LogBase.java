@@ -4,7 +4,7 @@ import com.github.craftforever.infinitefeatures.InfiniteFeatures;
 import com.github.craftforever.infinitefeatures.init.IHasModel;
 import com.github.craftforever.infinitefeatures.init.ModBlocks;
 import com.github.craftforever.infinitefeatures.init.ModItems;
-import com.github.craftforever.infinitefeatures.util.Wood;
+import com.github.craftforever.infinitefeatures.util.Plant;
 
 import net.minecraft.block.SoundType;
 import net.minecraft.block.properties.IProperty;
@@ -16,11 +16,11 @@ import net.minecraft.item.ItemBlock;
 
 public class LogBase extends BlockLog implements IHasModel
 {
-public Wood wood;
+public Plant plant;
 	
-	public LogBase(String name, Wood iwood) 
+	public LogBase(String name, Plant iplant) 
 	{
-		wood = iwood;
+		plant = iplant;
 		setSoundType(SoundType.WOOD);
 		setTranslationKey(name);
 		setRegistryName(name);

@@ -160,17 +160,18 @@ public class RegistryHandler
 		
 		for(Block block : ModBlocks.logArray)
 		{
-			String itemName = block.getTranslationKey().substring(5, block.getTranslationKey().toString().length()-4);
-			itemName = itemName.replace("_", " ");
-			itemName = WordUtils.capitalize(itemName);
-			String langinput = block.getTranslationKey()+".name="+itemName+"\n";
+			String blockName = block.getTranslationKey().substring(5);
+			blockName = blockName.replace("_", " ");
+			blockName = WordUtils.capitalize(blockName);
+			blockName = blockName.substring(0,blockName.length()-4) + " Wood";
+			String langinput = block.getTranslationKey()+".name="+blockName+"\n";
 			writer.write(langinput);
 			writer.flush();
 		}
 		
 		for(Block block : ModBlocks.leaveArray)
 		{
-			String itemName = block.getTranslationKey().substring(5, block.getTranslationKey().toString().length()-4);
+			String itemName = block.getTranslationKey().substring(5);
 			itemName = itemName.replace("_", " ");
 			itemName = WordUtils.capitalize(itemName);
 			String langinput = block.getTranslationKey()+".name="+itemName+"\n";
@@ -187,6 +188,37 @@ public class RegistryHandler
 			writer.write(langinput);
 			writer.flush();
 		}
+		
+		for(Block block : ModBlocks.plankArray)
+		{
+			String blockName = block.getTranslationKey().substring(5);
+			blockName = blockName.replace("_", " ");
+			blockName = WordUtils.capitalize(blockName);
+			String langinput = block.getTranslationKey()+".name="+blockName+"\n";
+			writer.write(langinput);
+			writer.flush();
+		}
+		
+		for(Block block : ModBlocks.dirtArray)
+		{
+			String blockName = block.getTranslationKey().substring(5);
+			blockName = blockName.replace("_", " ");
+			blockName = WordUtils.capitalize(blockName);
+			String langinput = block.getTranslationKey()+".name="+blockName+"\n";
+			writer.write(langinput);
+			writer.flush();
+		}
+		
+		for(Block block : ModBlocks.grassblockArray)
+		{
+			String blockName = block.getTranslationKey().substring(5);
+			blockName = blockName.replace("_", " ");
+			blockName = WordUtils.capitalize(blockName);
+			String langinput = block.getTranslationKey()+".name="+blockName+"\n";
+			writer.write(langinput);
+			writer.flush();
+		}
+		
 		writer.close();
 		writer = Files.newBufferedWriter(packMcmeta.toPath(), charset);
 		writer.write(packInput);
@@ -419,7 +451,7 @@ public class RegistryHandler
 			ImageIO.write(itemImg, "PNG", new File("InfiniCraft/Resources/assets/infeatures/textures/models/armor/"+name+"_layer_2.png"));
 		}
 		
-		for(int i = 0; i < InfiniteFeatures.WOOD_QTY; i++) 
+		for(int i = 0; i < InfiniteFeatures.PLANT_QTY; i++) 
 		{
 			String name = ModBlocks.logArray[i].getTranslationKey().substring(5);
 			int randNum = getRandomIntInRange(1, 4);
@@ -431,15 +463,15 @@ public class RegistryHandler
 			BufferedImage finalImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
 			Graphics g;
 			g = finalImg.getGraphics();
-			dye(topImg, ModBlocks.woods[i].woodcolor);
-			dye(endImg, ModBlocks.woods[i].plankcolor);
+			dye(topImg, ModBlocks.plants[i].woodcolor);
+			dye(endImg, ModBlocks.plants[i].plankcolor);
 			g.drawImage(topImg, 0, 0, null);
 			g.drawImage(endImg, 0, 0, null);
 			ImageIO.write(finalImg, "PNG", new File("InfiniCraft/Resources/assets/infeatures/textures/blocks/"+name+"_top.png"));
 			
 			stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/block/tree/logs/log_"+randNum+".png");
 			BufferedImage sideImg = ImageIO.read(stream);
-			dye(sideImg, ModBlocks.woods[i].woodcolor);
+			dye(sideImg, ModBlocks.plants[i].woodcolor);
 			ImageIO.write(sideImg, "PNG", new File("InfiniCraft/Resources/assets/infeatures/textures/blocks/"+name+"_side.png"));
 			
 			
@@ -447,23 +479,63 @@ public class RegistryHandler
 			randNum = getRandomIntInRange(1, 3);
 			stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/block/tree/leaves/leaves_"+randNum+".png");
 			BufferedImage leaveImg = ImageIO.read(stream);
-			dye(leaveImg, ModBlocks.woods[i].leavecolor);
+			dye(leaveImg, ModBlocks.plants[i].plantcolor);
 			ImageIO.write(leaveImg, "PNG", new File("InfiniCraft/Resources/assets/infeatures/textures/blocks/"+leavename+".png"));
+			
+			
+			String plankname = ModBlocks.plankArray[i].getTranslationKey().substring(5);
+			stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/block/tree/planks/planks1.png");
+			BufferedImage plankImg1 = ImageIO.read(stream);
+			dye(plankImg1, ModBlocks.plants[i].plankcolor);
+			stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/block/tree/planks/planks2.png");
+			BufferedImage plankImg2 = ImageIO.read(stream);
+			dye(plankImg2, ModBlocks.plants[i].plankcolor);
+			BufferedImage plankImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+			g = plankImg.getGraphics();
+			g.drawImage(plankImg1, 0, 0, null);
+			g.drawImage(plankImg2, 0, 0, null);
+			ImageIO.write(plankImg, "PNG", new File("InfiniCraft/Resources/assets/infeatures/textures/blocks/"+plankname+".png"));
 			
 			
 			String saplingname = ModBlocks.saplingArray[i].getTranslationKey().substring(5);
 			randNum = getRandomIntInRange(1, 5);
 			stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/block/tree/saplings/sapling_overlay_"+randNum+".png");
 			BufferedImage overlay = ImageIO.read(stream);
-			dye(overlay, ModBlocks.woods[i].leavecolor);
+			dye(overlay, ModBlocks.plants[i].plantcolor);
 			stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/block/tree/saplings/sapling_underlay_"+randNum+".png");
 			BufferedImage underlay = ImageIO.read(stream);
-			dye(underlay, ModBlocks.woods[i].woodcolor);
+			dye(underlay, ModBlocks.plants[i].woodcolor);
 			BufferedImage sapling = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
 			g = sapling.getGraphics();
 			g.drawImage(underlay, 0, 0, null);
 			g.drawImage(overlay, 0, 0, null);
 			ImageIO.write(sapling, "PNG", new File("InfiniCraft/Resources/assets/infeatures/textures/blocks/"+saplingname+".png"));
+			
+			String dirtname = ModBlocks.dirtArray[i].getTranslationKey().substring(5);
+			String grassname = ModBlocks.grassblockArray[i].getTranslationKey().substring(5);
+			stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/block/biome/dirt1.png");
+			BufferedImage dirt1 = ImageIO.read(stream);
+			stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/block/biome/dirt2.png");
+			BufferedImage dirt2 = ImageIO.read(stream);
+			dye(dirt1, ModBlocks.plants[i].woodcolor);
+			dye(dirt2, ModBlocks.plants[i].woodcolor);
+			BufferedImage dirt = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+			g = dirt.getGraphics();
+			g.drawImage(dirt1, 0, 0, null);
+			g.drawImage(dirt2, 0, 0, null);
+			ImageIO.write(dirt, "PNG", new File("InfiniCraft/Resources/assets/infeatures/textures/blocks/"+dirtname+".png"));
+			stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/block/biome/grass_top.png");
+			BufferedImage grass_top = ImageIO.read(stream);
+			stream = InfiniteFeatures.class.getClassLoader().getResourceAsStream("assets/infeatures/textures/block/biome/grass_side_overlay.png");
+			BufferedImage grass_side = ImageIO.read(stream);
+			dye(grass_top, ModBlocks.plants[i].plantcolor);
+			dye(grass_side, ModBlocks.plants[i].plantcolor);
+			ImageIO.write(grass_top, "PNG", new File("InfiniCraft/Resources/assets/infeatures/textures/blocks/"+grassname+"_top.png"));
+			BufferedImage grass_block = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+			g = grass_block.getGraphics();
+			g.drawImage(dirt, 0, 0, null);
+			g.drawImage(grass_side, 0, 0, null);
+			ImageIO.write(grass_block, "PNG", new File("InfiniCraft/Resources/assets/infeatures/textures/blocks/"+grassname+"_side.png"));
 		}
 	}
 	
@@ -656,6 +728,48 @@ public class RegistryHandler
 			
 		}
 		
+		for(Block block : ModBlocks.plankArray)
+		{
+			File blockModelFile = new File("InfiniCraft/Resources/assets/infeatures/models/block/"+block.getTranslationKey().substring(5)+".json");
+			File itemModelFile = new File("InfiniCraft/Resources/assets/infeatures/models/item/"+block.getTranslationKey().substring(5)+".json");
+			File BlockstatelFile = new File("InfiniCraft/Resources/assets/infeatures/blockstates/"+block.getTranslationKey().substring(5)+".json");
+			
+			if (!blockModelFile.exists())
+				blockModelFile.createNewFile();
+			if (!itemModelFile.exists())
+				itemModelFile.createNewFile();
+			if (!BlockstatelFile.exists())
+				BlockstatelFile.createNewFile();
+			
+			BufferedWriter writer = Files.newBufferedWriter(blockModelFile.toPath(), charset);
+			String modelInput = "{\r\n" + 
+					"   \"parent\": \"block/cube_all\",\r\n" + 
+					"   \"textures\": {\r\n" + 
+					"       \"all\": \""+InfiniteFeatures.modID+":blocks/"+block.getTranslationKey().substring(5)+"\"\r\n" + 
+							"   }\r\n" + 
+							"}";
+			writer.write(modelInput);
+			writer.flush();
+			writer.close();
+			writer = Files.newBufferedWriter(itemModelFile.toPath(), charset);
+			modelInput ="{\r\n" + 
+					"   \"parent\": \""+InfiniteFeatures.modID+":block/"+block.getTranslationKey().substring(5)+"\"\r\n" + 
+							"}";
+			writer.write(modelInput);
+			writer.flush();
+			writer.close();
+			writer = Files.newBufferedWriter(BlockstatelFile.toPath(), charset);
+			modelInput ="{\r\n" + 
+					"    \"variants\": {\r\n" + 
+					"        \"normal\": { \"model\": \""+InfiniteFeatures.modID+":"+block.getTranslationKey().substring(5)+"\" }\r\n" + 
+							"    }\r\n" + 
+							"}";
+			writer.write(modelInput);
+			writer.flush();
+			writer.close();
+			
+		}
+		
 		for(Block block : ModBlocks.logArray)
 		{
 			File blockModelFile = new File("InfiniCraft/Resources/assets/infeatures/models/block/"+block.getTranslationKey().substring(5)+".json");
@@ -732,6 +846,95 @@ public class RegistryHandler
 					"   \"parent\": \"block/cube_all\",\r\n" + 
 					"   \"textures\": {\r\n" + 
 					"       \"all\": \""+InfiniteFeatures.modID+":blocks/"+block.getTranslationKey().substring(5)+"\"\r\n" + 
+							"   }\r\n" + 
+							"}";
+			writer.write(modelInput);
+			writer.flush();
+			writer.close();
+			writer = Files.newBufferedWriter(itemModelFile.toPath(), charset);
+			modelInput ="{\r\n" + 
+					"   \"parent\": \""+InfiniteFeatures.modID+":block/"+block.getTranslationKey().substring(5)+"\"\r\n" + 
+							"}";
+			writer.write(modelInput);
+			writer.flush();
+			writer.close();
+			writer = Files.newBufferedWriter(BlockstatelFile.toPath(), charset);
+			modelInput ="{\r\n" + 
+					"    \"variants\": {\r\n" + 
+					"        \"normal\": { \"model\": \""+InfiniteFeatures.modID+":"+block.getTranslationKey().substring(5)+"\" }\r\n" + 
+							"    }\r\n" + 
+							"}";
+			writer.write(modelInput);
+			writer.flush();
+			writer.close();
+			
+		}
+		
+		for(Block block : ModBlocks.dirtArray)
+		{
+			File blockModelFile = new File("InfiniCraft/Resources/assets/infeatures/models/block/"+block.getTranslationKey().substring(5)+".json");
+			File itemModelFile = new File("InfiniCraft/Resources/assets/infeatures/models/item/"+block.getTranslationKey().substring(5)+".json");
+			File BlockstatelFile = new File("InfiniCraft/Resources/assets/infeatures/blockstates/"+block.getTranslationKey().substring(5)+".json");
+			
+			if (!blockModelFile.exists())
+				blockModelFile.createNewFile();
+			if (!itemModelFile.exists())
+				itemModelFile.createNewFile();
+			if (!BlockstatelFile.exists())
+				BlockstatelFile.createNewFile();
+			
+			BufferedWriter writer = Files.newBufferedWriter(blockModelFile.toPath(), charset);
+			String modelInput = "{\r\n" + 
+					"   \"parent\": \"block/cube_all\",\r\n" + 
+					"   \"textures\": {\r\n" + 
+					"       \"all\": \""+InfiniteFeatures.modID+":blocks/"+block.getTranslationKey().substring(5)+"\"\r\n" + 
+							"   }\r\n" + 
+							"}";
+			writer.write(modelInput);
+			writer.flush();
+			writer.close();
+			writer = Files.newBufferedWriter(itemModelFile.toPath(), charset);
+			modelInput ="{\r\n" + 
+					"   \"parent\": \""+InfiniteFeatures.modID+":block/"+block.getTranslationKey().substring(5)+"\"\r\n" + 
+							"}";
+			writer.write(modelInput);
+			writer.flush();
+			writer.close();
+			writer = Files.newBufferedWriter(BlockstatelFile.toPath(), charset);
+			modelInput ="{\r\n" + 
+					"    \"variants\": {\r\n" + 
+					"        \"normal\": { \"model\": \""+InfiniteFeatures.modID+":"+block.getTranslationKey().substring(5)+"\" }\r\n" + 
+							"    }\r\n" + 
+							"}";
+			writer.write(modelInput);
+			writer.flush();
+			writer.close();
+			
+		}
+		
+		for(Block block : ModBlocks.grassblockArray)
+		{
+			File blockModelFile = new File("InfiniCraft/Resources/assets/infeatures/models/block/"+block.getTranslationKey().substring(5)+".json");
+			File itemModelFile = new File("InfiniCraft/Resources/assets/infeatures/models/item/"+block.getTranslationKey().substring(5)+".json");
+			File BlockstatelFile = new File("InfiniCraft/Resources/assets/infeatures/blockstates/"+block.getTranslationKey().substring(5)+".json");
+			
+			String dirt = block.getTranslationKey().substring(5, block.getTranslationKey().toString().length()-6) + "_dirt";
+			
+			if (!blockModelFile.exists())
+				blockModelFile.createNewFile();
+			if (!itemModelFile.exists())
+				itemModelFile.createNewFile();
+			if (!BlockstatelFile.exists())
+				BlockstatelFile.createNewFile();
+			
+			BufferedWriter writer = Files.newBufferedWriter(blockModelFile.toPath(), charset);
+			String modelInput = "{\r\n" + 
+					"   \"parent\": \"block/cube_bottom_top\",\r\n" + 
+					"   \"textures\": {\r\n" + 
+					"       \"particle\": \""+InfiniteFeatures.modID+":blocks/"+dirt+"\",\r\n" + 
+					"       \"side\": \""+InfiniteFeatures.modID+":blocks/"+block.getTranslationKey().substring(5)+"_side\",\r\n" + 
+					"       \"top\": \""+InfiniteFeatures.modID+":blocks/"+block.getTranslationKey().substring(5)+"_top\",\r\n" + 
+					"       \"bottom\": \""+InfiniteFeatures.modID+":blocks/"+dirt+"\"\r\n" + 
 							"   }\r\n" + 
 							"}";
 			writer.write(modelInput);

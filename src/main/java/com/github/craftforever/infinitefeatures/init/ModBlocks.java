@@ -5,10 +5,13 @@ import java.util.List;
 
 import com.github.craftforever.infinitefeatures.InfiniteFeatures;
 import com.github.craftforever.infinitefeatures.blocks.BlockBase;
+import com.github.craftforever.infinitefeatures.blocks.biome.DirtBase;
+import com.github.craftforever.infinitefeatures.blocks.biome.GrassblockBase;
 import com.github.craftforever.infinitefeatures.blocks.tree.LeaveBase;
 import com.github.craftforever.infinitefeatures.blocks.tree.SaplingBase;
+import com.github.craftforever.infinitefeatures.blocks.tree.plankBase;
 import com.github.craftforever.infinitefeatures.util.Mineral;
-import com.github.craftforever.infinitefeatures.util.Wood;
+import com.github.craftforever.infinitefeatures.util.Plant;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -51,11 +54,15 @@ public class ModBlocks
 	//public static final Block RANDOM_BLOCK3 = new RandomBlock(minerals[2]).setCreativeTab(InfiniteFeatures.InfiniTab);
 
 	
-	public static Wood[] woods = generatewoodarray();
+	public static Plant[] plants = generateplantarray();
 
 	public static Block[] saplingArray = generatesaplingarray();
 	public static final Block[] logArray = generatelogarray();
 	public static final Block[] leaveArray = generateleavearray();
+	public static final Block[]	plankArray = generateplankarray();
+	
+	public static final Block[] dirtArray = generatedirtarray();
+	public static final Block[] grassblockArray = generategrassblockarray();
 	
     public static Mineral getRandomMineral(int i) 
     {
@@ -127,26 +134,26 @@ public class ModBlocks
 	}
 	
 	
-	public static Wood getRandomWood() 
+	public static Plant getRandomPlant() 
 	{
-		return RandomFactory.randomWoodFactory(one_consonants, two_consonants, vowels);
+		return RandomFactory.randomPlantFactory(one_consonants, two_consonants, vowels);
 	}
 	
-	public static Wood[] generatewoodarray() 
+	public static Plant[] generateplantarray() 
 	{
 		if(InfiniteFeatures.continueRandomGeneration) {
-			Wood[] woodarray = new Wood[InfiniteFeatures.WOOD_QTY];
+			Plant[] plantarray = new Plant[InfiniteFeatures.PLANT_QTY];
 			for (int i = 0; i < InfiniteFeatures.ORE_QTY; i++)
 			{
-				woodarray[i] = getRandomWood();
+				plantarray[i] = getRandomPlant();
 			}
-			return woodarray;
+			return plantarray;
 		}
 		
 		else 
 		{
-			Wood[] woodarray = null;
-			return woodarray;
+			Plant[] plantarray = null;
+			return plantarray;
 		}	
 	}
 	
@@ -154,10 +161,10 @@ public class ModBlocks
 	{
 		if(InfiniteFeatures.continueRandomGeneration) 
 		{	
-			Block[] logarray = new Block[InfiniteFeatures.WOOD_QTY];
-			for(int i = 0; i < InfiniteFeatures.WOOD_QTY; i++) 
+			Block[] logarray = new Block[InfiniteFeatures.PLANT_QTY];
+			for(int i = 0; i < InfiniteFeatures.PLANT_QTY; i++) 
 			{
-				logarray[i] = RandomFactory.randomLogFactory(woods[i]).setCreativeTab(InfiniteFeatures.InfiniTab);
+				logarray[i] = RandomFactory.randomLogFactory(plants[i]).setCreativeTab(InfiniteFeatures.InfiniTab);
 			}
 			return logarray;
 		}
@@ -172,10 +179,10 @@ public class ModBlocks
 	{
 		if(InfiniteFeatures.continueRandomGeneration) 
 		{
-			Block[] leavearray = new Block[InfiniteFeatures.WOOD_QTY];
-			for(int i = 0; i < InfiniteFeatures.WOOD_QTY; i++) 
+			Block[] leavearray = new Block[InfiniteFeatures.PLANT_QTY];
+			for(int i = 0; i < InfiniteFeatures.PLANT_QTY; i++) 
 			{
-				leavearray[i] = new LeaveBase(woods[i]).setCreativeTab(InfiniteFeatures.InfiniTab);
+				leavearray[i] = new LeaveBase(plants[i]).setCreativeTab(InfiniteFeatures.InfiniTab);
 			}
 			return leavearray;
 		}
@@ -190,12 +197,66 @@ public class ModBlocks
 	{
 		if(InfiniteFeatures.continueRandomGeneration) 
 		{
-			Block[] saparray = new Block[InfiniteFeatures.WOOD_QTY];
-			for(int i = 0; i < InfiniteFeatures.WOOD_QTY; i++) 
+			Block[] saparray = new Block[InfiniteFeatures.PLANT_QTY];
+			for(int i = 0; i < InfiniteFeatures.PLANT_QTY; i++) 
 			{
-				saparray[i] = new SaplingBase(woods[i]).setCreativeTab(InfiniteFeatures.InfiniTab);
+				saparray[i] = new SaplingBase(plants[i]).setCreativeTab(InfiniteFeatures.InfiniTab);
 			}
 			return saparray;
+		}
+		else
+		{
+			Block[] array = null;
+			return array;
+		}
+	}
+	
+	public static Block[] generateplankarray() 
+	{
+		if(InfiniteFeatures.continueRandomGeneration) 
+		{
+			Block[] array = new Block[InfiniteFeatures.PLANT_QTY];
+			for(int i = 0; i < InfiniteFeatures.PLANT_QTY; i++) 
+			{
+				array[i] = new plankBase(plants[i]).setCreativeTab(InfiniteFeatures.InfiniTab);
+			}
+			return array;
+		}
+		else 
+		{
+			Block[] array = null;
+			return array;
+		}
+	}
+	
+	public static Block[] generatedirtarray() 
+	{
+		if(InfiniteFeatures.continueRandomGeneration) 
+		{
+			Block[] dirtarray = new Block[InfiniteFeatures.PLANT_QTY];
+			for(int i = 0; i < InfiniteFeatures.PLANT_QTY; i++) 
+			{
+				dirtarray[i] = new DirtBase(plants[i]).setCreativeTab(InfiniteFeatures.InfiniTab);
+			}
+			return dirtarray;
+		}
+		else
+		{
+			Block[] array = null;
+			return array;
+		}
+	}
+	
+	public static Block[] generategrassblockarray() 
+	{
+		if(InfiniteFeatures.continueRandomGeneration) 
+		{
+			Block[] dirtarray = new Block[InfiniteFeatures.PLANT_QTY];
+			for(int i = 0; i < InfiniteFeatures.PLANT_QTY; i++) 
+			{
+				dirtarray[i] = new GrassblockBase(plants[i],dirtArray[i]).setCreativeTab(InfiniteFeatures.InfiniTab);
+			}
+			return dirtarray;
 		}
 		else
 		{
